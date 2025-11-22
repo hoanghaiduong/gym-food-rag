@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  # Service 1: Vector Database (Qdrant)
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: gym_qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      # Sử dụng Bind Mount (lưu trực tiếp ra thư mục hiện tại) để dễ quản lý file
+      - ./qdrant_storage:/qdrant/storage
+    restart: always
+
+  # Service 2: Local LLM (Ollama)
+  # LƯU Ý: Phải thụt đầu dòng ngang bằng với 'qdrant' và 'backend'
+  ollama:
+    image: ollama/ollama:latest
+    container_name: gym_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_models:/root/.ollama
+    # Uncomment bên dưới nếu dùng GPU NVIDIA
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    restart: always
+
+  # Service 3: Backend API (FastAPI)
+  # backend:
+  #   build: .
+  #   container_name: gym_backend
+  #   ports:
+  #     - "7563:8000" # Host Port là 7563, Container Port là 8000
+  #   volumes:
+  #     - .:/app
+  #     - ./hf_cache:/root/.cache/huggingface
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - qdrant
+  #     - ollama
+  #   command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload

@@ -1,0 +1,854 @@
+﻿food_id,name,group,portion_g,energy_kcal,protein_g,carbs_g,fat_g,calculated_kcal_from_macros,meal_suggestion,provenance
+10001,Sữa bò tươi,Sữa và sản phẩm chế biến,100,74.0,3.9,4.8,4.4,74.4,General,Viện Dinh dưỡng Quốc gia
+10002,Sữa dê tươi,Sữa và sản phẩm chế biến,100,69.0,3.5,4.5,4.1,68.9,General,Viện Dinh dưỡng Quốc gia
+10003,Sữa mẹ (sữa người),Sữa và sản phẩm chế biến,100,61.0,1.5,7.0,3.0,61.0,General,Viện Dinh dưỡng Quốc gia
+10004,Sữa chua,Sữa và sản phẩm chế biến,100,61.0,3.3,3.6,3.7,60.9,General,Viện Dinh dưỡng Quốc gia
+10005,Sữa chua vớt béo,Sữa và sản phẩm chế biến,100,26.0,3.4,3.1,0.0,26.0,General,Viện Dinh dưỡng Quốc gia
+10006,Sữa bột toàn phần,Sữa và sản phẩm chế biến,100,494.0,27.0,38.0,26.0,494.0,General,Viện Dinh dưỡng Quốc gia
+10007,Sữa bột tách béo,Sữa và sản phẩm chế biến,100,357.0,35.0,52.0,1.0,357.0,General,Viện Dinh dưỡng Quốc gia
+10008,Sữa đặc có đường Việt Nam,Sữa và sản phẩm chế biến,100,336.0,8.1,56.0,8.8,335.6,General,Viện Dinh dưỡng Quốc gia
+10009,Phó mát,Sữa và sản phẩm chế biến,100,380.0,25.5,0.0,30.9,380.1,General,Viện Dinh dưỡng Quốc gia
+1001,"Gạo, trắng, nếp cái, sống",Ngũ cốc và sản phẩm chế biến,100,348.0,8.6,75.1,1.5,348.3,General,Viện Dinh dưỡng Quốc gia
+10015,"Sữa, bò, tiệt trùng, có đường, toàn phần, trắng ",Sữa và sản phẩm chế biến,100,85.0,3.9,7.34,4.4,84.56,General,Viện Dinh dưỡng Quốc gia
+1002,"Gạo, trắng, nếp thường, sống",Ngũ cốc và sản phẩm chế biến,100,350.0,8.4,75.4,1.6,349.6,General,Viện Dinh dưỡng Quốc gia
+1003,"Gạo, trắng, tẻ, giã tay, sống",Ngũ cốc và sản phẩm chế biến,100,347.0,8.1,75.7,1.3,346.9,General,Viện Dinh dưỡng Quốc gia
+10031,"Sữa chua, nước/uống, có đường",Sữa và sản phẩm chế biến,100,62.0,3.47,4.66,3.25,61.77,General,Viện Dinh dưỡng Quốc gia
+10035,"Sữa chua, đặc, có đường",Sữa và sản phẩm chế biến,100,65.0,3.3,4.66,3.7,65.14,General,Viện Dinh dưỡng Quốc gia
+10036,"Sữa chua, đặc, không đường",Sữa và sản phẩm chế biến,100,61.0,3.3,3.6,3.7,60.9,General,Viện Dinh dưỡng Quốc gia
+1004,"Gạo, trắng, tẻ, xát máy, sống",Ngũ cốc và sản phẩm chế biến,100,346.0,7.9,76.3,1.0,345.8,General,Viện Dinh dưỡng Quốc gia
+10047,"Sữa đặc có đường, Việt Nam",Sữa và sản phẩm chế biến,100,328.0,7.91,54.4,8.7,327.54,General,Viện Dinh dưỡng Quốc gia
+10048,Sữa hộp Milo,Sữa và sản phẩm chế biến,100,55.0,0.92,11.54,0.55,54.79,General,Viện Dinh dưỡng Quốc gia
+1005,"Gạo, tẻ, chưa xát (gạo lứt), sống",Ngũ cốc và sản phẩm chế biến,100,359.0,7.5,76.18,2.68,358.84,General,Viện Dinh dưỡng Quốc gia
+1006,"Kê, hạt, sống",Ngũ cốc và sản phẩm chế biến,100,345.0,7.0,72.4,3.0,344.6,General,Viện Dinh dưỡng Quốc gia
+1007,"Ngô, cả bắp, tươi",Ngũ cốc và sản phẩm chế biến,100,200.0,4.1,40.8,2.3,200.3,General,Viện Dinh dưỡng Quốc gia
+1007014,"Ngô tươi, tẻ, nướng",Ngũ cốc và sản phẩm chế biến,100,274.0,5.62,55.89,3.15,274.39,General,Viện Dinh dưỡng Quốc gia
+1008,"Ngô, vàng, hạt, khô",Ngũ cốc và sản phẩm chế biến,100,362.0,8.6,71.4,4.7,362.3,General,Viện Dinh dưỡng Quốc gia
+1009,"Bánh bao, nhân thịt",Ngũ cốc và sản phẩm chế biến,100,276.0,10.4,34.2,10.8,275.6,General,Viện Dinh dưỡng Quốc gia
+1010,Bánh đa nem,Ngũ cốc và sản phẩm chế biến,100,335.0,4.0,79.4,0.2,335.4,General,Viện Dinh dưỡng Quốc gia
+1011,Bánh đúc,Ngũ cốc và sản phẩm chế biến,100,52.0,0.9,11.4,0.3,51.9,General,Viện Dinh dưỡng Quốc gia
+1012,Bánh mỳ ,Ngũ cốc và sản phẩm chế biến,100,250.0,7.9,52.8,0.8,250.0,General,Viện Dinh dưỡng Quốc gia
+1013,Bánh phở,Ngũ cốc và sản phẩm chế biến,100,146.0,3.2,31.2,0.9,145.7,General,Viện Dinh dưỡng Quốc gia
+1014,Bánh quẩy,Ngũ cốc và sản phẩm chế biến,100,200.0,3.7,30.8,6.8,199.2,General,Viện Dinh dưỡng Quốc gia
+1015,Bỏng ngô,Ngũ cốc và sản phẩm chế biến,100,386.0,8.6,84.2,1.6,385.6,General,Viện Dinh dưỡng Quốc gia
+1016,"Bột gạo, gạo nếp thường",Ngũ cốc và sản phẩm chế biến,100,365.0,8.2,79.4,1.6,364.8,General,Viện Dinh dưỡng Quốc gia
+1017,"Bột gạo, gạo tẻ",Ngũ cốc và sản phẩm chế biến,100,360.0,6.6,82.6,0.4,360.4,General,Viện Dinh dưỡng Quốc gia
+1018,"Bột mì, trắng ",Ngũ cốc và sản phẩm chế biến,100,347.0,11.0,73.2,1.1,346.7,General,Viện Dinh dưỡng Quốc gia
+1019,"Bột ngô, ngô vàng",Ngũ cốc và sản phẩm chế biến,100,367.0,8.3,74.5,4.0,367.2,General,Viện Dinh dưỡng Quốc gia
+1020,"Bún, tươi",Ngũ cốc và sản phẩm chế biến,100,116.0,1.7,25.3,0.9,116.1,General,Viện Dinh dưỡng Quốc gia
+1021,"Cốm, tươi",Ngũ cốc và sản phẩm chế biến,100,307.0,4.4,68.3,1.7,306.1,General,Viện Dinh dưỡng Quốc gia
+1022,"Mỳ sợi, khô",Ngũ cốc và sản phẩm chế biến,100,350.0,11.0,74.5,0.9,350.1,General,Viện Dinh dưỡng Quốc gia
+1023,"Ngô, cả bắp, nếp, luộc",Ngũ cốc và sản phẩm chế biến,100,172.0,3.9,34.1,2.2,171.8,General,Viện Dinh dưỡng Quốc gia
+1024002,Xôi nếp cẩm,Ngũ cốc và sản phẩm chế biến,100,235.0,5.59,49.21,1.71,234.59,General,Viện Dinh dưỡng Quốc gia
+1027014,"Ngô tươi, nếp, nướng",Ngũ cốc và sản phẩm chế biến,100,274.0,5.62,55.89,3.15,274.39,General,Viện Dinh dưỡng Quốc gia
+1032,"Bánh mì, vuông, ngọt",Ngũ cốc và sản phẩm chế biến,100,384.0,7.89,52.63,15.79,384.19,General,Viện Dinh dưỡng Quốc gia
+1038,Bánh bao chay,Ngũ cốc và sản phẩm chế biến,100,221.0,6.1,48.0,0.5,220.9,General,Viện Dinh dưỡng Quốc gia
+1041,"Bánh đa (đỏ, trắng)",Ngũ cốc và sản phẩm chế biến,100,347.0,5.28,81.41,0.0,346.76,General,Viện Dinh dưỡng Quốc gia
+1041002,"Bánh đa (đỏ, trắng), luộc",Ngũ cốc và sản phẩm chế biến,100,97.0,1.48,22.8,0.0,97.12,General,Viện Dinh dưỡng Quốc gia
+1043,"Mỳ  ăn liền, lúa mì ",Ngũ cốc và sản phẩm chế biến,100,364.0,6.7,70.9,5.9,363.5,General,Viện Dinh dưỡng Quốc gia
+1043002,"Mỳ ăn liền, lúa mì, luộc",Ngũ cốc và sản phẩm chế biến,100,102.0,1.88,19.86,1.65,101.81,General,Viện Dinh dưỡng Quốc gia
+1045,Sợi mỳ Quảng,Ngũ cốc và sản phẩm chế biến,100,,5.32,82.23,0.27,352.63,General,Viện Dinh dưỡng Quốc gia
+1046002,"Nui, luộc",Ngũ cốc và sản phẩm chế biến,100,371.0,13.0,74.7,1.51,364.39,General,Viện Dinh dưỡng Quốc gia
+11001,Chuối nước đường,Đồ hộp,100,63.0,0.5,15.2,0.0,62.8,General,Viện Dinh dưỡng Quốc gia
+11002,Dưa chuột hộp,Đồ hộp,100,19.0,0.3,4.16,0.14,19.1,General,Viện Dinh dưỡng Quốc gia
+11003,Dứa hộp,Đồ hộp,100,57.0,0.3,13.84,0.06,57.1,General,Viện Dinh dưỡng Quốc gia
+11004,Lạc chao dầu,Đồ hộp,100,680.0,25.7,10.3,59.5,679.5,General,Viện Dinh dưỡng Quốc gia
+11005,Mắc coọc nước đường,Đồ hộp,100,58.0,0.2,14.4,0.0,58.4,General,Viện Dinh dưỡng Quốc gia
+11006,Mận nước đường,Đồ hộp,100,62.0,0.3,14.9,0.1,61.7,General,Viện Dinh dưỡng Quốc gia
+11007,Mứt bí ngô,Đồ hộp,100,201.0,0.5,49.8,0.0,201.2,General,Viện Dinh dưỡng Quốc gia
+11008,Mứt cam có vỏ,Đồ hộp,100,227.0,0.4,56.4,0.0,227.2,General,Viện Dinh dưỡng Quốc gia
+11009,Mứt chuối,Đồ hộp,100,224.0,0.7,55.2,0.0,223.6,General,Viện Dinh dưỡng Quốc gia
+11010,Mứt dứa,Đồ hộp,100,210.0,0.5,51.9,0.0,209.6,General,Viện Dinh dưỡng Quốc gia
+11011,Mứt đu đủ,Đồ hộp,100,186.0,0.4,46.1,0.0,186.0,General,Viện Dinh dưỡng Quốc gia
+11012,Nhãn nước đường,Đồ hộp,100,66.0,0.5,16.0,0.0,66.0,General,Viện Dinh dưỡng Quốc gia
+11013,Nước dứa hộp,Đồ hộp,100,41.0,0.3,9.74,0.06,40.7,General,Viện Dinh dưỡng Quốc gia
+11014,Vải nước đường,Đồ hộp,100,65.0,0.4,15.8,0.0,64.8,General,Viện Dinh dưỡng Quốc gia
+11015,Cá thu hộp,Đồ hộp,100,207.0,24.8,0.0,12.0,207.2,General,Viện Dinh dưỡng Quốc gia
+11016,Cá trích hộp,Đồ hộp,100,233.0,22.3,3.5,14.4,232.8,General,Viện Dinh dưỡng Quốc gia
+11017,Thịt bò hộp,Đồ hộp,100,251.0,16.4,0.0,20.6,251.0,General,Viện Dinh dưỡng Quốc gia
+11018,Thịt gà hộp,Đồ hộp,100,273.0,17.0,0.0,22.8,273.2,General,Viện Dinh dưỡng Quốc gia
+11019,Thịt lợn hộp,Đồ hộp,100,344.0,17.3,2.7,29.3,343.7,General,Viện Dinh dưỡng Quốc gia
+11020,"Thịt lợn, thịt bò xay hộp",Đồ hộp,100,244.0,16.0,0.0,20.0,244.0,General,Viện Dinh dưỡng Quốc gia
+11021,Thịt vịt hầm,Đồ hộp,100,224.0,19.6,0.0,16.2,224.2,General,Viện Dinh dưỡng Quốc gia
+11022,Cá ngừ hộp,Đồ hộp,100,85.0,19.0,0.08,0.94,84.78,General,Viện Dinh dưỡng Quốc gia
+11023,Cá nục hộp,Đồ hộp,100,233.0,22.3,3.5,14.4,232.8,General,Viện Dinh dưỡng Quốc gia
+12001,Bánh bích cốt,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,349.0,12.3,72.1,1.3,349.3,General,Viện Dinh dưỡng Quốc gia
+12002,Bánh bích quy,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,378.0,8.8,75.6,4.5,378.1,General,Viện Dinh dưỡng Quốc gia
+12003,Bánh chả,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,399.0,3.4,81.5,6.6,399.0,General,Viện Dinh dưỡng Quốc gia
+12004,Bánh con cá,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,369.0,7.5,79.8,2.2,369.0,General,Viện Dinh dưỡng Quốc gia
+12005,Bánh đậu xanh,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,420.0,15.6,63.5,11.5,419.9,General,Viện Dinh dưỡng Quốc gia
+12006,Bánh kem xốp,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,506.0,8.3,64.2,24.0,506.0,General,Viện Dinh dưỡng Quốc gia
+12007,Bánh khảo chay,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,377.0,3.2,90.4,0.3,377.1,General,Viện Dinh dưỡng Quốc gia
+12008,Bánh quế,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,436.0,8.3,76.7,10.7,436.3,General,Viện Dinh dưỡng Quốc gia
+12009,Bánh sô cô la,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,449.0,3.9,68.8,17.6,449.2,General,Viện Dinh dưỡng Quốc gia
+12010,Bánh thỏi sô cô la,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,543.0,4.9,62.5,30.4,543.2,General,Viện Dinh dưỡng Quốc gia
+12011,Bánh trứng nhện,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,369.0,9.6,74.4,3.7,369.3,General,Viện Dinh dưỡng Quốc gia
+12012,Bột ca cao,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,423.0,23.3,44.2,17.0,423.0,General,Viện Dinh dưỡng Quốc gia
+12013,Đường cát,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,383.0,1.1,94.6,0.0,382.8,General,Viện Dinh dưỡng Quốc gia
+12014,Đường kính,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,397.0,0.0,99.3,0.0,397.2,General,Viện Dinh dưỡng Quốc gia
+12015,Kẹo bơ cứng,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,448.0,2.1,71.1,17.2,447.6,General,Viện Dinh dưỡng Quốc gia
+12016,Kẹo cà phê,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,378.0,0.0,91.5,1.3,377.7,General,Viện Dinh dưỡng Quốc gia
+12017,Kẹo cam chanh,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,378.0,0.0,93.4,0.5,378.1,General,Viện Dinh dưỡng Quốc gia
+12018,Kẹo dừa mềm,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,425.0,0.6,78.1,12.2,424.6,General,Viện Dinh dưỡng Quốc gia
+12019,Kẹo dứa mềm,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,425.0,0.6,78.1,12.2,424.6,General,Viện Dinh dưỡng Quốc gia
+12020,Kẹo lạc,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,458.0,10.3,67.0,16.5,457.7,General,Viện Dinh dưỡng Quốc gia
+12021,Kẹo Pastille (kẹo ngậm bạc hà),"Đồ ngọt (đường, bánh, mứt, kẹo)",100,356.0,5.2,83.8,0.0,356.0,General,Viện Dinh dưỡng Quốc gia
+12022,Kẹo sô cô la,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,393.0,1.6,86.3,4.6,393.0,General,Viện Dinh dưỡng Quốc gia
+12023,Kẹo sữa,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,390.0,2.9,83.0,5.2,390.4,General,Viện Dinh dưỡng Quốc gia
+12024,Kẹo vừng viên,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,424.0,2.8,87.6,6.9,423.7,General,Viện Dinh dưỡng Quốc gia
+12025,Mạch nha,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,331.0,0.2,82.5,0.0,330.8,General,Viện Dinh dưỡng Quốc gia
+12026,Mật ong,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,327.0,0.4,81.3,0.0,326.8,General,Viện Dinh dưỡng Quốc gia
+12027,Mứt lạc,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,433.0,5.4,83.6,8.6,433.4,General,Viện Dinh dưỡng Quốc gia
+12044,Bánh chocopie,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,435.3,5.51,66.12,16.53,435.29,General,Viện Dinh dưỡng Quốc gia
+12053,Bánh sữa,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,427.0,10.32,70.95,11.35,427.23,General,Viện Dinh dưỡng Quốc gia
+12063,Thạch POKE hương trái cây ,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,253.0,0.0,63.16,0.0,252.64,General,Viện Dinh dưỡng Quốc gia
+12066,"Bim bim, gạo, mặn","Đồ ngọt (đường, bánh, mứt, kẹo)",100,458.0,5.0,47.5,27.5,457.5,General,Viện Dinh dưỡng Quốc gia
+12072,Đậu phộng da cá,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,540.0,13.33,46.67,33.33,539.97,General,Viện Dinh dưỡng Quốc gia
+12073,Kem ngô,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,199.0,3.2,27.6,8.4,198.8,General,Viện Dinh dưỡng Quốc gia
+12077,Kem que Merino Cacao - Sô cô la,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,227.0,3.8,28.2,11.0,227.0,General,Viện Dinh dưỡng Quốc gia
+12078,Kem đậu xanh,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,227.0,3.8,28.2,11.0,227.0,General,Viện Dinh dưỡng Quốc gia
+12079,Kem tươi,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,,335.0,35.5,2.4,1503.6,General,Viện Dinh dưỡng Quốc gia
+12084,Bánh bông lan,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,489.0,5.1,50.8,29.5,489.1,General,Viện Dinh dưỡng Quốc gia
+12085,Bánh gấu,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,475.7,5.41,64.86,21.62,475.66,General,Viện Dinh dưỡng Quốc gia
+12086,Bánh ngũ cốc cao năng lượng,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,500.0,14.1,39.1,31.9,499.9,General,Viện Dinh dưỡng Quốc gia
+12087,Bánh quy tròn nhân kem Ritz,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,507.0,6.9,56.3,28.3,507.5,General,Viện Dinh dưỡng Quốc gia
+12088,Bánh trứng Custas,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,434.0,4.26,46.81,25.53,434.05,General,Viện Dinh dưỡng Quốc gia
+12089,Bánh gối,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,318.0,3.7,55.42,9.1,318.38,General,Viện Dinh dưỡng Quốc gia
+12090,Bánh rán nhân đỗ,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,318.0,3.7,55.42,9.1,318.38,General,Viện Dinh dưỡng Quốc gia
+12091,Bánh tiêu,"Đồ ngọt (đường, bánh, mứt, kẹo)",100,318.0,3.7,55.42,9.1,318.38,General,Viện Dinh dưỡng Quốc gia
+13001,Cary bột,"Gia vị, nước chấm",100,318.0,8.2,54.9,7.3,318.1,General,Viện Dinh dưỡng Quốc gia
+13002,Gừng khô (bột),"Gia vị, nước chấm",100,346.0,7.6,74.5,2.9,354.5,General,Viện Dinh dưỡng Quốc gia
+13003,Gừng tươi,"Gia vị, nước chấm",100,41.0,0.4,8.59,0.51,40.55,General,Viện Dinh dưỡng Quốc gia
+13004,Hạt tiêu,"Gia vị, nước chấm",100,365.0,7.0,67.6,7.4,365.0,General,Viện Dinh dưỡng Quốc gia
+13005,Muối,"Gia vị, nước chấm",100,0.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+13006,"Nghệ khô, bột","Gia vị, nước chấm",100,380.0,7.83,64.91,9.88,379.88,General,Viện Dinh dưỡng Quốc gia
+13007,Nghệ tươi,"Gia vị, nước chấm",100,51.0,1.1,11.0,0.3,51.1,General,Viện Dinh dưỡng Quốc gia
+13008,ớt khô bột,"Gia vị, nước chấm",100,322.0,15.6,55.4,4.2,321.8,General,Viện Dinh dưỡng Quốc gia
+13009,Riềng,"Gia vị, nước chấm",100,26.0,0.3,6.2,0.0,26.0,General,Viện Dinh dưỡng Quốc gia
+13010,Magi,"Gia vị, nước chấm",100,65.0,10.0,6.1,0.1,65.3,General,Viện Dinh dưỡng Quốc gia
+13011,Mắm tôm đặc,"Gia vị, nước chấm",100,73.0,14.8,0.0,1.5,72.7,General,Viện Dinh dưỡng Quốc gia
+13012,Mắm tôm loãng,"Gia vị, nước chấm",100,44.0,7.0,2.1,0.8,43.6,General,Viện Dinh dưỡng Quốc gia
+13013,Mắm tép chua,"Gia vị, nước chấm",100,68.0,8.7,5.5,1.2,67.6,General,Viện Dinh dưỡng Quốc gia
+13014,Nước mắm cá (loại đặc biệt),"Gia vị, nước chấm",100,60.0,15.0,0.0,0.0,60.0,General,Viện Dinh dưỡng Quốc gia
+13015,Nước mắm loại I,"Gia vị, nước chấm",100,28.0,7.1,0.0,0.0,28.4,General,Viện Dinh dưỡng Quốc gia
+13016,Nước mắm loại II,"Gia vị, nước chấm",100,21.0,5.2,0.0,0.0,20.8,General,Viện Dinh dưỡng Quốc gia
+13017,Nước mắm cá,"Gia vị, nước chấm",100,35.0,5.06,3.64,0.01,34.89,General,Viện Dinh dưỡng Quốc gia
+13018,Nước mắm cô,"Gia vị, nước chấm",100,131.0,32.8,0.0,0.0,131.2,General,Viện Dinh dưỡng Quốc gia
+13019,Tương ngô,"Gia vị, nước chấm",100,75.0,3.9,14.5,0.1,74.5,General,Viện Dinh dưỡng Quốc gia
+13020,Tương nếp,"Gia vị, nước chấm",100,86.0,4.3,15.7,0.7,86.3,General,Viện Dinh dưỡng Quốc gia
+13021,Tương ớt,"Gia vị, nước chấm",100,41.0,0.5,8.5,0.5,40.5,General,Viện Dinh dưỡng Quốc gia
+13022,Xì dầu,"Gia vị, nước chấm",100,55.0,6.3,7.46,0.04,55.4,General,Viện Dinh dưỡng Quốc gia
+13023,Sốt mayonnaise,"Gia vị, nước chấm",100,701.0,0.0,0.1,77.8,700.6,General,Viện Dinh dưỡng Quốc gia
+13024,Sả,"Gia vị, nước chấm",100,,0.8,16.5,1.0,78.2,General,Viện Dinh dưỡng Quốc gia
+13025,Bột canh,"Gia vị, nước chấm",100,62.2,1.05,14.5,0.0,62.2,General,Viện Dinh dưỡng Quốc gia
+13026,Bột nêm,"Gia vị, nước chấm",100,188.0,12.73,30.18,1.82,188.02,General,Viện Dinh dưỡng Quốc gia
+13027,Dầu hào,"Gia vị, nước chấm",100,73.0,2.9,14.7,0.3,73.1,General,Viện Dinh dưỡng Quốc gia
+13028,Gia vị,"Gia vị, nước chấm",100,62.2,1.05,14.5,0.0,62.2,General,Viện Dinh dưỡng Quốc gia
+13029,Mỳ chính,"Gia vị, nước chấm",100,282.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+13030,Ngũ vị hương,"Gia vị, nước chấm",100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+13031,Nước hàng,"Gia vị, nước chấm",100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+13032,Nước sốt cà chua,"Gia vị, nước chấm",100,,1.1,27.4,0.1,114.9,General,Viện Dinh dưỡng Quốc gia
+13034,Giấm ăn,"Gia vị, nước chấm",100,21.0,0.0,0.93,0.0,3.72,General,Viện Dinh dưỡng Quốc gia
+13039,Ớt tươi,"Gia vị, nước chấm",100,18.0,1.4,2.6,0.2,17.8,General,Viện Dinh dưỡng Quốc gia
+13044,Mù tạt,"Gia vị, nước chấm",100,69.0,4.25,5.3,3.38,68.62,General,Viện Dinh dưỡng Quốc gia
+13045,Bột chiên giòn,"Gia vị, nước chấm",100,351.6,8.5,74.9,2.0,351.6,General,Viện Dinh dưỡng Quốc gia
+13046,Bột năng,"Gia vị, nước chấm",100,343.0,0.7,85.1,0.0,343.2,General,Viện Dinh dưỡng Quốc gia
+13049,Mẻ,"Gia vị, nước chấm",100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+13054,Sa tế,"Gia vị, nước chấm",100,70.0,1.1,4.1,5.5,70.3,General,Viện Dinh dưỡng Quốc gia
+13056,Bột hạt điều đỏ,"Gia vị, nước chấm",100,,11.5,42.2,2.23,234.87,General,Viện Dinh dưỡng Quốc gia
+13059,Lá chanh,"Gia vị, nước chấm",100,91.0,4.25,18.46,0.0,90.84,General,Viện Dinh dưỡng Quốc gia
+13067,Bột chiên xù,"Gia vị, nước chấm",100,383.0,11.4,75.9,3.75,382.95,General,Viện Dinh dưỡng Quốc gia
+13072,Hạt ý dĩ,"Gia vị, nước chấm",100,358.0,14.2,67.2,3.6,358.0,General,Viện Dinh dưỡng Quốc gia
+13073,Nước ướp gà nướng,"Gia vị, nước chấm",100,,0.82,40.8,0.63,172.15,General,Viện Dinh dưỡng Quốc gia
+13074,Nước ướp thịt kho,"Gia vị, nước chấm",100,269.9,2.8,49.6,6.7,269.9,General,Viện Dinh dưỡng Quốc gia
+13075,Gói thuốc bắc (dùng để hầm thịt),"Gia vị, nước chấm",100,281.0,4.72,72.5,0.5,313.38,General,Viện Dinh dưỡng Quốc gia
+14001,"Bia (cồn: 4,5 g)",Nước giải khát,100,43.0,0.5,2.3,0.0,11.2,General,Viện Dinh dưỡng Quốc gia
+14002,Cô nhắc (cồn 32 g),Nước giải khát,100,224.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+14003,Cốc tain (cồn 13 g),Nước giải khát,100,155.0,0.0,15.74,0.0,62.96,General,Viện Dinh dưỡng Quốc gia
+14004,Coca cola,Nước giải khát,100,42.0,0.0,10.4,0.0,41.6,General,Viện Dinh dưỡng Quốc gia
+14005,Nước cam tươi,Nước giải khát,100,23.0,0.7,4.7,0.2,23.4,General,Viện Dinh dưỡng Quốc gia
+14006,Nước dừa non tươi,Nước giải khát,100,21.0,0.4,4.7,0.1,21.3,General,Viện Dinh dưỡng Quốc gia
+14007,Nước ép cà chua,Nước giải khát,100,21.0,0.8,3.0,0.6,20.6,General,Viện Dinh dưỡng Quốc gia
+14008,Nước khoáng,Nước giải khát,100,0.0,0.0,0.02,0.0,0.08,General,Viện Dinh dưỡng Quốc gia
+14009,Nước quít tươi,Nước giải khát,100,25.0,0.4,5.3,0.2,24.6,General,Viện Dinh dưỡng Quốc gia
+14010,"Rượu cam, chanh (cồn 24,2 g)",Nước giải khát,100,241.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+14011,Rượu nếp (80g/ 24 ml) (cồn 5 g),Nước giải khát,100,202.0,4.0,37.9,0.0,167.6,General,Viện Dinh dưỡng Quốc gia
+14012,Rượu trắng (cồn 39 g),Nước giải khát,100,273.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+14013,"Rượu vang đỏ (cồn 9,5 g)",Nước giải khát,100,69.0,0.2,2.02,0.0,8.88,General,Viện Dinh dưỡng Quốc gia
+14014,"Rượu vang trắng (cồn 9,5 g)",Nước giải khát,100,66.0,0.1,0.2,0.0,1.2,General,Viện Dinh dưỡng Quốc gia
+14015,Rượu vang trắng ngọt (cồn 10.2 g),Nước giải khát,100,96.0,0.2,5.9,0.0,24.4,General,Viện Dinh dưỡng Quốc gia
+14016,"Rượu Whisky (cồn 35,2 g)",Nước giải khát,100,246.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+14026,Cà phê sữa hòa tan,Nước giải khát,100,392.0,2.36,94.9,0.36,392.28,General,Viện Dinh dưỡng Quốc gia
+14040,Nước mía,Nước giải khát,100,79.6,0.0,20.2,0.0,80.8,General,Viện Dinh dưỡng Quốc gia
+14047,Nước ép dưa hấu,Nước giải khát,100,34.0,0.61,7.55,0.15,33.99,General,Viện Dinh dưỡng Quốc gia
+14054,Nước ép đào đóng hộp,Nước giải khát,100,57.0,0.27,13.92,0.02,56.94,General,Viện Dinh dưỡng Quốc gia
+14057,Nước đá,Nước giải khát,100,0.0,0.0,0.02,0.0,0.08,General,Viện Dinh dưỡng Quốc gia
+14068,Nước giải khát vitamin C,Nước giải khát,100,0.0,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+14069,Trà Neste,Nước giải khát,100,1.0,0.22,0.0,0.0,0.88,General,Viện Dinh dưỡng Quốc gia
+14070,Trà túi lọc,Nước giải khát,100,1.0,0.22,0.0,0.0,0.88,General,Viện Dinh dưỡng Quốc gia
+15001,Bánh bao chiên có nhân,Thức ăn truyền thống,100,177.0,2.3,19.31,10.1,177.34,General,Viện Dinh dưỡng Quốc gia
+15002,Bánh bèo,Thức ăn truyền thống,100,118.0,1.8,18.15,4.2,117.6,General,Viện Dinh dưỡng Quốc gia
+15003,Bánh bột lọc,Thức ăn truyền thống,100,137.0,6.8,17.74,4.3,136.86,General,Viện Dinh dưỡng Quốc gia
+15004,Bánh chay,Thức ăn truyền thống,100,156.0,3.3,28.71,3.1,155.94,General,Viện Dinh dưỡng Quốc gia
+15005,Bánh chín tầng mây,Thức ăn truyền thống,100,169.0,0.2,40.77,0.6,169.28,General,Viện Dinh dưỡng Quốc gia
+15006,Bánh chưng,Thức ăn truyền thống,100,181.0,4.3,31.6,4.2,181.4,General,Viện Dinh dưỡng Quốc gia
+15007,Bánh chuối,Thức ăn truyền thống,100,297.0,2.0,40.34,14.2,297.16,General,Viện Dinh dưỡng Quốc gia
+15008,Bánh cốm,Thức ăn truyền thống,100,250.0,3.4,58.5,0.3,250.3,General,Viện Dinh dưỡng Quốc gia
+15009,Bánh cuốn,Thức ăn truyền thống,100,129.0,3.0,17.4,5.3,129.3,General,Viện Dinh dưỡng Quốc gia
+15010,Bánh cuốn nóng nhân thịt,Thức ăn truyền thống,100,102.0,2.1,17.65,2.6,102.4,General,Viện Dinh dưỡng Quốc gia
+15011,Bánh dẻo nhân thập cẩm,Thức ăn truyền thống,100,349.0,5.0,60.3,9.8,349.4,General,Viện Dinh dưỡng Quốc gia
+15012,Bánh dẻo nhân trứng,Thức ăn truyền thống,100,338.0,7.4,58.6,8.2,337.8,General,Viện Dinh dưỡng Quốc gia
+15013,Bánh đúc nguội,Thức ăn truyền thống,100,88.0,2.0,15.36,2.1,88.34,General,Viện Dinh dưỡng Quốc gia
+15014,Bánh đúc nóng,Thức ăn truyền thống,100,108.0,3.9,8.95,6.3,108.1,General,Viện Dinh dưỡng Quốc gia
+15015,Bánh gai,Thức ăn truyền thống,100,251.0,4.7,52.3,2.5,250.5,General,Viện Dinh dưỡng Quốc gia
+15016,Bánh gio,Thức ăn truyền thống,100,173.0,2.0,40.44,0.4,173.36,General,Viện Dinh dưỡng Quốc gia
+15017,Bánh giò,Thức ăn truyền thống,100,234.0,2.8,16.3,17.5,233.9,General,Viện Dinh dưỡng Quốc gia
+15018,Bánh khoai,Thức ăn truyền thống,100,141.0,4.1,27.64,1.6,141.36,General,Viện Dinh dưỡng Quốc gia
+15019,Bánh khoái,Thức ăn truyền thống,100,159.0,0.6,16.26,10.2,159.24,General,Viện Dinh dưỡng Quốc gia
+15020,Bánh khoai sọ chiên,Thức ăn truyền thống,100,197.0,5.6,24.9,8.3,196.7,General,Viện Dinh dưỡng Quốc gia
+15021,Bánh khúc,Thức ăn truyền thống,100,249.0,4.1,49.7,3.8,249.4,General,Viện Dinh dưỡng Quốc gia
+15022,Bánh mè,Thức ăn truyền thống,100,482.0,5.5,55.42,26.5,482.18,General,Viện Dinh dưỡng Quốc gia
+15023,Bánh mì xíu mại,Thức ăn truyền thống,100,189.0,11.3,19.0,7.5,188.7,General,Viện Dinh dưỡng Quốc gia
+15024,Bánh mỳ patê,Thức ăn truyền thống,100,266.0,9.8,31.9,11.0,265.8,General,Viện Dinh dưỡng Quốc gia
+15025,Bánh nếp,Thức ăn truyền thống,100,216.0,5.0,41.77,3.2,215.88,General,Viện Dinh dưỡng Quốc gia
+15026,Bánh nướng nhân thập cẩm,Thức ăn truyền thống,100,386.0,5.2,58.1,14.8,386.4,General,Viện Dinh dưỡng Quốc gia
+15027,Bánh nướng nhân trứng đỗ xanh,Thức ăn truyền thống,100,371.0,9.6,51.9,13.9,371.1,General,Viện Dinh dưỡng Quốc gia
+15028,"Bánh phu thê (su sê, xu xuê)",Thức ăn truyền thống,100,185.0,2.1,41.1,1.3,184.5,General,Viện Dinh dưỡng Quốc gia
+15029,Bánh rán bọc đường,Thức ăn truyền thống,100,318.0,3.7,55.42,9.1,318.38,General,Viện Dinh dưỡng Quốc gia
+15030,Bánh tẻ,Thức ăn truyền thống,100,104.0,1.5,17.23,3.2,103.72,General,Viện Dinh dưỡng Quốc gia
+15031,Bánh tôm,Thức ăn truyền thống,100,204.0,4.0,22.64,10.8,203.76,General,Viện Dinh dưỡng Quốc gia
+15032,Bánh trôi,Thức ăn truyền thống,100,202.0,2.8,46.37,0.6,202.08,General,Viện Dinh dưỡng Quốc gia
+15033,Bún bò Nam bộ,Thức ăn truyền thống,100,81.0,3.2,15.73,0.6,81.12,General,Viện Dinh dưỡng Quốc gia
+15034,Bún chả,Thức ăn truyền thống,100,136.0,6.1,17.9,4.4,135.6,General,Viện Dinh dưỡng Quốc gia
+15035,Bún cua,Thức ăn truyền thống,100,53.0,2.1,9.1,0.9,52.9,General,Viện Dinh dưỡng Quốc gia
+15036,Bún đậu,Thức ăn truyền thống,100,151.0,3.0,20.3,6.4,150.8,General,Viện Dinh dưỡng Quốc gia
+15037,Bún dọc mùng,Thức ăn truyền thống,100,408.0,3.0,8.3,2.6,68.6,General,Viện Dinh dưỡng Quốc gia
+15038,Bún nem,Thức ăn truyền thống,100,120.0,3.3,17.8,3.9,119.5,General,Viện Dinh dưỡng Quốc gia
+15039,Bún ốc,Thức ăn truyền thống,100,62.0,3.1,10.9,0.7,62.3,General,Viện Dinh dưỡng Quốc gia
+15040,Caramen,Thức ăn truyền thống,100,109.0,5.2,12.81,4.1,108.94,General,Viện Dinh dưỡng Quốc gia
+15041,Chả quế,Thức ăn truyền thống,100,339.0,18.3,1.1,29.0,338.6,General,Viện Dinh dưỡng Quốc gia
+15042,Cháo lòng,Thức ăn truyền thống,100,69.0,1.4,6.0,4.4,69.2,General,Viện Dinh dưỡng Quốc gia
+15043,Cháo sườn,Thức ăn truyền thống,100,40.0,1.5,8.0,0.2,39.8,General,Viện Dinh dưỡng Quốc gia
+15044,Cháo trai,Thức ăn truyền thống,100,49.0,2.2,8.4,0.7,48.7,General,Viện Dinh dưỡng Quốc gia
+15045,Chè bưởi,Thức ăn truyền thống,100,73.0,0.8,16.64,0.41,73.45,General,Viện Dinh dưỡng Quốc gia
+15046,Chè chuối,Thức ăn truyền thống,100,82.0,1.37,17.08,0.87,81.63,General,Viện Dinh dưỡng Quốc gia
+15047,Chè cốm,Thức ăn truyền thống,100,80.0,0.23,19.04,0.32,79.96,General,Viện Dinh dưỡng Quốc gia
+15048,Chè đỗ đen,Thức ăn truyền thống,100,79.0,1.21,18.02,0.26,79.26,General,Viện Dinh dưỡng Quốc gia
+15049,Chè đỗ đỏ,Thức ăn truyền thống,100,77.0,1.85,16.51,0.39,76.95,General,Viện Dinh dưỡng Quốc gia
+15050,Chè đỗ xanh,Thức ăn truyền thống,100,79.0,1.35,17.54,0.39,79.07,General,Viện Dinh dưỡng Quốc gia
+15051,Chè hạt sen,Thức ăn truyền thống,100,75.0,1.25,17.12,0.13,74.65,General,Viện Dinh dưỡng Quốc gia
+15052,Chè khoai sọ,Thức ăn truyền thống,100,83.0,0.78,19.05,0.42,83.1,General,Viện Dinh dưỡng Quốc gia
+15053,Chè ngô cốm,Thức ăn truyền thống,100,72.0,0.35,16.42,0.6,72.48,General,Viện Dinh dưỡng Quốc gia
+15054,Chè sắn,Thức ăn truyền thống,100,86.0,0.57,19.24,0.73,85.81,General,Viện Dinh dưỡng Quốc gia
+15055,Chè Thái,Thức ăn truyền thống,100,82.0,0.72,18.53,0.51,81.59,General,Viện Dinh dưỡng Quốc gia
+15056,Cơm rang,Thức ăn truyền thống,100,198.0,6.0,21.85,9.65,198.25,General,Viện Dinh dưỡng Quốc gia
+15057,Gà tần,Thức ăn truyền thống,100,131.0,6.7,9.4,7.4,131.0,General,Viện Dinh dưỡng Quốc gia
+15058,Miến lươn,Thức ăn truyền thống,100,73.0,2.4,9.92,2.6,72.68,General,Viện Dinh dưỡng Quốc gia
+15059,Miến ngan,Thức ăn truyền thống,100,65.0,2.0,8.96,2.4,65.44,General,Viện Dinh dưỡng Quốc gia
+15060,Mỳ vằn thắn,Thức ăn truyền thống,100,81.0,2.6,10.58,3.1,80.62,General,Viện Dinh dưỡng Quốc gia
+15061,Mỳ xào,Thức ăn truyền thống,100,139.0,5.7,13.41,7.0,139.44,General,Viện Dinh dưỡng Quốc gia
+15062,Nem lụi,Thức ăn truyền thống,100,183.0,6.7,9.07,13.3,182.78,General,Viện Dinh dưỡng Quốc gia
+15063,Nem rán,Thức ăn truyền thống,100,145.0,4.5,14.42,7.7,144.98,General,Viện Dinh dưỡng Quốc gia
+15064,Nộm tai lợn,Thức ăn truyền thống,100,119.0,6.6,8.85,6.3,118.5,General,Viện Dinh dưỡng Quốc gia
+15065,Phở bò chín,Thức ăn truyền thống,100,73.0,5.2,11.1,0.9,73.3,General,Viện Dinh dưỡng Quốc gia
+15066,Phở bò tái,Thức ăn truyền thống,100,67.0,4.3,11.8,0.3,67.1,General,Viện Dinh dưỡng Quốc gia
+15067,Phở gà,Thức ăn truyền thống,100,73.0,3.8,12.3,1.0,73.4,General,Viện Dinh dưỡng Quốc gia
+15068,Thịt xiên nướng,Thức ăn truyền thống,100,322.0,26.5,0.54,23.8,322.36,General,Viện Dinh dưỡng Quốc gia
+15069,Xôi đỗ xanh,Thức ăn truyền thống,100,230.0,5.5,51.0,0.4,229.6,General,Viện Dinh dưỡng Quốc gia
+15070,Xôi gấc,Thức ăn truyền thống,100,231.0,3.1,52.9,0.8,231.2,General,Viện Dinh dưỡng Quốc gia
+15071,Xôi lạc,Thức ăn truyền thống,100,246.0,4.2,47.5,4.3,245.5,General,Viện Dinh dưỡng Quốc gia
+15072,Xôi ngô,Thức ăn truyền thống,100,198.0,4.4,36.0,4.0,197.6,General,Viện Dinh dưỡng Quốc gia
+15073,Xôi xéo,Thức ăn truyền thống,100,254.0,4.3,50.9,3.7,254.1,General,Viện Dinh dưỡng Quốc gia
+15074,Muối vừng,Thức ăn truyền thống,100,,18.11,13.77,32.65,421.37,General,Viện Dinh dưỡng Quốc gia
+15075,Cháo dinh dưỡng thịt bò,Thức ăn truyền thống,100,47.0,1.84,6.63,1.5,47.38,General,Viện Dinh dưỡng Quốc gia
+15076,Cháo dinh dưỡng tôm,Thức ăn truyền thống,100,47.0,1.84,6.63,1.5,47.38,General,Viện Dinh dưỡng Quốc gia
+15077,Bánh dày,Thức ăn truyền thống,100,156.0,3.3,28.71,3.1,155.94,General,Viện Dinh dưỡng Quốc gia
+15078,Xôi đỗ đen,Thức ăn truyền thống,100,230.0,5.5,51.0,0.4,229.6,General,Viện Dinh dưỡng Quốc gia
+2001,"Củ ấu, tươi",Khoai củ và sản phẩm chế biến,100,119.0,3.6,25.0,0.5,118.9,General,Viện Dinh dưỡng Quốc gia
+2002,"Củ cái, tươi",Khoai củ và sản phẩm chế biến,100,134.0,3.1,30.18,0.12,134.2,General,Viện Dinh dưỡng Quốc gia
+2003,"Củ dong, tươi",Khoai củ và sản phẩm chế biến,100,129.0,1.4,30.8,0.0,128.8,General,Viện Dinh dưỡng Quốc gia
+2003002,Củ dong luộc,Khoai củ và sản phẩm chế biến,100,131.0,1.43,31.43,0.0,131.44,General,Viện Dinh dưỡng Quốc gia
+2004,"Củ sắn, tươi",Khoai củ và sản phẩm chế biến,100,158.0,1.1,37.9,0.2,157.8,General,Viện Dinh dưỡng Quốc gia
+2004014,Củ sắn nướng,Khoai củ và sản phẩm chế biến,100,216.0,1.51,51.92,0.27,216.15,General,Viện Dinh dưỡng Quốc gia
+2005,"Củ sắn dây, tươi",Khoai củ và sản phẩm chế biến,100,156.0,1.6,37.2,0.1,156.1,General,Viện Dinh dưỡng Quốc gia
+2005002,"Củ sắn dây, luộc",Khoai củ và sản phẩm chế biến,100,152.0,1.55,36.12,0.1,151.58,General,Viện Dinh dưỡng Quốc gia
+2006,"Củ súng, bóc vỏ, khô",Khoai củ và sản phẩm chế biến,100,359.0,16.1,72.6,0.5,359.3,General,Viện Dinh dưỡng Quốc gia
+2007,"Củ từ, tươi",Khoai củ và sản phẩm chế biến,100,97.0,1.5,22.7,0.0,96.8,General,Viện Dinh dưỡng Quốc gia
+2007002,Củ từ luộc,Khoai củ và sản phẩm chế biến,100,99.0,1.53,23.16,0.0,98.76,General,Viện Dinh dưỡng Quốc gia
+2008,"Khoai lang, tươi",Khoai củ và sản phẩm chế biến,100,124.0,0.8,29.8,0.2,124.2,General,Viện Dinh dưỡng Quốc gia
+2008002,"Khoai lang, luộc",Khoai củ và sản phẩm chế biến,100,122.0,0.78,29.22,0.2,121.8,General,Viện Dinh dưỡng Quốc gia
+2008014,"Khoai lang, nướng ",Khoai củ và sản phẩm chế biến,100,170.0,1.1,40.82,0.27,170.11,General,Viện Dinh dưỡng Quốc gia
+2009,"Khoai lang nghệ, tươi",Khoai củ và sản phẩm chế biến,100,119.0,1.2,27.9,0.3,119.1,General,Viện Dinh dưỡng Quốc gia
+2010,"Khoai môn, tươi",Khoai củ và sản phẩm chế biến,100,113.0,1.5,26.4,0.2,113.4,General,Viện Dinh dưỡng Quốc gia
+2011,"Khoai nước, tươi",Khoai củ và sản phẩm chế biến,100,106.0,1.0,25.3,0.1,106.1,General,Viện Dinh dưỡng Quốc gia
+2012,"Khoai riềng, tươi",Khoai củ và sản phẩm chế biến,100,114.0,0.8,27.6,0.0,113.6,General,Viện Dinh dưỡng Quốc gia
+2012002,Khoai riềng luộc,Khoai củ và sản phẩm chế biến,100,116.0,0.82,28.16,0.0,115.92,General,Viện Dinh dưỡng Quốc gia
+2013,"Khoai sọ, tươi",Khoai củ và sản phẩm chế biến,100,119.0,1.8,27.7,0.1,118.9,General,Viện Dinh dưỡng Quốc gia
+2013002,"Khoai sọ, luộc",Khoai củ và sản phẩm chế biến,100,121.0,1.84,28.27,0.1,121.34,General,Viện Dinh dưỡng Quốc gia
+2014,"Khoai tây, tươi",Khoai củ và sản phẩm chế biến,100,96.0,2.0,21.93,0.07,96.35,General,Viện Dinh dưỡng Quốc gia
+2014002,"Khoai tây, luộc",Khoai củ và sản phẩm chế biến,100,104.0,2.17,23.91,0.0,104.32,General,Viện Dinh dưỡng Quốc gia
+2015,"Miến dong, khô",Khoai củ và sản phẩm chế biến,100,338.0,0.6,83.7,0.1,338.1,General,Viện Dinh dưỡng Quốc gia
+2016,Bột dong lọc,Khoai củ và sản phẩm chế biến,100,343.0,0.6,85.2,0.0,343.2,General,Viện Dinh dưỡng Quốc gia
+2017,Bột khoai lang,Khoai củ và sản phẩm chế biến,100,341.0,2.2,81.8,0.5,340.5,General,Viện Dinh dưỡng Quốc gia
+2018,Bột khoai riềng (bột đao),Khoai củ và sản phẩm chế biến,100,343.0,0.2,85.6,0.0,343.2,General,Viện Dinh dưỡng Quốc gia
+2019,Bột khoai tây (lọc),Khoai củ và sản phẩm chế biến,100,346.0,1.0,84.85,0.25,345.65,General,Viện Dinh dưỡng Quốc gia
+2020,Bột sắn,Khoai củ và sản phẩm chế biến,100,341.0,2.4,81.8,0.5,341.3,General,Viện Dinh dưỡng Quốc gia
+2021,Bột sắn dây,Khoai củ và sản phẩm chế biến,100,343.0,0.7,85.1,0.0,343.2,General,Viện Dinh dưỡng Quốc gia
+2022,"Khoai lang, khô",Khoai củ và sản phẩm chế biến,100,348.0,2.2,83.6,0.5,347.7,General,Viện Dinh dưỡng Quốc gia
+2023,"Khoai tây, khô",Khoai củ và sản phẩm chế biến,100,343.0,6.6,78.5,0.3,343.1,General,Viện Dinh dưỡng Quốc gia
+2024,"Khoai tây lát, chiên",Khoai củ và sản phẩm chế biến,100,550.0,2.2,55.6,35.4,549.8,General,Viện Dinh dưỡng Quốc gia
+2025,"Sắn, củ, khô",Khoai củ và sản phẩm chế biến,100,352.0,3.0,83.3,0.7,351.5,General,Viện Dinh dưỡng Quốc gia
+2026,Trân châu sắn,Khoai củ và sản phẩm chế biến,100,344.0,1.0,84.9,0.0,343.6,General,Viện Dinh dưỡng Quốc gia
+2026002,Trân châu sắn luộc ,Khoai củ và sản phẩm chế biến,100,344.0,1.0,84.9,0.0,343.6,General,Viện Dinh dưỡng Quốc gia
+3001,"Cùi dừa già, tươi","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,385.0,4.8,10.4,36.0,384.8,General,Viện Dinh dưỡng Quốc gia
+3002,"Cùi dừa non, tươi","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,54.0,3.5,6.1,1.7,53.7,General,Viện Dinh dưỡng Quốc gia
+3003,"Đậu cô ve, hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,335.0,21.8,58.4,1.6,335.2,General,Viện Dinh dưỡng Quốc gia
+3004,"Đậu đen, hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,341.0,24.2,57.3,1.7,341.3,General,Viện Dinh dưỡng Quốc gia
+3005,"Đậu đũa, hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,338.0,23.7,56.2,2.0,337.6,General,Viện Dinh dưỡng Quốc gia
+3006,"Đậu Hà lan, hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,342.0,22.2,60.1,1.4,341.8,General,Viện Dinh dưỡng Quốc gia
+3007,"Đậu tương, đậu nành, hạt khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,418.0,34.0,29.1,18.4,418.0,General,Viện Dinh dưỡng Quốc gia
+3008,"Đậu trắng (đậu tây), hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,341.0,23.2,57.4,2.1,341.3,General,Viện Dinh dưỡng Quốc gia
+3009,"Đậu trứng cuốc, hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,340.0,25.8,54.8,2.0,340.4,General,Viện Dinh dưỡng Quốc gia
+3010,"Đậu xanh (đậu tắt), hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,346.0,23.4,57.8,2.4,346.4,General,Viện Dinh dưỡng Quốc gia
+3011,"Hạt dẻ to, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,652.0,18.0,12.2,59.0,651.8,General,Viện Dinh dưỡng Quốc gia
+3012,"Hạt dẻ to, tươi","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,223.0,4.2,49.07,1.11,223.07,General,Viện Dinh dưỡng Quốc gia
+3013,"Hạt dẻ, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,363.0,6.82,79.76,1.81,362.61,General,Viện Dinh dưỡng Quốc gia
+3014,"Hạt đen, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,486.0,17.3,39.0,29.0,486.2,General,Viện Dinh dưỡng Quốc gia
+3015,"Hạt điều, khô ","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,608.0,18.4,29.3,46.3,607.5,General,Viện Dinh dưỡng Quốc gia
+3016,"Hạt mít, tươi","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,166.0,0.7,38.3,1.1,165.9,General,Viện Dinh dưỡng Quốc gia
+3017,"Lạc hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,583.0,27.5,18.0,44.5,582.5,General,Viện Dinh dưỡng Quốc gia
+3017011,Lạc rang dầu,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,,0.0,18.0,44.5,472.5,General,Viện Dinh dưỡng Quốc gia
+3018,"Quả cọ, tươi","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,192.0,2.3,15.6,13.4,192.2,General,Viện Dinh dưỡng Quốc gia
+3019,"Quả đại hái, tươi","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,440.0,20.0,4.6,38.0,440.4,General,Viện Dinh dưỡng Quốc gia
+3020,"Vừng (đen, trắng), hạt, khô","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,582.0,20.1,21.1,46.4,582.4,General,Viện Dinh dưỡng Quốc gia
+3020011,Vừng rang,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,607.0,20.94,21.98,48.33,606.65,General,Viện Dinh dưỡng Quốc gia
+3021,"Bột đậu tương, đã loại béo","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,331.0,49.0,31.5,1.0,331.0,General,Viện Dinh dưỡng Quốc gia
+3022,"Bột đậu tương, rang chín","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,428.0,41.0,25.4,18.0,427.6,General,Viện Dinh dưỡng Quốc gia
+3023,Bột đậu xanh,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,363.0,24.6,60.4,2.5,362.5,General,Viện Dinh dưỡng Quốc gia
+3024,Bột lạc,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,583.0,27.5,17.1,45.0,583.4,General,Viện Dinh dưỡng Quốc gia
+3025,"Đậu phụ, sống","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,97.0,10.9,1.1,5.4,96.6,General,Viện Dinh dưỡng Quốc gia
+3025002,Đậu phụ luộc,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,98.0,11.01,1.11,5.45,97.53,General,Viện Dinh dưỡng Quốc gia
+3026,"Đậu phụ chúc, sống","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,415.0,50.2,6.8,20.8,415.2,General,Viện Dinh dưỡng Quốc gia
+3027,"Đậu phụ, nướng","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,116.0,13.4,1.3,6.4,116.4,General,Viện Dinh dưỡng Quốc gia
+3028,"Hạt bí đỏ, rang","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,528.0,35.1,25.3,31.8,527.8,General,Viện Dinh dưỡng Quốc gia
+3029,"Hạt dưa hấu, rang","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,558.0,31.8,19.8,39.1,558.3,General,Viện Dinh dưỡng Quốc gia
+3030,"Hạt điều khô, chiên dầu","Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,585.0,18.3,17.1,49.3,585.3,General,Viện Dinh dưỡng Quốc gia
+3031,Sữa bột đậu nành,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,413.0,31.1,50.4,9.7,413.3,General,Viện Dinh dưỡng Quốc gia
+3032,Sữa đậu nành (100g đậu/lít),"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,29.0,3.1,0.5,1.6,28.8,General,Viện Dinh dưỡng Quốc gia
+3033,Tào phớ,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,46.0,3.8,4.7,1.2,44.8,General,Viện Dinh dưỡng Quốc gia
+3036002,Đậu ngự luộc,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,136.0,9.68,23.4,0.4,135.92,General,Viện Dinh dưỡng Quốc gia
+3037002,Đậu ván luộc,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,16.0,1.12,2.8,0.0,15.68,General,Viện Dinh dưỡng Quốc gia
+3038,Đậu phụ non Tứ Xuyên,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,97.0,10.9,1.1,5.4,96.6,General,Viện Dinh dưỡng Quốc gia
+3039002,Hạt sen tươi luộc,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,172.0,9.5,30.8,1.17,171.73,General,Viện Dinh dưỡng Quốc gia
+3041011,Hạt hướng dương rang,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,652.0,21.65,20.83,53.6,652.32,General,Viện Dinh dưỡng Quốc gia
+3042011,Hạt hạnh nhân rang,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,652.0,21.23,17.68,55.17,652.17,General,Viện Dinh dưỡng Quốc gia
+3043011,Hạt óc chó rang,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,703.0,15.23,13.71,65.21,702.65,General,Viện Dinh dưỡng Quốc gia
+3044011,Hạt macca rang,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,767.0,7.79,12.83,76.08,767.2,General,Viện Dinh dưỡng Quốc gia
+3046011,Hạt dẻ cười rang,"Hạt, quả giàu đạm, béo và sản phẩm chế biến",100,610.0,21.05,28.28,45.82,609.7,General,Viện Dinh dưỡng Quốc gia
+4001,"Quả bầu, tươi","Rau, quả, củ dùng làm rau",100,18.0,0.6,3.88,0.02,18.1,General,Viện Dinh dưỡng Quốc gia
+4001002,"Bầu, luộc","Rau, quả, củ dùng làm rau",100,19.0,0.65,4.19,0.0,19.36,General,Viện Dinh dưỡng Quốc gia
+4002,"Quả bí đao (bí xanh), tươi","Rau, quả, củ dùng làm rau",100,16.0,0.6,3.4,0.0,16.0,General,Viện Dinh dưỡng Quốc gia
+4002002,"Bí đao (bí xanh), luộc","Rau, quả, củ dùng làm rau",100,17.0,0.63,3.58,0.0,16.84,General,Viện Dinh dưỡng Quốc gia
+4003,"Quả bí ngô, tươi","Rau, quả, củ dùng làm rau",100,29.0,0.3,6.83,0.07,29.15,General,Viện Dinh dưỡng Quốc gia
+4003002,"Bí ngô, luộc","Rau, quả, củ dùng làm rau",100,35.0,0.34,7.75,0.34,35.42,General,Viện Dinh dưỡng Quốc gia
+4004,"Quả cà bát, tươi","Rau, quả, củ dùng làm rau",100,28.0,1.2,5.57,0.13,28.25,General,Viện Dinh dưỡng Quốc gia
+4004002,"Cà bát, luộc","Rau, quả, củ dùng làm rau",100,36.0,1.52,7.22,0.13,36.13,General,Viện Dinh dưỡng Quốc gia
+4005,"Quả cà chua, tươi","Rau, quả, củ dùng làm rau",100,24.0,0.6,4.77,0.23,23.55,General,Viện Dinh dưỡng Quốc gia
+4006,"Quả cà pháo, tươi","Rau, quả, củ dùng làm rau",100,27.0,1.5,5.2,0.0,26.8,General,Viện Dinh dưỡng Quốc gia
+4007,"Củ cà rốt, tươi","Rau, quả, củ dùng làm rau",100,44.0,1.5,9.03,0.17,43.65,General,Viện Dinh dưỡng Quốc gia
+4007002,"Cà rốt (củ đỏ, vàng), luộc","Rau, quả, củ dùng làm rau",100,47.0,1.6,9.79,0.21,47.45,General,Viện Dinh dưỡng Quốc gia
+4008,"Củ cà rốt, khô","Rau, quả, củ dùng làm rau",100,330.0,9.2,70.0,1.5,330.3,General,Viện Dinh dưỡng Quốc gia
+4009,"Quả cà tím, tươi","Rau, quả, củ dùng làm rau",100,28.0,1.0,6.0,0.0,28.0,General,Viện Dinh dưỡng Quốc gia
+4009002,"Cà tím, luộc","Rau, quả, củ dùng làm rau",100,37.0,1.27,7.59,0.13,36.61,General,Viện Dinh dưỡng Quốc gia
+4010,"Cải bắp trắng, tươi","Rau, quả, củ dùng làm rau",100,36.0,1.8,6.91,0.09,35.65,General,Viện Dinh dưỡng Quốc gia
+4010002,"Cải bắp, luộc","Rau, quả, củ dùng làm rau",100,41.0,1.96,7.61,0.33,41.25,General,Viện Dinh dưỡng Quốc gia
+4011,"Cải bắp đỏ, tươi","Rau, quả, củ dùng làm rau",100,61.0,1.9,13.0,0.2,61.4,General,Viện Dinh dưỡng Quốc gia
+4011002,"Cải bắp đỏ, luộc","Rau, quả, củ dùng làm rau",100,67.0,2.07,14.13,0.22,66.78,General,Viện Dinh dưỡng Quốc gia
+4012,"Cải bắp trắng, khô","Rau, quả, củ dùng làm rau",100,301.0,18.0,53.7,1.6,301.2,General,Viện Dinh dưỡng Quốc gia
+4013,"Cải cúc, tươi","Rau, quả, củ dùng làm rau",100,22.0,1.6,3.9,0.0,22.0,General,Viện Dinh dưỡng Quốc gia
+4014,"Cải soong, tươi","Rau, quả, củ dùng làm rau",100,22.0,2.1,3.33,0.07,22.35,General,Viện Dinh dưỡng Quốc gia
+4015,"Cải thìa (cải trắng), tươi","Rau, quả, củ dùng làm rau",100,24.0,1.4,4.26,0.14,23.9,General,Viện Dinh dưỡng Quốc gia
+4015002,"Cải thìa (cải trắng), luộc","Rau, quả, củ dùng làm rau",100,28.0,1.57,4.94,0.22,28.02,General,Viện Dinh dưỡng Quốc gia
+4016,"Cải xanh, tươi","Rau, quả, củ dùng làm rau",100,23.0,1.7,3.76,0.14,23.1,General,Viện Dinh dưỡng Quốc gia
+4016002,"Cải xanh, luộc","Rau, quả, củ dùng làm rau",100,26.0,1.81,4.15,0.21,25.73,General,Viện Dinh dưỡng Quốc gia
+4017,"Cần ta, tươi","Rau, quả, củ dùng làm rau",100,16.0,1.0,3.0,0.0,16.0,General,Viện Dinh dưỡng Quốc gia
+4018,"Cần tây, tươi","Rau, quả, củ dùng làm rau",100,54.0,3.7,9.44,0.16,54.0,General,Viện Dinh dưỡng Quốc gia
+4019,"Chuối xanh, tươi","Rau, quả, củ dùng làm rau",100,78.0,1.2,17.48,0.32,77.6,General,Viện Dinh dưỡng Quốc gia
+4019002,"Chuối xanh, luộc","Rau, quả, củ dùng làm rau",100,64.0,1.0,14.83,0.08,64.04,General,Viện Dinh dưỡng Quốc gia
+4020,"Củ cải đỏ, tươi","Rau, quả, củ dùng làm rau",100,52.0,1.3,11.7,0.0,52.0,General,Viện Dinh dưỡng Quốc gia
+4020002,"Củ cải đỏ, luộc","Rau, quả, củ dùng làm rau",100,63.0,1.51,13.6,0.23,62.51,General,Viện Dinh dưỡng Quốc gia
+4021,"Củ cải trắng, tươi","Rau, quả, củ dùng làm rau",100,27.0,1.5,5.11,0.09,27.25,General,Viện Dinh dưỡng Quốc gia
+4021002,"Củ cải trắng, luộc","Rau, quả, củ dùng làm rau",100,33.0,1.74,6.05,0.23,33.23,General,Viện Dinh dưỡng Quốc gia
+4022,"Củ cải trắng, khô","Rau, quả, củ dùng làm rau",100,290.0,17.6,51.6,1.5,290.3,General,Viện Dinh dưỡng Quốc gia
+4023,"Củ đậu, tươi","Rau, quả, củ dùng làm rau",100,31.0,1.0,6.7,0.0,30.8,General,Viện Dinh dưỡng Quốc gia
+4024,"Củ niễng, tươi","Rau, quả, củ dùng làm rau",100,37.0,2.0,7.2,0.0,36.8,General,Viện Dinh dưỡng Quốc gia
+4025,"Dọc củ cải, non, tươi","Rau, quả, củ dùng làm rau",100,21.0,1.9,3.4,0.0,21.2,General,Viện Dinh dưỡng Quốc gia
+4026,"Dọc mùng, tươi","Rau, quả, củ dùng làm rau",100,13.0,0.4,2.8,0.0,12.8,General,Viện Dinh dưỡng Quốc gia
+4027,"Dưa chuột, tươi","Rau, quả, củ dùng làm rau",100,18.0,0.8,3.61,0.09,18.45,General,Viện Dinh dưỡng Quốc gia
+4028,"Dưa gang, tươi","Rau, quả, củ dùng làm rau",100,14.0,0.8,2.7,0.0,14.0,General,Viện Dinh dưỡng Quốc gia
+4029,"Đậu cô ve, quả, tươi","Rau, quả, củ dùng làm rau",100,77.0,5.0,14.3,0.0,77.2,General,Viện Dinh dưỡng Quốc gia
+4029002,"Đậu cô ve, luộc","Rau, quả, củ dùng làm rau",100,85.0,5.38,15.38,0.22,85.02,General,Viện Dinh dưỡng Quốc gia
+4030,"Đậu đũa, quả, tươi","Rau, quả, củ dùng làm rau",100,67.0,6.0,9.99,0.31,66.75,General,Viện Dinh dưỡng Quốc gia
+4030002,"Đậu đũa, luộc","Rau, quả, củ dùng làm rau",100,68.0,6.12,10.51,0.2,68.32,General,Viện Dinh dưỡng Quốc gia
+4031,"Đậu Hà Lan, quả, tươi","Rau, quả, củ dùng làm rau",100,75.0,6.5,11.71,0.29,75.45,General,Viện Dinh dưỡng Quốc gia
+4032,"Đậu rồng, quả non, tươi","Rau, quả, củ dùng làm rau",100,40.0,1.9,7.9,0.1,40.1,General,Viện Dinh dưỡng Quốc gia
+4033,"Đu đủ xanh, tươi","Rau, quả, củ dùng làm rau",100,30.0,0.8,6.6,0.0,29.6,General,Viện Dinh dưỡng Quốc gia
+4034,"Quả gấc, tươi","Rau, quả, củ dùng làm rau",100,129.0,2.1,12.3,7.9,128.7,General,Viện Dinh dưỡng Quốc gia
+4035,"Giá đậu tương, tươi","Rau, quả, củ dùng làm rau",100,82.0,7.7,8.7,1.8,81.8,General,Viện Dinh dưỡng Quốc gia
+4036,"Giá đậu xanh, tươi","Rau, quả, củ dùng làm rau",100,52.0,5.5,7.17,0.13,51.85,General,Viện Dinh dưỡng Quốc gia
+4036002,"Giá đậu xanh, luộc","Rau, quả, củ dùng làm rau",100,58.0,6.04,8.02,0.22,58.22,General,Viện Dinh dưỡng Quốc gia
+4037,"Hành củ, tươi","Rau, quả, củ dùng làm rau",100,29.0,1.3,5.22,0.28,28.6,General,Viện Dinh dưỡng Quốc gia
+4038,"Hành lá (hành hoa), tươi","Rau, quả, củ dùng làm rau",100,26.0,1.3,5.2,0.0,26.0,General,Viện Dinh dưỡng Quốc gia
+4039,"Hành tây, tươi","Rau, quả, củ dùng làm rau",100,45.0,1.8,9.29,0.11,45.35,General,Viện Dinh dưỡng Quốc gia
+4040,"Hạt sen, tươi","Rau, quả, củ dùng làm rau",100,164.0,9.5,30.3,0.5,163.7,General,Viện Dinh dưỡng Quốc gia
+4041,"Hạt sen, khô","Rau, quả, củ dùng làm rau",100,342.0,20.0,60.2,2.4,342.4,General,Viện Dinh dưỡng Quốc gia
+4042,"Hẹ lá, tươi","Rau, quả, củ dùng làm rau",100,21.0,2.2,2.49,0.21,20.65,General,Viện Dinh dưỡng Quốc gia
+4043,"Hoa chuối, tươi","Rau, quả, củ dùng làm rau",100,28.0,1.5,5.5,0.0,28.0,General,Viện Dinh dưỡng Quốc gia
+4044,"Hoa lý, tươi","Rau, quả, củ dùng làm rau",100,35.0,2.9,5.8,0.0,34.8,General,Viện Dinh dưỡng Quốc gia
+4045,"Quả khế, tươi","Rau, quả, củ dùng làm rau",100,26.0,0.6,5.47,0.23,26.35,General,Viện Dinh dưỡng Quốc gia
+4046,"Lá lốt, tươi","Rau, quả, củ dùng làm rau",100,49.0,4.3,7.9,0.0,48.8,General,Viện Dinh dưỡng Quốc gia
+4047,"Lá me, tươi ","Rau, quả, củ dùng làm rau",100,46.0,7.5,4.0,0.0,46.0,General,Viện Dinh dưỡng Quốc gia
+4048,"Lá mơ lông, tươi","Rau, quả, củ dùng làm rau",100,48.0,3.9,8.0,0.0,47.6,General,Viện Dinh dưỡng Quốc gia
+4049,"Lá sắn, tươi","Rau, quả, củ dùng làm rau",100,96.0,7.0,16.9,0.0,95.6,General,Viện Dinh dưỡng Quốc gia
+4050,"Măng chua, măng tre","Rau, quả, củ dùng làm rau",100,28.0,1.4,5.5,0.0,27.6,General,Viện Dinh dưỡng Quốc gia
+4051,"Măng tre, khô","Rau, quả, củ dùng làm rau",100,301.0,13.0,57.5,2.1,300.9,General,Viện Dinh dưỡng Quốc gia
+4052,"Măng tây, tươi","Rau, quả, củ dùng làm rau",100,24.0,2.2,3.36,0.14,23.5,General,Viện Dinh dưỡng Quốc gia
+4053,"Măng tre, tươi","Rau, quả, củ dùng làm rau",100,31.0,1.7,5.59,0.21,31.05,General,Viện Dinh dưỡng Quốc gia
+4054,"Mướp, tươi","Rau, quả, củ dùng làm rau",100,18.0,0.9,3.36,0.14,18.3,General,Viện Dinh dưỡng Quốc gia
+4054002,"Mướp, luộc","Rau, quả, củ dùng làm rau",100,26.0,1.25,4.86,0.14,25.7,General,Viện Dinh dưỡng Quốc gia
+4055,"Mướp đắng, tươi","Rau, quả, củ dùng làm rau",100,20.0,0.9,4.1,0.0,20.0,General,Viện Dinh dưỡng Quốc gia
+4055002,"Mướp đắng, luộc","Rau, quả, củ dùng làm rau",100,21.0,0.91,4.14,0.1,21.1,General,Viện Dinh dưỡng Quốc gia
+4056,"Mướp Nhật bản, tươi","Rau, quả, củ dùng làm rau",100,16.0,0.8,3.2,0.0,16.0,General,Viện Dinh dưỡng Quốc gia
+4057,"Ngải cứu, tươi","Rau, quả, củ dùng làm rau",100,33.0,3.8,4.4,0.0,32.8,General,Viện Dinh dưỡng Quốc gia
+4058,"Ngô bao tử, tươi","Rau, quả, củ dùng làm rau",100,42.0,2.2,7.8,0.2,41.8,General,Viện Dinh dưỡng Quốc gia
+4059,"Ngó sen, tươi","Rau, quả, củ dùng làm rau",100,65.0,1.0,15.13,0.07,65.15,General,Viện Dinh dưỡng Quốc gia
+4060,"Nụ mướp, tươi","Rau, quả, củ dùng làm rau",100,36.0,4.9,4.0,0.0,35.6,General,Viện Dinh dưỡng Quốc gia
+4061,"Ớt đỏ to, tươi","Rau, quả, củ dùng làm rau",100,31.0,0.99,6.04,0.3,30.82,General,Viện Dinh dưỡng Quốc gia
+4062,"Ớt vàng to, tươi","Rau, quả, củ dùng làm rau",100,34.0,1.3,7.1,0.0,33.6,General,Viện Dinh dưỡng Quốc gia
+4063,"Ớt xanh to, tươi","Rau, quả, củ dùng làm rau",100,31.0,1.3,6.07,0.13,30.65,General,Viện Dinh dưỡng Quốc gia
+4064,"Quả dọc, tươi","Rau, quả, củ dùng làm rau",100,19.0,0.8,3.9,0.0,18.8,General,Viện Dinh dưỡng Quốc gia
+4065,"Quả me chua, tươi","Rau, quả, củ dùng làm rau",100,35.0,1.9,6.8,0.0,34.8,General,Viện Dinh dưỡng Quốc gia
+4066,"Rau bí, tươi","Rau, quả, củ dùng làm rau",100,26.0,2.7,3.12,0.28,25.8,General,Viện Dinh dưỡng Quốc gia
+4066002,"Rau bí, luộc","Rau, quả, củ dùng làm rau",100,27.0,2.84,3.58,0.11,26.67,General,Viện Dinh dưỡng Quốc gia
+4067,"Rau câu, khô","Rau, quả, củ dùng làm rau",100,281.0,11.2,56.6,1.1,281.1,General,Viện Dinh dưỡng Quốc gia
+4068,"Rau câu, tươi","Rau, quả, củ dùng làm rau",100,45.0,1.9,9.1,0.1,44.9,General,Viện Dinh dưỡng Quốc gia
+4069,"Rau diếp, tươi","Rau, quả, củ dùng làm rau",100,15.0,1.2,2.39,0.11,15.35,General,Viện Dinh dưỡng Quốc gia
+4070,"Rau đay, tươi","Rau, quả, củ dùng làm rau",100,31.0,2.8,4.52,0.18,30.9,General,Viện Dinh dưỡng Quốc gia
+4071,"Rau giấp cá, diếp cá, tươi","Rau, quả, củ dùng làm rau",100,30.0,2.9,4.5,0.0,29.6,General,Viện Dinh dưỡng Quốc gia
+4072,"Rau giền cơm, tươi","Rau, quả, củ dùng làm rau",100,27.0,3.4,2.69,0.31,27.15,General,Viện Dinh dưỡng Quốc gia
+4072002,"Rau giền cơm, luộc","Rau, quả, củ dùng làm rau",100,29.0,3.47,3.06,0.31,28.91,General,Viện Dinh dưỡng Quốc gia
+4073,"Rau giền đỏ, tươi","Rau, quả, củ dùng làm rau",100,47.0,3.3,7.79,0.31,47.15,General,Viện Dinh dưỡng Quốc gia
+4073002,"Rau giền đỏ, luộc","Rau, quả, củ dùng làm rau",100,48.0,3.37,7.96,0.31,48.11,General,Viện Dinh dưỡng Quốc gia
+4074,"Rau giền trắng, tươi","Rau, quả, củ dùng làm rau",100,48.0,3.2,7.8,0.4,47.6,General,Viện Dinh dưỡng Quốc gia
+4074002,"Rau giền trắng, luộc","Rau, quả, củ dùng làm rau",100,49.0,3.27,7.96,0.41,48.61,General,Viện Dinh dưỡng Quốc gia
+4075,"Rau húng, tươi","Rau, quả, củ dùng làm rau",100,34.0,2.2,5.08,0.52,33.8,General,Viện Dinh dưỡng Quốc gia
+4076,"Rau khoai lang, tươi","Rau, quả, củ dùng làm rau",100,28.0,2.6,3.99,0.21,28.25,General,Viện Dinh dưỡng Quốc gia
+4076002,"Rau khoai lang, luộc","Rau, quả, củ dùng làm rau",100,28.0,2.65,4.29,0.0,27.76,General,Viện Dinh dưỡng Quốc gia
+4077,"Rau kinh giới, tươi","Rau, quả, củ dùng làm rau",100,36.0,2.7,6.4,0.0,36.4,General,Viện Dinh dưỡng Quốc gia
+4078,"Rau má rừng, tươi","Rau, quả, củ dùng làm rau",100,31.0,3.1,4.6,0.0,30.8,General,Viện Dinh dưỡng Quốc gia
+4079,"Rau má, má mơ, tươi","Rau, quả, củ dùng làm rau",100,38.0,3.2,6.3,0.0,38.0,General,Viện Dinh dưỡng Quốc gia
+4080,"Rau mồng tơi, tươi","Rau, quả, củ dùng làm rau",100,24.0,2.0,3.9,0.0,23.6,General,Viện Dinh dưỡng Quốc gia
+4080002,"Rau mồng tơi, luộc","Rau, quả, củ dùng làm rau",100,24.0,2.04,3.98,0.0,24.08,General,Viện Dinh dưỡng Quốc gia
+4081,"Rau mùi, tươi","Rau, quả, củ dùng làm rau",100,22.0,2.6,2.17,0.33,22.05,General,Viện Dinh dưỡng Quốc gia
+4082,"Rau mùi tàu, tươi","Rau, quả, củ dùng làm rau",100,30.0,2.1,4.25,0.55,30.35,General,Viện Dinh dưỡng Quốc gia
+4083,"Rau muống,  tươi","Rau, quả, củ dùng làm rau",100,28.0,3.2,3.26,0.24,28.0,General,Viện Dinh dưỡng Quốc gia
+4083002,"Rau muống, luộc","Rau, quả, củ dùng làm rau",100,27.0,3.27,3.57,0.0,27.36,General,Viện Dinh dưỡng Quốc gia
+4084,"Rau muống, khô","Rau, quả, củ dùng làm rau",100,293.0,34.2,35.0,1.8,293.0,General,Viện Dinh dưỡng Quốc gia
+4085,"Rau ngổ, tươi","Rau, quả, củ dùng làm rau",100,24.0,1.5,4.4,0.0,23.6,General,Viện Dinh dưỡng Quốc gia
+4086,"Rau ngót, tươi","Rau, quả, củ dùng làm rau",100,45.0,5.3,5.9,0.0,44.8,General,Viện Dinh dưỡng Quốc gia
+4087,"Rau ngót, khô","Rau, quả, củ dùng làm rau",100,299.0,32.2,36.8,2.6,299.4,General,Viện Dinh dưỡng Quốc gia
+4088,"Rau răm, tươi","Rau, quả, củ dùng làm rau",100,45.0,4.7,6.6,0.0,45.2,General,Viện Dinh dưỡng Quốc gia
+4089,"Rau rút, tươi","Rau, quả, củ dùng làm rau",100,35.0,5.1,3.7,0.0,35.2,General,Viện Dinh dưỡng Quốc gia
+4090,"Rau sà lách, tươi","Rau, quả, củ dùng làm rau",100,18.0,1.5,2.43,0.27,18.15,General,Viện Dinh dưỡng Quốc gia
+4091,"Rau sam, tươi","Rau, quả, củ dùng làm rau",100,20.0,1.4,3.7,0.0,20.4,General,Viện Dinh dưỡng Quốc gia
+4092,"Rau sắng chùa hương, tươi","Rau, quả, củ dùng làm rau",100,62.0,6.5,8.9,0.0,61.6,General,Viện Dinh dưỡng Quốc gia
+4093,"Rau tàu bay, tươi","Rau, quả, củ dùng làm rau",100,24.0,2.5,3.5,0.0,24.0,General,Viện Dinh dưỡng Quốc gia
+4094,"Rau thơm, tươi","Rau, quả, củ dùng làm rau",100,30.0,2.0,5.4,0.0,29.6,General,Viện Dinh dưỡng Quốc gia
+4095,"Quả sấu xanh, tươi","Rau, quả, củ dùng làm rau",100,19.0,1.8,3.0,0.0,19.2,General,Viện Dinh dưỡng Quốc gia
+4096,"Củ su hào, tươi","Rau, quả, củ dùng làm rau",100,44.0,2.8,7.93,0.07,43.55,General,Viện Dinh dưỡng Quốc gia
+4096002,"Su hào, luộc","Rau, quả, củ dùng làm rau",100,48.0,3.11,8.89,0.0,48.0,General,Viện Dinh dưỡng Quốc gia
+4097,"Củ su hào, khô","Rau, quả, củ dùng làm rau",100,311.0,20.0,54.6,1.4,311.0,General,Viện Dinh dưỡng Quốc gia
+4098,"Quả su su, tươi","Rau, quả, củ dùng làm rau",100,23.0,0.8,4.6,0.1,22.5,General,Viện Dinh dưỡng Quốc gia
+4098002,"Su su, luộc","Rau, quả, củ dùng làm rau",100,24.0,0.88,5.16,0.0,24.16,General,Viện Dinh dưỡng Quốc gia
+4099,"Súp lơ trắng, tươi","Rau, quả, củ dùng làm rau",100,34.0,2.5,5.65,0.15,33.95,General,Viện Dinh dưỡng Quốc gia
+4099002,"Súp lơ trắng, luộc","Rau, quả, củ dùng làm rau",100,29.0,2.17,5.04,0.0,28.84,General,Viện Dinh dưỡng Quốc gia
+4100,"Súp lơ xanh, tươi","Rau, quả, củ dùng làm rau",100,39.0,2.95,6.08,0.3,38.82,General,Viện Dinh dưỡng Quốc gia
+4100002,"Súp lơ xanh, luộc","Rau, quả, củ dùng làm rau",100,34.0,2.57,5.29,0.26,33.78,General,Viện Dinh dưỡng Quốc gia
+4101,"Thìa là, tươi","Rau, quả, củ dùng làm rau",100,47.0,2.6,6.94,0.96,46.8,General,Viện Dinh dưỡng Quốc gia
+4102,"Tía tô, tươi","Rau, quả, củ dùng làm rau",100,40.0,2.9,7.0,0.0,39.6,General,Viện Dinh dưỡng Quốc gia
+4103,"Tỏi ta, tươi","Rau, quả, củ dùng làm rau",100,126.0,6.0,24.65,0.35,125.75,General,Viện Dinh dưỡng Quốc gia
+4104,"Tỏi tây, cả lá, tươi","Rau, quả, củ dùng làm rau",100,35.0,1.4,7.4,0.0,35.2,General,Viện Dinh dưỡng Quốc gia
+4105,"Trám đen, quả chín, tươi","Rau, quả, củ dùng làm rau",100,134.0,2.5,8.5,10.0,134.0,General,Viện Dinh dưỡng Quốc gia
+4106,"Trám xanh, trám trắng, tươi","Rau, quả, củ dùng làm rau",100,56.0,1.2,9.3,1.6,56.4,General,Viện Dinh dưỡng Quốc gia
+4107,"Lá xương sông, tươi","Rau, quả, củ dùng làm rau",100,28.0,2.2,4.7,0.0,27.6,General,Viện Dinh dưỡng Quốc gia
+4108,"Rau cải ngọt, tươi","Rau, quả, củ dùng làm rau",100,17.0,1.4,2.62,0.1,16.98,General,Viện Dinh dưỡng Quốc gia
+4108002,"Cải ngọt, luộc","Rau, quả, củ dùng làm rau",100,19.0,1.57,2.94,0.11,19.03,General,Viện Dinh dưỡng Quốc gia
+4109,"Rau cải thảo, tươi","Rau, quả, củ dùng làm rau",100,14.0,0.9,2.57,0.0,13.88,General,Viện Dinh dưỡng Quốc gia
+4109002,"Cải thảo, luộc","Rau, quả, củ dùng làm rau",100,15.0,0.98,2.79,0.0,15.08,General,Viện Dinh dưỡng Quốc gia
+4110,"Ngọn su su, tươi","Rau, quả, củ dùng làm rau",100,24.0,3.3,2.5,0.1,24.1,General,Viện Dinh dưỡng Quốc gia
+4110002,"Ngọn su su, luộc","Rau, quả, củ dùng làm rau",100,14.0,3.37,0.0,0.1,14.38,General,Viện Dinh dưỡng Quốc gia
+4111,"Quả đậu ván, tươi","Rau, quả, củ dùng làm rau",100,39.0,2.8,7.0,0.0,39.2,General,Viện Dinh dưỡng Quốc gia
+4112,"Cà chua, muối","Rau, quả, củ dùng làm rau",100,10.0,0.6,1.8,0.0,9.6,General,Viện Dinh dưỡng Quốc gia
+4113,"Cà pháo, muối nén","Rau, quả, củ dùng làm rau",100,20.0,1.3,3.7,0.0,20.0,General,Viện Dinh dưỡng Quốc gia
+4114,"Cà pháo, muối sổi ","Rau, quả, củ dùng làm rau",100,23.0,1.5,4.2,0.0,22.8,General,Viện Dinh dưỡng Quốc gia
+4115,Dưa cải bắp,"Rau, quả, củ dùng làm rau",100,24.0,1.2,4.9,0.0,24.4,General,Viện Dinh dưỡng Quốc gia
+4116,Dưa cải bẹ,"Rau, quả, củ dùng làm rau",100,25.0,1.8,4.5,0.0,25.2,General,Viện Dinh dưỡng Quốc gia
+4117,Dưa cải sen,"Rau, quả, củ dùng làm rau",100,17.0,1.1,3.1,0.0,16.8,General,Viện Dinh dưỡng Quốc gia
+4118,"Dưa chuột, muối","Rau, quả, củ dùng làm rau",100,17.0,0.8,3.06,0.14,16.7,General,Viện Dinh dưỡng Quốc gia
+4119,Dưa giá đậu xanh,"Rau, quả, củ dùng làm rau",100,47.0,5.0,6.8,0.0,47.2,General,Viện Dinh dưỡng Quốc gia
+4120,"Hành củ, muối","Rau, quả, củ dùng làm rau",100,24.0,1.4,4.7,0.0,24.4,General,Viện Dinh dưỡng Quốc gia
+4121,"Kiệu, muối","Rau, quả, củ dùng làm rau",100,29.0,1.3,5.9,0.0,28.8,General,Viện Dinh dưỡng Quốc gia
+4122,"Nhút (dưa muối từ mít non, lá đậu xanh non...)","Rau, quả, củ dùng làm rau",100,25.0,2.5,3.8,0.0,25.2,General,Viện Dinh dưỡng Quốc gia
+4123,"Men bia, khô","Rau, quả, củ dùng làm rau",100,367.0,52.5,32.0,3.2,366.8,General,Viện Dinh dưỡng Quốc gia
+4124,"Men bia, tươi","Rau, quả, củ dùng làm rau",100,103.0,16.2,6.5,1.3,102.5,General,Viện Dinh dưỡng Quốc gia
+4125,"Mộc nhĩ, khô","Rau, quả, củ dùng làm rau",100,332.0,10.6,72.0,0.2,332.2,General,Viện Dinh dưỡng Quốc gia
+4126,"Nấm hương, khô","Rau, quả, củ dùng làm rau",100,342.0,36.0,40.5,4.0,342.0,General,Viện Dinh dưỡng Quốc gia
+4127,"Nấm hương, tươi","Rau, quả, củ dùng làm rau",100,51.0,5.5,6.1,0.5,50.9,General,Viện Dinh dưỡng Quốc gia
+4128,"Nấm mỡ (Nấm tây), tươi","Rau, quả, củ dùng làm rau",100,37.0,4.0,4.5,0.3,36.7,General,Viện Dinh dưỡng Quốc gia
+4129,"Nấm rơm, tươi","Rau, quả, củ dùng làm rau",100,61.0,3.6,4.5,3.2,61.2,General,Viện Dinh dưỡng Quốc gia
+4130,"Nấm thường, tươi","Rau, quả, củ dùng làm rau",100,48.0,4.6,5.7,0.8,48.4,General,Viện Dinh dưỡng Quốc gia
+4132,Hành khô,"Rau, quả, củ dùng làm rau",100,326.0,15.6,66.0,0.0,326.4,General,Viện Dinh dưỡng Quốc gia
+4133,Nấm kim châm,"Rau, quả, củ dùng làm rau",100,44.0,2.66,7.81,0.29,44.49,General,Viện Dinh dưỡng Quốc gia
+4134,Cải ngồng,"Rau, quả, củ dùng làm rau",100,17.0,1.5,2.18,0.2,16.52,General,Viện Dinh dưỡng Quốc gia
+4134002,"Cải ngồng, luộc","Rau, quả, củ dùng làm rau",100,18.0,1.6,2.32,0.21,17.57,General,Viện Dinh dưỡng Quốc gia
+4135,Rau cải chíp,"Rau, quả, củ dùng làm rau",100,17.0,1.5,2.18,0.2,16.52,General,Viện Dinh dưỡng Quốc gia
+4135002,Rau cải chíp luộc,"Rau, quả, củ dùng làm rau",100,17.0,1.5,2.18,0.2,16.52,General,Viện Dinh dưỡng Quốc gia
+4139,Rong biển,"Rau, quả, củ dùng làm rau",100,700.0,20.0,20.0,60.0,700.0,General,Viện Dinh dưỡng Quốc gia
+5001,"Bưởi, tươi",Quả chín,100,33.0,0.2,8.0,0.0,32.8,General,Viện Dinh dưỡng Quốc gia
+5002,"Cam, tươi",Quả chín,100,43.0,0.9,9.74,0.06,43.1,General,Viện Dinh dưỡng Quốc gia
+5003,"Chanh, tươi",Quả chín,100,29.0,0.9,5.96,0.14,28.7,General,Viện Dinh dưỡng Quốc gia
+5004,"Chôm chôm, tươi",Quả chín,100,77.0,1.5,17.7,0.0,76.8,General,Viện Dinh dưỡng Quốc gia
+5005,"Chuối, khô",Quả chín,100,301.0,5.0,70.3,0.0,301.2,General,Viện Dinh dưỡng Quốc gia
+5006,"Chuối tây, tươi",Quả chín,100,66.0,0.9,15.0,0.3,66.3,General,Viện Dinh dưỡng Quốc gia
+5007,"Chuối tiêu, tươi",Quả chín,100,100.0,1.5,23.0,0.2,99.8,General,Viện Dinh dưỡng Quốc gia
+5008,"Dâu gia, tươi ",Quả chín,100,27.0,0.6,6.2,0.0,27.2,General,Viện Dinh dưỡng Quốc gia
+5009,"Dâu tây, tươi",Quả chín,100,59.0,1.8,12.1,0.4,59.2,General,Viện Dinh dưỡng Quốc gia
+5010,"Dưa bở, tươi",Quả chín,100,21.0,0.5,4.3,0.2,21.0,General,Viện Dinh dưỡng Quốc gia
+5011,"Dưa hấu, tươi",Quả chín,100,18.0,1.2,2.8,0.2,17.8,General,Viện Dinh dưỡng Quốc gia
+5012,"Dưa hồng, tươi",Quả chín,100,19.0,0.3,4.1,0.1,18.5,General,Viện Dinh dưỡng Quốc gia
+5013,"Dưa lê, tươi",Quả chín,100,20.0,0.4,4.7,0.0,20.4,General,Viện Dinh dưỡng Quốc gia
+5014,"Dứa ta, tươi",Quả chín,100,32.0,0.8,7.3,0.0,32.4,General,Viện Dinh dưỡng Quốc gia
+5015,"Dứa tây, tươi",Quả chín,100,40.0,0.5,9.23,0.07,39.55,General,Viện Dinh dưỡng Quốc gia
+5016,"Đào, tươi",Quả chín,100,37.0,0.9,7.8,0.2,36.6,General,Viện Dinh dưỡng Quốc gia
+5017,"Đu đủ chín, tươi",Quả chín,100,38.0,1.0,8.19,0.11,37.75,General,Viện Dinh dưỡng Quốc gia
+5018,"Gioi, tươi",Quả chín,100,27.0,0.4,6.4,0.0,27.2,General,Viện Dinh dưỡng Quốc gia
+5019,"Hồng bì, tươi",Quả chín,100,44.0,1.4,9.6,0.0,44.0,General,Viện Dinh dưỡng Quốc gia
+5020,"Hồng đỏ, tươi",Quả chín,100,38.0,0.7,8.6,0.1,38.1,General,Viện Dinh dưỡng Quốc gia
+5021,"Hồng ngâm, tươi",Quả chín,100,48.0,0.9,11.1,0.0,48.0,General,Viện Dinh dưỡng Quốc gia
+5022,"Hồng xiêm, tươi",Quả chín,100,58.0,0.5,12.5,0.7,58.3,General,Viện Dinh dưỡng Quốc gia
+5023,"Lê, tươi",Quả chín,100,48.0,0.7,10.8,0.2,47.8,General,Viện Dinh dưỡng Quốc gia
+5024,"Lựu, tươi",Quả chín,100,79.0,0.6,18.85,0.15,79.15,General,Viện Dinh dưỡng Quốc gia
+5025,"Mãng cầu xiêm, tươi",Quả chín,100,58.0,1.8,12.6,0.0,57.6,General,Viện Dinh dưỡng Quốc gia
+5026,"Mắc coọc, tươi",Quả chín,100,24.0,0.2,5.7,0.0,23.6,General,Viện Dinh dưỡng Quốc gia
+5027,"Mận tím, tươi",Quả chín,100,23.0,0.6,4.6,0.2,22.6,General,Viện Dinh dưỡng Quốc gia
+5028,"Mít dai, tươi",Quả chín,100,54.0,0.6,12.41,0.19,53.75,General,Viện Dinh dưỡng Quốc gia
+5029,Mít khô,Quả chín,100,286.0,2.9,68.5,0.0,285.6,General,Viện Dinh dưỡng Quốc gia
+5030,"Mít mật , tươi",Quả chín,100,67.0,1.5,15.2,0.0,66.8,General,Viện Dinh dưỡng Quốc gia
+5031,"Mơ, tươi",Quả chín,100,50.0,0.9,11.03,0.27,50.15,General,Viện Dinh dưỡng Quốc gia
+5032,"Mơ, khô",Quả chín,100,290.0,3.0,66.9,1.1,289.5,General,Viện Dinh dưỡng Quốc gia
+5033,"Muỗm, quéo, tươi",Quả chín,100,69.0,0.6,15.7,0.4,68.8,General,Viện Dinh dưỡng Quốc gia
+5034,"Na, tươi",Quả chín,100,69.0,1.6,15.1,0.2,68.6,General,Viện Dinh dưỡng Quốc gia
+5035,"Nhãn, tươi ",Quả chín,100,52.0,0.9,12.0,0.0,51.6,General,Viện Dinh dưỡng Quốc gia
+5036,"Nhãn, khô",Quả chín,100,292.0,4.3,67.6,0.5,292.1,General,Viện Dinh dưỡng Quốc gia
+5037,"Nho ngọt, tươi",Quả chín,100,71.0,0.4,16.99,0.11,70.55,General,Viện Dinh dưỡng Quốc gia
+5038,"Nho ta (nho chua), tươi",Quả chín,100,24.0,0.4,5.5,0.0,23.6,General,Viện Dinh dưỡng Quốc gia
+5039,"Nhót, tươi",Quả chín,100,22.0,1.2,4.4,0.0,22.4,General,Viện Dinh dưỡng Quốc gia
+5040,"Ổi, quả chín, tươi",Quả chín,100,61.0,0.6,12.94,0.76,61.0,General,Viện Dinh dưỡng Quốc gia
+5041,"Quả bơ vỏ tím, tươi",Quả chín,100,76.0,1.8,3.2,6.2,75.8,General,Viện Dinh dưỡng Quốc gia
+5042,"Quả bơ vỏ xanh, tươi",Quả chín,100,103.0,1.9,2.8,9.4,103.4,General,Viện Dinh dưỡng Quốc gia
+5043,"Quả cóc, tươi",Quả chín,100,62.0,1.8,13.7,0.0,62.0,General,Viện Dinh dưỡng Quốc gia
+5044,"Quả thanh long, tươi",Quả chín,100,47.0,1.3,10.5,0.0,47.2,General,Viện Dinh dưỡng Quốc gia
+5045,"Quả trứng gà, tươi",Quả chín,100,106.0,4.3,21.3,0.4,106.0,General,Viện Dinh dưỡng Quốc gia
+5046,"Quất chín, tươi",Quả chín,100,42.0,0.9,9.6,0.0,42.0,General,Viện Dinh dưỡng Quốc gia
+5047,"Quít, tươi",Quả chín,100,40.0,0.8,9.2,0.0,40.0,General,Viện Dinh dưỡng Quốc gia
+5048,"Sầu riêng, tươi",Quả chín,100,138.0,2.5,28.3,1.6,137.6,General,Viện Dinh dưỡng Quốc gia
+5049,"Sấu chín, tươi   ",Quả chín,100,49.0,1.3,10.9,0.0,48.8,General,Viện Dinh dưỡng Quốc gia
+5050,"Táo ta, tươi",Quả chín,100,40.0,0.8,9.2,0.0,40.0,General,Viện Dinh dưỡng Quốc gia
+5051,"Táo tây, tươi",Quả chín,100,50.0,0.5,11.71,0.09,49.65,General,Viện Dinh dưỡng Quốc gia
+5052,"Vải, tươi   ",Quả chín,100,49.0,0.7,10.75,0.35,48.95,General,Viện Dinh dưỡng Quốc gia
+5053,"Vải, khô",Quả chín,100,264.0,3.0,58.6,1.9,263.5,General,Viện Dinh dưỡng Quốc gia
+5054,"Vú sữa, tươi",Quả chín,100,51.0,1.0,11.7,0.0,50.8,General,Viện Dinh dưỡng Quốc gia
+5055,"Xoài chín, tươi",Quả chín,100,69.0,0.6,15.9,0.3,68.7,General,Viện Dinh dưỡng Quốc gia
+5056,"Quả kiwi, tươi",Quả chín,100,68.0,1.14,14.66,0.52,67.88,General,Viện Dinh dưỡng Quốc gia
+5058,Táo mèo,Quả chín,100,92.0,1.94,20.65,0.17,91.89,General,Viện Dinh dưỡng Quốc gia
+5060,Dưa lưới,Quả chín,100,38.0,0.84,8.16,0.19,37.71,General,Viện Dinh dưỡng Quốc gia
+5061,Măng cụt,Quả chín,100,65.0,0.6,14.4,0.6,65.4,General,Viện Dinh dưỡng Quốc gia
+6001,Bơ,"Dầu, mỡ, bơ",100,756.0,0.5,0.5,83.5,755.5,General,Viện Dinh dưỡng Quốc gia
+6002,"Dầu thảo mộc (Lạc, vừng, cám...)","Dầu, mỡ, bơ",100,897.0,0.0,0.0,99.7,897.3,General,Viện Dinh dưỡng Quốc gia
+6003,"Mỡ lợn, muối","Dầu, mỡ, bơ",100,827.0,2.0,0.0,91.0,827.0,General,Viện Dinh dưỡng Quốc gia
+6004,"Mỡ lợn, nước","Dầu, mỡ, bơ",100,896.0,0.0,0.0,99.6,896.4,General,Viện Dinh dưỡng Quốc gia
+6005,Bơ thực vật,"Dầu, mỡ, bơ",100,729.0,0.5,0.1,80.7,728.7,General,Viện Dinh dưỡng Quốc gia
+6006,Dầu bông,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6007,Dầu cám gạo,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6008,Dầu cọ,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6009,Dầu dừa,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6010,Dầu đậu tương,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6011,Dầu lạc,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6012,Dầu mè,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6013,Dầu ngô ,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6014,Dầu oliu,"Dầu, mỡ, bơ",100,900.0,0.0,0.0,100.0,900.0,General,Viện Dinh dưỡng Quốc gia
+6023,Dầu hỗn hợp,"Dầu, mỡ, bơ",100,897.0,0.0,0.0,99.7,897.3,General,Viện Dinh dưỡng Quốc gia
+7001,"Thịt bê, mỡ, tươi",Thịt và sản phẩm chế biến,100,144.0,19.0,0.0,7.5,143.5,General,Viện Dinh dưỡng Quốc gia
+7002,"Thịt bê, nạc, tươi",Thịt và sản phẩm chế biến,100,85.0,20.0,0.0,0.5,84.5,General,Viện Dinh dưỡng Quốc gia
+7003,"Thịt bò, loại I, tươi",Thịt và sản phẩm chế biến,100,118.0,21.0,0.0,3.8,118.2,General,Viện Dinh dưỡng Quốc gia
+7004,"Thịt bò, loại II, tươi",Thịt và sản phẩm chế biến,100,167.0,18.0,0.0,10.5,166.5,General,Viện Dinh dưỡng Quốc gia
+7005,"Thịt bò, lưng, nạc, tươi",Thịt và sản phẩm chế biến,100,121.0,23.07,0.1,3.16,121.12,General,Viện Dinh dưỡng Quốc gia
+7005018,"Thịt bò, lưng, nạc, chần",Thịt và sản phẩm chế biến,100,157.0,34.43,4.87,0.0,157.2,General,Viện Dinh dưỡng Quốc gia
+7006,"Thịt bò, lưng, nạc và mỡ, tươi",Thịt và sản phẩm chế biến,100,174.0,21.53,0.7,9.49,174.33,General,Viện Dinh dưỡng Quốc gia
+7006018,"Thịt bò, lưng, nạc và mỡ, chần",Thịt và sản phẩm chế biến,100,189.0,32.13,15.21,0.0,189.36,General,Viện Dinh dưỡng Quốc gia
+7007,"Thịt bồ câu, cả con non (ra ràng), tươi",Thịt và sản phẩm chế biến,100,340.0,17.5,0.0,30.0,340.0,General,Viện Dinh dưỡng Quốc gia
+7008,"Thịt chó, sấn, tươi",Thịt và sản phẩm chế biến,100,338.0,16.0,0.0,30.4,337.6,General,Viện Dinh dưỡng Quốc gia
+7009,"Thịt chó, vai, tươi",Thịt và sản phẩm chế biến,100,230.0,18.0,0.0,17.6,230.4,General,Viện Dinh dưỡng Quốc gia
+7010,"Thịt cừu, nạc, tươi",Thịt và sản phẩm chế biến,100,219.0,16.4,0.0,17.0,218.6,General,Viện Dinh dưỡng Quốc gia
+7011,"Thịt dê, nạc, tươi",Thịt và sản phẩm chế biến,100,122.0,20.7,0.0,4.3,121.5,General,Viện Dinh dưỡng Quốc gia
+7011003,"Thịt dê, nạc, hấp",Thịt và sản phẩm chế biến,100,213.0,36.32,0.0,7.54,213.14,General,Viện Dinh dưỡng Quốc gia
+7012,"Thịt gà rừng, tươi",Thịt và sản phẩm chế biến,100,141.0,24.4,0.0,4.8,140.8,General,Viện Dinh dưỡng Quốc gia
+7013,"Thịt gà ta, tươi",Thịt và sản phẩm chế biến,100,199.0,20.3,0.0,13.1,199.1,General,Viện Dinh dưỡng Quốc gia
+7014,"Thịt gà tây, tươi",Thịt và sản phẩm chế biến,100,218.0,20.06,0.04,15.3,218.1,General,Viện Dinh dưỡng Quốc gia
+7015,"Thịt hươu, tươi",Thịt và sản phẩm chế biến,100,94.0,19.0,0.0,2.0,94.0,General,Viện Dinh dưỡng Quốc gia
+7016,"Thịt lợn, mỡ, tươi",Thịt và sản phẩm chế biến,100,394.0,14.5,0.0,37.3,393.7,General,Viện Dinh dưỡng Quốc gia
+7017,"Thịt lợn, nạc, tươi",Thịt và sản phẩm chế biến,100,139.0,19.0,0.0,7.0,139.0,General,Viện Dinh dưỡng Quốc gia
+7018,"Thịt lợn, nửa nạc, nửa mỡ, tươi",Thịt và sản phẩm chế biến,100,260.0,16.5,0.0,21.5,259.5,General,Viện Dinh dưỡng Quốc gia
+7018002,"Thịt lợn nửa nạc, nửa mỡ, luộc",Thịt và sản phẩm chế biến,100,220.0,13.98,0.0,18.22,219.9,General,Viện Dinh dưỡng Quốc gia
+7019,"Thịt ngỗng, tươi",Thịt và sản phẩm chế biến,100,409.0,14.0,0.0,39.2,408.8,General,Viện Dinh dưỡng Quốc gia
+7019002,"Thịt ngỗng, luộc",Thịt và sản phẩm chế biến,100,568.0,19.44,0.0,54.44,567.72,General,Viện Dinh dưỡng Quốc gia
+7020,"Thịt ngựa, tươi",Thịt và sản phẩm chế biến,100,176.0,21.5,0.0,10.0,176.0,General,Viện Dinh dưỡng Quốc gia
+7021,"Thịt thỏ nhà, tươi",Thịt và sản phẩm chế biến,100,158.0,21.5,0.0,8.0,158.0,General,Viện Dinh dưỡng Quốc gia
+7022,"Thịt thỏ rừng, tươi",Thịt và sản phẩm chế biến,100,103.0,23.5,0.0,1.0,103.0,General,Viện Dinh dưỡng Quốc gia
+7023,"Thịt trâu, tươi",Thịt và sản phẩm chế biến,100,97.0,20.39,0.89,1.37,97.45,General,Viện Dinh dưỡng Quốc gia
+7024,"Thịt trâu, bắp, tươi",Thịt và sản phẩm chế biến,100,115.0,21.9,0.0,3.0,114.6,General,Viện Dinh dưỡng Quốc gia
+7024002,"Thịt trâu bắp, luộc",Thịt và sản phẩm chế biến,100,171.0,32.69,0.0,4.48,171.08,General,Viện Dinh dưỡng Quốc gia
+7024018,"Thịt trâu bắp, chần",Thịt và sản phẩm chế biến,100,153.0,29.2,0.0,4.0,152.8,General,Viện Dinh dưỡng Quốc gia
+7025,"Thịt trâu, cổ, tươi",Thịt và sản phẩm chế biến,100,112.0,20.9,0.0,3.1,111.5,General,Viện Dinh dưỡng Quốc gia
+7026,"Thịt trâu, đùi, tươi",Thịt và sản phẩm chế biến,100,112.0,21.2,0.0,3.0,111.8,General,Viện Dinh dưỡng Quốc gia
+7027,"Thịt trâu, đùi, tươi",Thịt và sản phẩm chế biến,100,121.0,22.8,0.0,3.3,120.9,General,Viện Dinh dưỡng Quốc gia
+7027002,"Thịt trâu thăn, luộc",Thịt và sản phẩm chế biến,100,180.0,34.03,0.0,4.93,180.49,General,Viện Dinh dưỡng Quốc gia
+7027018,"Thịt trâu thăn, chần",Thịt và sản phẩm chế biến,100,161.0,30.4,0.0,4.4,161.2,General,Viện Dinh dưỡng Quốc gia
+7028,"Thịt vịt, tươi",Thịt và sản phẩm chế biến,100,267.0,17.8,0.0,21.8,267.4,General,Viện Dinh dưỡng Quốc gia
+7028002,"Thịt vịt, luộc",Thịt và sản phẩm chế biến,100,371.0,24.72,0.0,30.28,371.4,General,Viện Dinh dưỡng Quốc gia
+7029,"Bầu dục bò, tươi",Thịt và sản phẩm chế biến,100,67.0,12.5,0.3,1.8,67.4,General,Viện Dinh dưỡng Quốc gia
+7029002,"Bầu dục bò, luộc",Thịt và sản phẩm chế biến,100,91.0,16.89,0.41,2.43,91.07,General,Viện Dinh dưỡng Quốc gia
+7030,"Bầu dục lợn, tươi",Thịt và sản phẩm chế biến,100,81.0,13.0,0.3,3.1,81.1,General,Viện Dinh dưỡng Quốc gia
+7030002,"Bầu dục lợn, luộc",Thịt và sản phẩm chế biến,100,110.0,17.57,0.41,4.19,109.63,General,Viện Dinh dưỡng Quốc gia
+7031,"Bì lợn, tươi",Thịt và sản phẩm chế biến,100,118.0,23.3,0.0,2.7,117.5,General,Viện Dinh dưỡng Quốc gia
+7032,"Chân giò lợn, tươi",Thịt và sản phẩm chế biến,100,230.0,15.7,0.0,18.6,230.2,General,Viện Dinh dưỡng Quốc gia
+7032002,"Thịt chân giò lợn, luộc",Thịt và sản phẩm chế biến,100,230.0,15.7,0.0,18.6,230.2,General,Viện Dinh dưỡng Quốc gia
+7033,"Dạ dày bò, tươi",Thịt và sản phẩm chế biến,100,97.0,14.8,0.0,4.2,97.0,General,Viện Dinh dưỡng Quốc gia
+7034,"Dạ dày lợn, tươi",Thịt và sản phẩm chế biến,100,85.0,14.6,0.0,2.9,84.5,General,Viện Dinh dưỡng Quốc gia
+7034002,"Dạ dày lợn, luộc",Thịt và sản phẩm chế biến,100,106.0,18.25,0.0,3.63,105.67,General,Viện Dinh dưỡng Quốc gia
+7035,"Đầu bò, tươi",Thịt và sản phẩm chế biến,100,185.0,18.1,0.0,12.5,184.9,General,Viện Dinh dưỡng Quốc gia
+7036,"Đầu lợn, tươi",Thịt và sản phẩm chế biến,100,335.0,13.4,0.0,31.3,335.3,General,Viện Dinh dưỡng Quốc gia
+7037,"Đuôi bò, tươi",Thịt và sản phẩm chế biến,100,137.0,19.7,0.0,6.5,137.3,General,Viện Dinh dưỡng Quốc gia
+7038,"Đuôi lợn, tươi",Thịt và sản phẩm chế biến,100,467.0,10.8,0.0,47.1,467.1,General,Viện Dinh dưỡng Quốc gia
+7039,"Gan bò, tươi",Thịt và sản phẩm chế biến,100,110.0,17.4,3.0,3.1,109.5,General,Viện Dinh dưỡng Quốc gia
+7040,"Gan gà, tươi",Thịt và sản phẩm chế biến,100,111.0,18.2,2.0,3.4,111.4,General,Viện Dinh dưỡng Quốc gia
+7040002,"Gan gà, luộc",Thịt và sản phẩm chế biến,100,155.0,25.28,2.78,4.72,154.72,General,Viện Dinh dưỡng Quốc gia
+7041,"Gan lợn, tươi",Thịt và sản phẩm chế biến,100,116.0,18.8,2.0,3.6,115.6,General,Viện Dinh dưỡng Quốc gia
+7041002,"Gan lợn, luộc",Thịt và sản phẩm chế biến,100,150.0,24.42,2.6,4.68,150.2,General,Viện Dinh dưỡng Quốc gia
+7042,"Gan vịt, tươi",Thịt và sản phẩm chế biến,100,122.0,17.1,2.8,4.7,121.9,General,Viện Dinh dưỡng Quốc gia
+7042002,"Gan vịt, luộc",Thịt và sản phẩm chế biến,100,156.0,21.92,3.59,6.03,156.31,General,Viện Dinh dưỡng Quốc gia
+7043,"Gân chân bò, tươi",Thịt và sản phẩm chế biến,100,124.0,30.2,0.0,0.3,123.5,General,Viện Dinh dưỡng Quốc gia
+7043006,"Thịt bò, gân, kho/om",Thịt và sản phẩm chế biến,100,175.0,21.05,7.02,7.02,175.46,General,Viện Dinh dưỡng Quốc gia
+7044,"Lưỡi bò, tươi",Thịt và sản phẩm chế biến,100,164.0,13.6,0.2,12.1,164.1,General,Viện Dinh dưỡng Quốc gia
+7044002,"Lưỡi bò, luộc",Thịt và sản phẩm chế biến,100,234.0,19.43,0.29,17.29,234.49,General,Viện Dinh dưỡng Quốc gia
+7045,"Lưỡi lợn, tươi",Thịt và sản phẩm chế biến,100,178.0,14.2,1.4,12.8,177.6,General,Viện Dinh dưỡng Quốc gia
+7045002,"Lưỡi lợn, luộc",Thịt và sản phẩm chế biến,100,254.0,20.29,2.0,18.29,253.77,General,Viện Dinh dưỡng Quốc gia
+7046,"Lòng lợn (ruột già), tươi",Thịt và sản phẩm chế biến,100,167.0,6.9,0.8,15.1,166.7,General,Viện Dinh dưỡng Quốc gia
+7047,"Lòng lợn (ruột non), tươi",Thịt và sản phẩm chế biến,100,44.0,7.2,0.8,1.3,43.7,General,Viện Dinh dưỡng Quốc gia
+7047002,"Lòng lợn (ruột non), luộc",Thịt và sản phẩm chế biến,100,55.0,9.0,1.0,1.63,54.67,General,Viện Dinh dưỡng Quốc gia
+7048,"Mề gà, tươi",Thịt và sản phẩm chế biến,100,99.0,21.3,0.6,1.3,99.3,General,Viện Dinh dưỡng Quốc gia
+7048002,"Mề gà, luộc",Thịt và sản phẩm chế biến,100,127.0,27.31,0.77,1.67,127.35,General,Viện Dinh dưỡng Quốc gia
+7049,"Óc bò, tươi",Thịt và sản phẩm chế biến,100,124.0,9.0,0.5,9.5,123.5,General,Viện Dinh dưỡng Quốc gia
+7049002,"Óc bò, luộc",Thịt và sản phẩm chế biến,100,134.0,9.78,0.54,10.33,134.25,General,Viện Dinh dưỡng Quốc gia
+7050,"Óc lợn, tươi",Thịt và sản phẩm chế biến,100,123.0,9.0,0.4,9.5,123.1,General,Viện Dinh dưỡng Quốc gia
+7050002,"Óc lợn, luộc",Thịt và sản phẩm chế biến,100,134.0,9.78,0.43,10.33,133.81,General,Viện Dinh dưỡng Quốc gia
+7051,"Phổi bò, tươi",Thịt và sản phẩm chế biến,100,103.0,15.2,0.0,4.7,103.1,General,Viện Dinh dưỡng Quốc gia
+7052,"Phổi lợn, tươi",Thịt và sản phẩm chế biến,100,92.0,14.8,0.0,3.6,91.6,General,Viện Dinh dưỡng Quốc gia
+7053,"Sườn lợn, tươi",Thịt và sản phẩm chế biến,100,187.0,17.9,0.0,12.8,186.8,General,Viện Dinh dưỡng Quốc gia
+7054,"Tai lợn, tươi",Thịt và sản phẩm chế biến,100,126.0,21.0,1.3,4.1,126.1,General,Viện Dinh dưỡng Quốc gia
+7054002,"Tai lợn, luộc",Thịt và sản phẩm chế biến,100,126.0,21.0,1.3,4.1,126.1,General,Viện Dinh dưỡng Quốc gia
+7055,"Tim bò, tươi",Thịt và sản phẩm chế biến,100,89.0,15.0,0.6,3.0,89.4,General,Viện Dinh dưỡng Quốc gia
+7055002,"Tim bò, luộc",Thịt và sản phẩm chế biến,100,131.0,22.06,0.88,4.41,131.45,General,Viện Dinh dưỡng Quốc gia
+7056,"Tim gà, tươi",Thịt và sản phẩm chế biến,100,114.0,16.0,0.0,5.5,113.5,General,Viện Dinh dưỡng Quốc gia
+7056002,"Tim gà, luộc",Thịt và sản phẩm chế biến,100,160.0,22.54,0.0,7.75,159.91,General,Viện Dinh dưỡng Quốc gia
+7057,"Tim lợn, tươi",Thịt và sản phẩm chế biến,100,94.0,15.1,1.2,3.2,94.0,General,Viện Dinh dưỡng Quốc gia
+7057002,"Tim lợn, luộc",Thịt và sản phẩm chế biến,100,138.0,22.21,1.76,4.71,138.27,General,Viện Dinh dưỡng Quốc gia
+7058,"Tiết bò, tươi",Thịt và sản phẩm chế biến,100,75.0,18.0,0.4,0.2,75.4,General,Viện Dinh dưỡng Quốc gia
+7058002,"Tiết bò, luộc",Thịt và sản phẩm chế biến,100,75.0,17.82,0.4,0.2,74.68,General,Viện Dinh dưỡng Quốc gia
+7059,"Tiết lợn, luộc",Thịt và sản phẩm chế biến,100,44.0,10.7,0.0,0.1,43.7,General,Viện Dinh dưỡng Quốc gia
+7060,"Tiết lợn, tươi",Thịt và sản phẩm chế biến,100,25.0,5.7,0.2,0.1,24.5,General,Viện Dinh dưỡng Quốc gia
+7061,"Tủy xương bò, tươi",Thịt và sản phẩm chế biến,100,814.0,1.1,0.0,89.9,813.5,General,Viện Dinh dưỡng Quốc gia
+7062,"Tủy xương lợn, tươi",Thịt và sản phẩm chế biến,100,749.0,2.3,0.0,82.2,749.0,General,Viện Dinh dưỡng Quốc gia
+7063,Ba tê lợn,Thịt và sản phẩm chế biến,100,326.0,10.8,15.4,24.6,326.2,General,Viện Dinh dưỡng Quốc gia
+7064,Chả lợn,Thịt và sản phẩm chế biến,100,517.0,10.8,5.1,50.4,517.2,General,Viện Dinh dưỡng Quốc gia
+7065,Chả quế lợn,Thịt và sản phẩm chế biến,100,416.0,16.2,0.0,39.0,415.8,General,Viện Dinh dưỡng Quốc gia
+7066,Dăm bông lợn,Thịt và sản phẩm chế biến,100,318.0,23.0,0.3,25.0,318.2,General,Viện Dinh dưỡng Quốc gia
+7067,"Dồi lợn, chín",Thịt và sản phẩm chế biến,100,114.0,12.4,0.0,7.1,113.5,General,Viện Dinh dưỡng Quốc gia
+7068,"Giò bò, chín",Thịt và sản phẩm chế biến,100,335.0,18.2,0.0,29.0,333.8,General,Viện Dinh dưỡng Quốc gia
+7069,"Giò lụa, chín",Thịt và sản phẩm chế biến,100,205.0,16.9,1.8,15.0,209.8,General,Viện Dinh dưỡng Quốc gia
+7070,"Giò thủ lợn, chín",Thịt và sản phẩm chế biến,100,553.0,16.0,0.0,54.3,552.7,General,Viện Dinh dưỡng Quốc gia
+7071,"Lạp xường, lạp sườn",Thịt và sản phẩm chế biến,100,585.0,20.8,1.7,55.0,585.0,General,Viện Dinh dưỡng Quốc gia
+7072,Nem chạo,Thịt và sản phẩm chế biến,100,116.0,12.1,12.9,1.6,114.4,General,Viện Dinh dưỡng Quốc gia
+7073,Nem chua,Thịt và sản phẩm chế biến,100,125.0,20.7,3.2,3.3,125.3,General,Viện Dinh dưỡng Quốc gia
+7074,Ruốc thịt lợn,Thịt và sản phẩm chế biến,100,369.0,46.6,0.0,20.3,369.1,General,Viện Dinh dưỡng Quốc gia
+7075,Thịt bò khô,Thịt và sản phẩm chế biến,100,239.0,51.0,5.2,1.6,239.2,General,Viện Dinh dưỡng Quốc gia
+7076,Thịt trâu khô,Thịt và sản phẩm chế biến,100,226.0,50.4,0.0,2.7,225.9,General,Viện Dinh dưỡng Quốc gia
+7077,Xúc xích,Thịt và sản phẩm chế biến,100,535.0,27.2,0.0,47.4,535.4,General,Viện Dinh dưỡng Quốc gia
+7078,Bột cóc,Thịt và sản phẩm chế biến,100,342.0,55.4,0.0,13.4,342.2,General,Viện Dinh dưỡng Quốc gia
+7079,"Châu chấu, sống",Thịt và sản phẩm chế biến,100,130.0,24.3,0.0,3.6,129.6,General,Viện Dinh dưỡng Quốc gia
+7080,"Ếch (thịt đùi), tươi",Thịt và sản phẩm chế biến,100,90.0,20.0,0.0,1.1,89.9,General,Viện Dinh dưỡng Quốc gia
+7081,"Nhộng, tươi",Thịt và sản phẩm chế biến,100,111.0,13.0,0.0,6.5,110.5,General,Viện Dinh dưỡng Quốc gia
+7082,"Lòng gà (cả bộ), tươi",Thịt và sản phẩm chế biến,100,119.0,17.88,1.79,4.47,118.91,General,Viện Dinh dưỡng Quốc gia
+7083,"Thịt lợn, nạc vai, tươi",Thịt và sản phẩm chế biến,100,149.0,20.83,0.0,7.29,148.93,General,Viện Dinh dưỡng Quốc gia
+7083002,"Thịt lợn nạc vai, luộc",Thịt và sản phẩm chế biến,100,126.0,17.65,0.0,6.18,126.22,General,Viện Dinh dưỡng Quốc gia
+7084,"Thịt lợn, nạc mông, tươi",Thịt và sản phẩm chế biến,100,141.0,24.68,0.0,4.72,141.2,General,Viện Dinh dưỡng Quốc gia
+7084002,"Thịt lợn nạc mông, luộc",Thịt và sản phẩm chế biến,100,120.0,20.92,0.0,4.0,119.68,General,Viện Dinh dưỡng Quốc gia
+7085,"Thịt lợn, nạc thăn, tươi",Thịt và sản phẩm chế biến,100,118.0,23.0,0.04,2.9,118.26,General,Viện Dinh dưỡng Quốc gia
+7085002,"Thịt lợn nạc thăn, luộc",Thịt và sản phẩm chế biến,100,100.0,19.49,0.03,2.46,100.22,General,Viện Dinh dưỡng Quốc gia
+7086,"Thịt lợn nửa nạc, nửa mỡ, nướng",Thịt và sản phẩm chế biến,100,401.0,20.5,0.56,35.2,401.04,General,Viện Dinh dưỡng Quốc gia
+7087,"Thịt gà công nghiệp, cánh, tươi",Thịt và sản phẩm chế biến,100,188.0,19.09,0.0,12.43,188.23,General,Viện Dinh dưỡng Quốc gia
+7087002,"Thịt gà công nghiệp, cánh, luộc",Thịt và sản phẩm chế biến,100,261.0,26.51,0.0,17.26,261.38,General,Viện Dinh dưỡng Quốc gia
+7088,"Thịt gà công nghiệp, đùi, tươi",Thịt và sản phẩm chế biến,100,137.0,18.0,0.89,6.8,136.76,General,Viện Dinh dưỡng Quốc gia
+7088002,"Thịt gà công nghiệp, đùi, luộc",Thịt và sản phẩm chế biến,100,190.0,25.0,1.24,9.44,189.92,General,Viện Dinh dưỡng Quốc gia
+7089,"Thịt gà công nghiệp, lườn, raw",Thịt và sản phẩm chế biến,100,134.0,22.86,0.0,4.68,133.56,General,Viện Dinh dưỡng Quốc gia
+7090,"Thịt ngan, tươi",Thịt và sản phẩm chế biến,100,288.0,17.05,0.0,24.45,288.25,General,Viện Dinh dưỡng Quốc gia
+7090002,"Thịt ngan, luộc",Thịt và sản phẩm chế biến,100,400.0,23.68,-0.03,33.96,400.24,General,Viện Dinh dưỡng Quốc gia
+7091,"Chả lá lốt, rán",Thịt và sản phẩm chế biến,100,306.0,20.0,2.3,24.8,312.4,General,Viện Dinh dưỡng Quốc gia
+7094,"Thịt bò, bắp, sống",Thịt và sản phẩm chế biến,100,122.0,21.75,0.0,3.85,121.65,General,Viện Dinh dưỡng Quốc gia
+7094003,"Thịt bò, bắp, hấp",Thịt và sản phẩm chế biến,100,182.0,32.46,0.0,5.75,181.59,General,Viện Dinh dưỡng Quốc gia
+7095003,"Thịt bò, vai, hấp",Thịt và sản phẩm chế biến,100,191.0,32.46,0.24,6.69,191.01,General,Viện Dinh dưỡng Quốc gia
+7096,Nầm bò,Thịt và sản phẩm chế biến,100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+7105002,"Thịt gà, ta, đùi, luộc",Thịt và sản phẩm chế biến,100,261.0,26.51,0.0,17.26,261.38,General,Viện Dinh dưỡng Quốc gia
+7106002,"Thịt gà, ta, lườn, đùi, luộc",Thịt và sản phẩm chế biến,100,186.0,31.75,0.0,6.5,185.5,General,Viện Dinh dưỡng Quốc gia
+7107002,"Thịt gà, ta, cánh, đùi, luộc",Thịt và sản phẩm chế biến,100,261.0,26.51,0.0,17.26,261.38,General,Viện Dinh dưỡng Quốc gia
+7108002,"Thịt gà, ta, chân, đùi, luộc",Thịt và sản phẩm chế biến,100,214.0,20.0,0.2,14.3,209.5,General,Viện Dinh dưỡng Quốc gia
+7111002,"Thịt gà, công nghiệp, cổ, luộc",Thịt và sản phẩm chế biến,100,188.0,19.09,0.0,12.43,188.23,General,Viện Dinh dưỡng Quốc gia
+7112,"Thịt lợn, mông, sống",Thịt và sản phẩm chế biến,100,131.0,20.48,0.0,5.41,130.61,General,Viện Dinh dưỡng Quốc gia
+7113002,"Thịt vịt, lườn, luộc",Thịt và sản phẩm chế biến,100,163.0,27.57,0.0,5.9,163.38,General,Viện Dinh dưỡng Quốc gia
+7113003,"Thịt vịt, lườn, hấp",Thịt và sản phẩm chế biến,100,163.0,27.57,0.0,5.9,163.38,General,Viện Dinh dưỡng Quốc gia
+7114002,"Thịt vịt, đùi, luộc",Thịt và sản phẩm chế biến,100,267.0,17.8,0.0,21.8,267.4,General,Viện Dinh dưỡng Quốc gia
+7115003,"Thịt vịt, cánh, hấp",Thịt và sản phẩm chế biến,100,261.0,26.51,0.0,17.26,261.38,General,Viện Dinh dưỡng Quốc gia
+7118002,"Mọc, từ thịt lợn, nấu canh",Thịt và sản phẩm chế biến,100,286.0,14.4,8.06,22.2,289.64,General,Viện Dinh dưỡng Quốc gia
+7120,Xương cục,Thịt và sản phẩm chế biến,100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+7123002,"Tiết ngan, luộc",Thịt và sản phẩm chế biến,100,50.0,12.17,0.06,0.06,49.46,General,Viện Dinh dưỡng Quốc gia
+7132,Nước hầm xương lợn,Thịt và sản phẩm chế biến,100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+7140,Nước canh,Thịt và sản phẩm chế biến,100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+7141,Nước dùng,Thịt và sản phẩm chế biến,100,,0.0,0.0,0.0,0.0,General,Viện Dinh dưỡng Quốc gia
+7142,Thịt xá xíu,Thịt và sản phẩm chế biến,100,189.0,26.37,0.0,9.23,188.55,General,Viện Dinh dưỡng Quốc gia
+7143,Xúc xích bò,Thịt và sản phẩm chế biến,100,178.0,10.2,13.5,8.83,174.27,General,Viện Dinh dưỡng Quốc gia
+7144,Tiết gà,Thịt và sản phẩm chế biến,100,25.0,5.7,0.2,0.1,24.5,General,Viện Dinh dưỡng Quốc gia
+7145,Tiết dê,Thịt và sản phẩm chế biến,100,25.0,5.7,0.2,0.1,24.5,General,Viện Dinh dưỡng Quốc gia
+8001,"Cá bống, tươi",Thủy sản và sản phẩm chế biến,100,70.0,15.8,0.0,0.8,70.4,General,Viện Dinh dưỡng Quốc gia
+8002,"Cá chày, tươi",Thủy sản và sản phẩm chế biến,100,113.0,20.1,0.0,3.6,112.8,General,Viện Dinh dưỡng Quốc gia
+8003,"Cá chép, tươi",Thủy sản và sản phẩm chế biến,100,96.0,16.0,0.0,3.6,96.4,General,Viện Dinh dưỡng Quốc gia
+8004,"Cá dưa, tươi",Thủy sản và sản phẩm chế biến,100,115.0,17.6,0.0,5.0,115.4,General,Viện Dinh dưỡng Quốc gia
+8005,"Cá dầu, tươi",Thủy sản và sản phẩm chế biến,100,96.0,18.9,0.0,2.3,96.3,General,Viện Dinh dưỡng Quốc gia
+8006,"Cá diếc, tươi",Thủy sản và sản phẩm chế biến,100,87.0,17.7,0.0,1.8,87.0,General,Viện Dinh dưỡng Quốc gia
+8007,"Cá đao, tươi",Thủy sản và sản phẩm chế biến,100,94.0,18.3,0.0,2.3,93.9,General,Viện Dinh dưỡng Quốc gia
+8008,"Cá đé, tươi",Thủy sản và sản phẩm chế biến,100,83.0,18.7,0.0,0.9,82.9,General,Viện Dinh dưỡng Quốc gia
+8009,"Cá đối, tươi",Thủy sản và sản phẩm chế biến,100,108.0,19.5,0.0,3.3,107.7,General,Viện Dinh dưỡng Quốc gia
+8010,"Cá đồng tiền, tươi",Thủy sản và sản phẩm chế biến,100,98.0,20.1,0.0,2.0,98.4,General,Viện Dinh dưỡng Quốc gia
+8011,"Cá hồi, tươi",Thủy sản và sản phẩm chế biến,100,136.0,22.0,0.0,5.3,135.7,General,Viện Dinh dưỡng Quốc gia
+8012,"Cá khô (chim, thu, nụ, đé), sống",Thủy sản và sản phẩm chế biến,100,208.0,43.3,0.0,3.9,208.3,General,Viện Dinh dưỡng Quốc gia
+8013,"Cá lác, tươi",Thủy sản và sản phẩm chế biến,100,71.0,16.7,0.0,0.5,71.3,General,Viện Dinh dưỡng Quốc gia
+8013002,"Cá lác, luộc",Thủy sản và sản phẩm chế biến,100,86.0,20.12,0.0,0.6,85.88,General,Viện Dinh dưỡng Quốc gia
+8013008,"Cá lác, chiên giòn",Thủy sản và sản phẩm chế biến,100,94.0,21.97,0.0,0.66,93.82,General,Viện Dinh dưỡng Quốc gia
+8014,"Cá mè, tươi",Thủy sản và sản phẩm chế biến,100,144.0,15.4,0.0,9.1,143.5,General,Viện Dinh dưỡng Quốc gia
+8015,"Cá mòi (cá sardin), tươi",Thủy sản và sản phẩm chế biến,100,124.0,17.5,0.0,6.0,124.0,General,Viện Dinh dưỡng Quốc gia
+8016,"Cá mỡ, tươi",Thủy sản và sản phẩm chế biến,100,151.0,16.8,0.0,9.3,150.9,General,Viện Dinh dưỡng Quốc gia
+8017,"Cá mối, tươi",Thủy sản và sản phẩm chế biến,100,116.0,22.1,0.0,3.1,116.3,General,Viện Dinh dưỡng Quốc gia
+8018,"Cá nạc, tươi",Thủy sản và sản phẩm chế biến,100,80.0,17.5,0.0,1.1,79.9,General,Viện Dinh dưỡng Quốc gia
+8019,"Cá ngừ, tươi",Thủy sản và sản phẩm chế biến,100,87.0,21.0,0.0,0.3,86.7,General,Viện Dinh dưỡng Quốc gia
+8020,"Cá nục, tươi",Thủy sản và sản phẩm chế biến,100,111.0,20.2,0.0,3.3,110.5,General,Viện Dinh dưỡng Quốc gia
+8020002,"Cá nục, luộc",Thủy sản và sản phẩm chế biến,100,133.0,24.34,0.0,3.98,133.18,General,Viện Dinh dưỡng Quốc gia
+8020014,"Cá nục, nướng",Thủy sản và sản phẩm chế biến,100,138.0,25.25,0.0,4.13,138.17,General,Viện Dinh dưỡng Quốc gia
+8021,"Cá phèn, tươi",Thủy sản và sản phẩm chế biến,100,104.0,15.9,0.0,4.5,104.1,General,Viện Dinh dưỡng Quốc gia
+8022,"Cá quả, tươi",Thủy sản và sản phẩm chế biến,100,97.0,18.2,0.0,2.7,97.1,General,Viện Dinh dưỡng Quốc gia
+8023,"Cá rô đồng, tươi",Thủy sản và sản phẩm chế biến,100,126.0,19.1,0.0,5.5,125.9,General,Viện Dinh dưỡng Quốc gia
+8024,"Cá rô phi, tươi",Thủy sản và sản phẩm chế biến,100,100.0,19.7,0.0,2.3,99.5,General,Viện Dinh dưỡng Quốc gia
+8024008,"Cá rô phi, chiên giòn",Thủy sản và sản phẩm chế biến,100,131.0,25.92,0.0,3.03,130.95,General,Viện Dinh dưỡng Quốc gia
+8025,"Cá thờn bơn, tươi",Thủy sản và sản phẩm chế biến,100,73.0,17.4,0.0,0.4,73.2,General,Viện Dinh dưỡng Quốc gia
+8026,"Cá thu, tươi",Thủy sản và sản phẩm chế biến,100,166.0,18.2,0.0,10.3,165.5,General,Viện Dinh dưỡng Quốc gia
+8027,"Cá thu đao, tươi",Thủy sản và sản phẩm chế biến,100,156.0,20.0,0.0,8.4,155.6,General,Viện Dinh dưỡng Quốc gia
+8028,"Cá trạch, tươi",Thủy sản và sản phẩm chế biến,100,110.0,20.4,0.0,3.2,110.4,General,Viện Dinh dưỡng Quốc gia
+8029,"Cá trắm cỏ, tươi",Thủy sản và sản phẩm chế biến,100,91.0,17.0,0.0,2.6,91.4,General,Viện Dinh dưỡng Quốc gia
+8030,"Cá trê, tươi",Thủy sản và sản phẩm chế biến,100,173.0,16.5,0.0,11.9,173.1,General,Viện Dinh dưỡng Quốc gia
+8031,"Cá trích, tươi",Thủy sản và sản phẩm chế biến,100,166.0,17.7,0.0,10.6,166.2,General,Viện Dinh dưỡng Quốc gia
+8032,"Cá trôi, tươi ",Thủy sản và sản phẩm chế biến,100,127.0,18.8,0.0,5.7,126.5,General,Viện Dinh dưỡng Quốc gia
+8033,"Cua bể, tươi",Thủy sản và sản phẩm chế biến,100,103.0,17.5,7.0,0.6,103.4,General,Viện Dinh dưỡng Quốc gia
+8034,"Cua đồng, tươi",Thủy sản và sản phẩm chế biến,100,87.0,12.3,2.0,3.3,86.9,General,Viện Dinh dưỡng Quốc gia
+8035,"Cua ghẹ, tươi",Thủy sản và sản phẩm chế biến,100,54.0,11.9,0.0,0.7,53.9,General,Viện Dinh dưỡng Quốc gia
+8036,"Hải sâm, tươi",Thủy sản và sản phẩm chế biến,100,90.0,21.5,0.2,0.3,89.5,General,Viện Dinh dưỡng Quốc gia
+8037,"Hến, tươi",Thủy sản và sản phẩm chế biến,100,45.0,4.5,5.1,0.7,44.7,General,Viện Dinh dưỡng Quốc gia
+8038,"Lươn, tươi",Thủy sản và sản phẩm chế biến,100,130.0,18.4,10.7,1.5,129.9,General,Viện Dinh dưỡng Quốc gia
+8039,"Mực khô, sống",Thủy sản và sản phẩm chế biến,100,291.0,60.1,2.5,4.5,290.9,General,Viện Dinh dưỡng Quốc gia
+8040,"Mực, tươi",Thủy sản và sản phẩm chế biến,100,73.0,16.3,0.0,0.9,73.3,General,Viện Dinh dưỡng Quốc gia
+8040003,"Mực tươi, hấp",Thủy sản và sản phẩm chế biến,100,115.0,25.47,0.0,1.41,114.57,General,Viện Dinh dưỡng Quốc gia
+8040014,"Mực tươi, nướng",Thủy sản và sản phẩm chế biến,100,115.0,25.47,0.0,1.41,114.57,General,Viện Dinh dưỡng Quốc gia
+8041,"Ốc bươu, tươi",Thủy sản và sản phẩm chế biến,100,84.0,11.1,8.3,0.7,83.9,General,Viện Dinh dưỡng Quốc gia
+8041002,"Ốc bươu, luộc",Thủy sản và sản phẩm chế biến,100,336.0,44.4,33.2,2.8,335.6,General,Viện Dinh dưỡng Quốc gia
+8042,"Ốc đá, tươi",Thủy sản và sản phẩm chế biến,100,63.0,11.2,3.9,0.3,63.1,General,Viện Dinh dưỡng Quốc gia
+8043,"Ốc nhồi, tươi",Thủy sản và sản phẩm chế biến,100,84.0,11.9,7.6,0.7,84.3,General,Viện Dinh dưỡng Quốc gia
+8043003,"Ốc nhồi, hấp",Thủy sản và sản phẩm chế biến,100,337.0,47.6,30.4,2.8,337.2,General,Viện Dinh dưỡng Quốc gia
+8044,"Ốc vặn, raw",Thủy sản và sản phẩm chế biến,100,72.0,12.2,4.3,0.7,72.3,General,Viện Dinh dưỡng Quốc gia
+8044002,"Ốc vặn, luộc",Thủy sản và sản phẩm chế biến,100,289.0,48.8,17.2,2.8,289.2,General,Viện Dinh dưỡng Quốc gia
+8044003,"Ốc vặn, hấp",Thủy sản và sản phẩm chế biến,100,289.0,48.8,17.2,2.8,289.2,General,Viện Dinh dưỡng Quốc gia
+8044014,"Ốc vặn, nướng",Thủy sản và sản phẩm chế biến,100,289.0,48.8,17.2,2.8,289.2,General,Viện Dinh dưỡng Quốc gia
+8045,"Rạm, muối, đồ",Thủy sản và sản phẩm chế biến,100,83.0,14.2,0.0,2.9,82.9,General,Viện Dinh dưỡng Quốc gia
+8046,"Rạm, tươi",Thủy sản và sản phẩm chế biến,100,77.0,12.9,0.0,2.8,76.8,General,Viện Dinh dưỡng Quốc gia
+8047,"Rươi, tươi",Thủy sản và sản phẩm chế biến,100,89.0,12.4,0.0,4.4,89.2,General,Viện Dinh dưỡng Quốc gia
+8048,"Sò, tươi",Thủy sản và sản phẩm chế biến,100,51.0,8.8,3.0,0.4,50.8,General,Viện Dinh dưỡng Quốc gia
+8049,"Tép gạo, tươi",Thủy sản và sản phẩm chế biến,100,58.0,11.7,0.0,1.2,57.6,General,Viện Dinh dưỡng Quốc gia
+8050,"Tép khô, sống",Thủy sản và sản phẩm chế biến,100,269.0,59.8,0.7,3.0,269.0,General,Viện Dinh dưỡng Quốc gia
+8051,"Tôm biển, tươi",Thủy sản và sản phẩm chế biến,100,82.0,17.6,0.9,0.9,82.1,General,Viện Dinh dưỡng Quốc gia
+8051002,"Tôm biển, luộc",Thủy sản và sản phẩm chế biến,100,82.0,17.6,0.9,0.9,82.1,General,Viện Dinh dưỡng Quốc gia
+8051014,"Tôm biển, nướng",Thủy sản và sản phẩm chế biến,100,124.0,26.67,1.36,1.36,124.36,General,Viện Dinh dưỡng Quốc gia
+8052,"Tôm đồng, tươi",Thủy sản và sản phẩm chế biến,100,90.0,18.4,0.0,1.8,89.8,General,Viện Dinh dưỡng Quốc gia
+8052002,"Tôm đồng, luộc",Thủy sản và sản phẩm chế biến,100,90.0,18.4,0.0,1.8,89.8,General,Viện Dinh dưỡng Quốc gia
+8052014,"Tôm đồng, nướng",Thủy sản và sản phẩm chế biến,100,136.0,27.88,0.0,2.73,136.09,General,Viện Dinh dưỡng Quốc gia
+8053,"Tôm biển, khô",Thủy sản và sản phẩm chế biến,100,347.0,75.6,2.5,3.8,346.6,General,Viện Dinh dưỡng Quốc gia
+8054,"Trai, nước ngọt, tươi",Thủy sản và sản phẩm chế biến,100,38.0,4.6,2.5,1.1,38.3,General,Viện Dinh dưỡng Quốc gia
+8055,"Bánh phồng tôm, rán",Thủy sản và sản phẩm chế biến,100,676.0,1.6,34.1,59.2,675.6,General,Viện Dinh dưỡng Quốc gia
+8056,"Bánh phồng tôm, sống",Thủy sản và sản phẩm chế biến,100,381.0,3.4,75.3,7.4,381.4,General,Viện Dinh dưỡng Quốc gia
+8057,"Bột cá, sống",Thủy sản và sản phẩm chế biến,100,323.0,71.2,3.0,2.9,322.9,General,Viện Dinh dưỡng Quốc gia
+8058,Ruốc cá quả,Thủy sản và sản phẩm chế biến,100,312.0,65.7,3.0,4.1,311.7,General,Viện Dinh dưỡng Quốc gia
+8059,Ruốc tôm,Thủy sản và sản phẩm chế biến,100,305.0,65.5,3.7,3.1,304.7,General,Viện Dinh dưỡng Quốc gia
+8060,Cá chim,Thủy sản và sản phẩm chế biến,100,143.0,17.7,3.6,6.4,142.8,General,Viện Dinh dưỡng Quốc gia
+8061,Cá chim trắng,Thủy sản và sản phẩm chế biến,100,247.0,15.1,3.42,19.2,246.88,General,Viện Dinh dưỡng Quốc gia
+8062,Cá điêu hồng,Thủy sản và sản phẩm chế biến,100,111.0,17.1,3.11,3.3,110.54,General,Viện Dinh dưỡng Quốc gia
+8063,"Cá basa, phi lê",Thủy sản và sản phẩm chế biến,100,67.0,9.7,5.32,0.8,67.28,General,Viện Dinh dưỡng Quốc gia
+8064,Chả cá basa,Thủy sản và sản phẩm chế biến,100,186.0,11.1,6.12,13.0,185.88,General,Viện Dinh dưỡng Quốc gia
+8064008,"Chả cá basa, rán",Thủy sản và sản phẩm chế biến,100,186.0,11.1,6.12,13.0,185.88,General,Viện Dinh dưỡng Quốc gia
+8065,Con trùng trục,Thủy sản và sản phẩm chế biến,100,108.0,14.4,9.65,1.3,107.9,General,Viện Dinh dưỡng Quốc gia
+8066,Ngao biển trắng,Thủy sản và sản phẩm chế biến,100,42.0,5.37,4.03,0.44,41.56,General,Viện Dinh dưỡng Quốc gia
+8069,Thịt cua,Thủy sản và sản phẩm chế biến,100,103.0,17.5,7.0,0.6,103.4,General,Viện Dinh dưỡng Quốc gia
+8070002,"Sò huyết, luộc",Thủy sản và sản phẩm chế biến,100,316.0,54.0,18.8,2.8,316.4,General,Viện Dinh dưỡng Quốc gia
+8074002,"Ốc móng tay, luộc",Thủy sản và sản phẩm chế biến,100,123.0,15.89,2.05,5.65,122.61,General,Viện Dinh dưỡng Quốc gia
+8074014,"Ốc móng tay, nướng",Thủy sản và sản phẩm chế biến,100,123.0,15.89,2.05,5.65,122.61,General,Viện Dinh dưỡng Quốc gia
+8075002,"Ốc hương, luộc",Thủy sản và sản phẩm chế biến,100,94.0,22.4,2.4,2.7,123.5,General,Viện Dinh dưỡng Quốc gia
+8075003,"Ốc hương, hấp",Thủy sản và sản phẩm chế biến,100,94.0,22.4,2.4,2.7,123.5,General,Viện Dinh dưỡng Quốc gia
+8075014,"Ốc hương, nướng",Thủy sản và sản phẩm chế biến,100,94.0,22.4,2.4,2.7,123.5,General,Viện Dinh dưỡng Quốc gia
+8076003,"Ốc len, hấp",Thủy sản và sản phẩm chế biến,100,94.0,22.4,2.4,2.7,123.5,General,Viện Dinh dưỡng Quốc gia
+8076014,"Ốc len, nướng",Thủy sản và sản phẩm chế biến,100,94.0,22.4,2.4,2.7,123.5,General,Viện Dinh dưỡng Quốc gia
+8079002,"Sò dương, luộc",Thủy sản và sản phẩm chế biến,100,261.0,48.24,12.72,1.96,261.48,General,Viện Dinh dưỡng Quốc gia
+8079003,"Sò dương, hấp",Thủy sản và sản phẩm chế biến,100,261.0,48.24,12.72,1.96,261.48,General,Viện Dinh dưỡng Quốc gia
+8079014,"Sò dương, nướng",Thủy sản và sản phẩm chế biến,100,261.0,48.24,12.72,1.96,261.48,General,Viện Dinh dưỡng Quốc gia
+8080002,"Sò điệp, luộc",Thủy sản và sản phẩm chế biến,100,69.0,12.1,3.18,0.49,65.53,General,Viện Dinh dưỡng Quốc gia
+8080003,"Sò điệp, hấp",Thủy sản và sản phẩm chế biến,100,69.0,12.1,3.18,0.49,65.53,General,Viện Dinh dưỡng Quốc gia
+8080014,"Sò điệp, nướng",Thủy sản và sản phẩm chế biến,100,69.0,12.1,3.18,0.49,65.53,General,Viện Dinh dưỡng Quốc gia
+8081003,"Sò lông, hấp",Thủy sản và sản phẩm chế biến,100,316.0,54.0,18.8,2.8,316.4,General,Viện Dinh dưỡng Quốc gia
+8081014,"Sò lông, nướng",Thủy sản và sản phẩm chế biến,100,316.0,54.0,18.8,2.8,316.4,General,Viện Dinh dưỡng Quốc gia
+8092,"Cá basa, tươi",Thủy sản và sản phẩm chế biến,100,119.0,15.2,0.0,5.94,114.26,General,Viện Dinh dưỡng Quốc gia
+8093,Tôm tít (bề bề),Thủy sản và sản phẩm chế biến,100,82.0,17.6,0.9,0.9,82.1,General,Viện Dinh dưỡng Quốc gia
+8094,Tu hài,Thủy sản và sản phẩm chế biến,100,42.0,5.37,4.03,0.44,41.56,General,Viện Dinh dưỡng Quốc gia
+9001,Trứng gà ta,Trứng và sản phẩm chế biến,100,150.0,12.96,1.25,10.33,149.81,General,Viện Dinh dưỡng Quốc gia
+9002,Lòng đỏ trứng gà,Trứng và sản phẩm chế biến,100,327.0,13.6,1.0,29.8,326.6,General,Viện Dinh dưỡng Quốc gia
+9003,Lòng trắng trứng gà,Trứng và sản phẩm chế biến,100,46.0,10.3,1.0,0.1,46.1,General,Viện Dinh dưỡng Quốc gia
+9004,Trứng vịt,Trứng và sản phẩm chế biến,100,172.0,13.02,2.94,12.02,172.02,General,Viện Dinh dưỡng Quốc gia
+9005,Lòng đỏ trứng vịt,Trứng và sản phẩm chế biến,100,364.0,13.6,4.8,32.3,364.3,General,Viện Dinh dưỡng Quốc gia
+9006,Lòng trắng trứng vịt,Trứng và sản phẩm chế biến,100,47.0,10.7,0.8,0.1,46.9,General,Viện Dinh dưỡng Quốc gia
+9007,Trứng chim cút,Trứng và sản phẩm chế biến,100,157.0,12.78,2.89,10.47,156.91,General,Viện Dinh dưỡng Quốc gia
+9008,Trứng cá,Trứng và sản phẩm chế biến,100,171.0,20.5,0.0,9.9,171.1,General,Viện Dinh dưỡng Quốc gia
+9009,Trứng cá muối,Trứng và sản phẩm chế biến,100,274.0,24.6,3.5,17.9,273.5,General,Viện Dinh dưỡng Quốc gia
+9010,Trứng vịt lộn,Trứng và sản phẩm chế biến,100,182.0,13.6,4.0,12.4,182.0,General,Viện Dinh dưỡng Quốc gia
+9011,Bột trứng,Trứng và sản phẩm chế biến,100,563.0,44.0,1.8,42.2,563.0,General,Viện Dinh dưỡng Quốc gia
+9012,Trứng gà công nghiệp,Trứng và sản phẩm chế biến,100,132.0,12.79,1.89,8.17,132.25,General,Viện Dinh dưỡng Quốc gia

@@ -12,3 +12,6 @@ fastembed
 psutil
 sqlalchemy
 psycopg[binary]
+python-jose[cryptography]   # Xử lý JWT
+passlib[bcrypt]             # Băm mật khẩu an toàn
+python-multipart            # Xử lý Form Data khi Login

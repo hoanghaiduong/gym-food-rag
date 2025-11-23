@@ -1,12 +1,18 @@
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 
-# Schema cho câu hỏi người dùng gửi lên
+# =================================================================
+# CORE CHAT/RAG SCHEMAS
+# =================================================================
+
 class ChatRequest(BaseModel):
     question: str
-    history: Optional[List[Dict[str, str]]] = [] # Lịch sử chat (nếu cần)
+    history: Optional[List[Dict[str, str]]] = [] 
 
-# Schema cho dữ liệu nguồn (Món ăn)
+class ChatResponse(BaseModel):
+    answer: str
+    sources: List[Dict[str, Any]] 
+
 class FoodItem(BaseModel):
     name: str
     group: str
@@ -16,23 +22,19 @@ class FoodItem(BaseModel):
     fat_g: float
     meal_suggestion: str
     provenance: Optional[str] = None
-    document_content: str # Chuỗi đã template hóa
+    document_content: str 
 
-# Schema cho câu trả lời trả về
-class ChatResponse(BaseModel):
-    answer: str
-    sources: List[Dict[str, Any]] # Trả về nguồn tham khảo để người dùng tin tưởng
-    
-# [THÊM MỚI] Step 0: Admin Creation
+# =================================================================
+# SETUP WIZARD CONFIG SCHEMAS (Step 0-5)
+# =================================================================
+
 class AdminSetupConfig(BaseModel):
-    admin_secret_key: str # Người dùng tự nhập mật khẩu quản trị mong muốn
-# Schema cho cấu hình mạng (STEP 1)
-# Step 1: Network
+    admin_secret_key: str 
+
 class NetworkConfig(BaseModel):
     api_base_url: str
     websocket_url: str
 
-# Step 2: Database
 class DatabaseConfig(BaseModel):
     db_type: str = "PostgreSQL"
     host: str
@@ -41,21 +43,59 @@ class DatabaseConfig(BaseModel):
     password: str
     db_name: str
 
-# Step 3: Vector DB
 class VectorConfig(BaseModel):
     provider: str = "Qdrant"
     host: str
     api_key: Optional[str] = None
     collection_name: str
 
-# Step 4: LLM
 class LLMConfig(BaseModel):
     provider: str = "Gemini"
     api_key: str
     model_name: str = "gemini-1.5-flash"
 
-# Step 5: General
 class GeneralConfig(BaseModel):
     bot_name: str
     welcome_message: str
     language: str = "Vietnamese"
+    
+# =================================================================
+# AUTHENTICATION & USER MANAGEMENT SCHEMAS (Bổ sung đầy đủ)
+# =================================================================
+
+class UserCreate(BaseModel):
+    """Schema cho /register"""
+    username: str
+    email: str
+    password: str
+    full_name: Optional[str] = None
+    
+class UserLogin(BaseModel):
+    """Schema cho form đăng nhập (/login)"""
+    username: str
+    password: str
+
+class UserResponse(BaseModel):
+    """Schema trả về thông tin người dùng"""
+    id: int
+    username: str
+    email: str
+    role: str
+    is_active: bool
+
+class UserUpdate(BaseModel):
+    """Schema dùng cho /users/{id} để cập nhật thông tin"""
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    role: Optional[str] = None 
+    is_active: Optional[bool] = None 
+
+class Token(BaseModel):
+    """Schema trả về sau khi Login/Refresh"""
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    
+class RefreshTokenRequest(BaseModel):
+    """Schema nhận Refresh Token từ Client"""
+    refresh_token: str

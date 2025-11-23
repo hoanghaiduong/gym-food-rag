@@ -7,7 +7,7 @@ import logging
 # Import các router và module system
 from app.core.config import settings
 from app.api.v1 import chat
-from app.api.v2 import chat_v2, admin, system, setup
+from app.api.v2 import chat_v2, admin, system, setup, users
 
 # --- CẤU HÌNH LOGGER (Để module system đọc được file log) ---
 # Encoding utf-8 để tránh lỗi khi log tiếng Việt trên Windows
@@ -63,7 +63,7 @@ app.include_router(chat.router, prefix=settings.API_V1_STR, tags=["Chat V1 (Lega
 app.include_router(chat_v2.router, prefix="/api/v2", tags=["Chat V2 (Hybrid)"])
 app.include_router(admin.router, prefix="/api/v2/admin", tags=["Admin Data"])
 app.include_router(system.router, prefix="/api/v2/system", tags=["System Control"])
-
+app.include_router(users.router, prefix="/api/v2/users", tags=["Admin User Management"]) # <-- Thêm dòng này
 @app.get("/")
 def root():
     return {"message": "Gym Food Recommendation API is running!"}

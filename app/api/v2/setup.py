@@ -5,30 +5,33 @@ from dotenv import set_key
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text, MetaData, Table, Column, Integer, String, Text, DateTime, func, inspect
 from sqlalchemy.sql import text as sql_text
+from sqlalchemy.dialects.postgresql import insert # Import tính năng Upsert
 from qdrant_client import QdrantClient
 import google.generativeai as genai
 
 # Import models và auth
 from app.api.deps import verify_admin
-from app.api.v2.system import log_manager # Để bắn log ra màn hình
+from app.api.v2.system import log_manager 
+from app.core.config import settings
 from app.db.migrations import run_db_migrations
 from app.db.seeds import seed_initial_data
+from app.db.schemas import system_settings # Import bảng settings để lưu Step 5
 from app.models.schemas import (
     AdminSetupConfig, DatabaseConfig, GeneralConfig, 
     LLMConfig, NetworkConfig, VectorConfig
 )
 
-class MigrationRequest(BaseModel): # Model cục bộ cho migration
+class MigrationRequest(BaseModel):
     force_reset: bool = False
 
 router = APIRouter()
-
+DEFAULT_ADMIN_KEY = "gym-food-super-admin"
 # Đường dẫn file .env
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ENV_PATH = os.path.join(PROJECT_ROOT, ".env")
 
 def save_to_env(config_dict: dict):
-    """Hàm helper để lưu vào .env"""
+    """Hàm helper để lưu vào .env (Dùng cho Steps 0-4)"""
     try:
         for key, value in config_dict.items():
             env_key = key.upper()
@@ -37,6 +40,44 @@ def save_to_env(config_dict: dict):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Lỗi lưu file .env: {str(e)}")
 
+
+@router.get("/status")
+async def get_system_status():
+    """
+    Endpoint KHÔNG CẦN XÁC THỰC: Kiểm tra xem hệ thống đã sẵn sàng cho đăng nhập chưa.
+    Logic: Hoàn thành nếu Admin Key ĐÃ ĐƯỢC THAY ĐỔI.
+    """
+    
+    # --- BƯỚC 1: KIỂM TRA BẢO MẬT (ADMIN KEY) ---
+    if settings.ADMIN_SECRET_KEY != DEFAULT_ADMIN_KEY:
+        # Nếu Key đã được thay đổi khỏi giá trị mặc định, coi như đã thiết lập xong.
+        return {
+            "status": "completed", 
+            "requires_auth": True, 
+            "message": "Security key set. Proceed to login."
+        }
+
+    # --- BƯỚC 2: KIỂM TRA DB (Nếu key là mặc định, xem đã tạo bảng chưa) ---
+    db_url = settings.DATABASE_URL
+    if not db_url:
+         # Nếu DATABASE_URL còn thiếu (chưa qua Step 2)
+         return {"status": "pending", "requires_auth": False, "message": "Database URL cần cấu hình (Step 2)."}
+
+    try:
+        engine = create_engine(db_url)
+        inspector = inspect(engine)
+        
+        # Kiểm tra xem bảng 'users' (bảng cốt lõi) đã tồn tại chưa
+        if 'users' not in inspector.get_table_names():
+            return {"status": "pending", "requires_auth": False, "message": "Core database tables missing (Migration required)."}
+        
+        # Nếu bảng tồn tại nhưng Admin Key vẫn là mặc định: Bắt buộc set Key.
+        return {"status": "pending", "requires_auth": False, "message": "Admin security key needs to be set (Step 0)."}
+
+    except Exception as e:
+        # Lỗi kết nối DB (Container DB chưa chạy, hoặc lỗi cấu hình)
+        print(f"❌ Lỗi kết nối DB trong Setup Status: {e}")
+        return {"status": "pending", "requires_auth": False, "message": f"Database connection error: {e}"}
 # ============================================================
 # STEP 0: INIT ADMIN
 # ============================================================
@@ -51,7 +92,7 @@ async def initialize_admin(config: AdminSetupConfig):
     return {"status": "success", "message": "Đã tạo Admin Key thành công!"}
 
 # ============================================================
-# STEP 1: BACKEND & NETWORK
+# STEP 1: BACKEND & NETWORK (Lưu .env)
 # ============================================================
 @router.post("/step1/save", dependencies=[Depends(verify_admin)])
 async def save_network_config(config: NetworkConfig):
@@ -59,7 +100,7 @@ async def save_network_config(config: NetworkConfig):
     return {"status": "success", "message": "Network configuration saved."}
 
 # ============================================================
-# STEP 2: DATABASE CONNECTION (PSYCOPG 3)
+# STEP 2: DATABASE CONNECTION (Lưu .env)
 # ============================================================
 @router.post("/step2/test", dependencies=[Depends(verify_admin)])
 async def test_database(config: DatabaseConfig):
@@ -84,7 +125,7 @@ async def save_database_config(config: DatabaseConfig):
     return {"status": "success", "message": "Database configuration saved."}
 
 # ============================================================
-# STEP 2.5: DATABASE MIGRATION (SMART CHECK)
+# STEP 2.5: DATABASE MIGRATION
 # ============================================================
 @router.get("/step4/db-status", dependencies=[Depends(verify_admin)])
 async def check_db_status():
@@ -107,27 +148,21 @@ async def execute_migration_endpoint(request: MigrationRequest):
     db_url = os.getenv("DATABASE_URL")
     if not db_url: raise HTTPException(400, "Missing DATABASE_URL.")
     
-    # Hàm log bắn ra WebSocket
     async def ws_log(msg): 
         await log_manager.broadcast_log(msg)
 
     try:
         engine = create_engine(db_url)
-        
-        # 1. Chạy Migration
         await run_db_migrations(engine, request.force_reset, ws_log)
-        
-        # 2. Chạy Seeding
         await seed_initial_data(engine, ws_log)
-
         await ws_log("[DONE] System initialization complete!")
         return {"status": "success", "message": "Database initialized."}
-        
     except Exception as e:
         await ws_log(f"[ERROR] {str(e)}")
         raise HTTPException(500, str(e))
+
 # ============================================================
-# STEP 3: VECTOR SEARCH (RAG)
+# STEP 3: VECTOR SEARCH (Lưu .env)
 # ============================================================
 @router.post("/step3/test", dependencies=[Depends(verify_admin)])
 async def test_vector_db(config: VectorConfig):
@@ -154,7 +189,7 @@ async def save_vector_config(config: VectorConfig):
         raise HTTPException(500, str(e))
 
 # ============================================================
-# STEP 4: LLM CONFIGURATION
+# STEP 4: LLM CONFIGURATION (Lưu .env)
 # ============================================================
 @router.post("/step4/test", dependencies=[Depends(verify_admin)])
 async def test_llm_connection(config: LLMConfig):
@@ -173,9 +208,42 @@ async def save_llm_config(config: LLMConfig):
     return {"status": "success", "message": "LLM credentials saved."}
 
 # ============================================================
-# STEP 5: GENERAL SITE INFO
+# STEP 5: GENERAL SITE INFO (Lưu CẢ 2: Database & .Env)
 # ============================================================
 @router.post("/step5/save", dependencies=[Depends(verify_admin)])
 async def save_general_config(config: GeneralConfig):
-    save_to_env(config.model_dump())
-    return {"status": "success", "message": "Setup Completed!"}
+    """
+    Lưu cấu hình chung vào cả .env và Database để dự phòng.
+    """
+    # --- 1. LƯU VÀO FILE .ENV ---
+    try:
+        save_to_env(config.model_dump())
+        print("✅ Đã lưu cấu hình vào .env")
+    except Exception as e:
+        print(f"⚠️ Cảnh báo: Không lưu được vào .env: {e}")
+
+    # --- 2. LƯU VÀO DATABASE ---
+    db_url = os.getenv("DATABASE_URL")
+    if not db_url:
+        # Nếu chưa có DB thì thôi, coi như xong (vì đã lưu .env rồi)
+        return {"status": "warning", "message": "Đã lưu vào .env, nhưng chưa kết nối DB để lưu bảng settings."}
+    
+    try:
+        engine = create_engine(db_url)
+        with engine.begin() as conn:
+            settings_to_save = config.model_dump()
+            for key, value in settings_to_save.items():
+                # Upsert vào bảng system_settings
+                stmt = insert(system_settings).values(key=key, value=str(value))
+                do_update_stmt = stmt.on_conflict_do_update(
+                    index_elements=['key'],
+                    set_=dict(value=str(value))
+                )
+                conn.execute(do_update_stmt)
+        print("✅ Đã lưu cấu hình vào Database")
+                
+    except Exception as e:
+        # Nếu lỗi DB thì báo lỗi cho Frontend biết
+        raise HTTPException(status_code=500, detail=f"Lỗi lưu DB: {str(e)}")
+
+    return {"status": "success", "message": "Cấu hình đã được lưu đồng bộ (File + Database)!"}

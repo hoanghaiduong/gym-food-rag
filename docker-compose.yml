@@ -30,7 +30,30 @@ services:
     #           count: 1
     #           capabilities: [gpu]
     restart: always
-
+  postgres:
+    image: postgres:15-alpine
+    container_name: gym_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}         # Lấy từ .env hoặc mặc định là admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin} # Lấy từ .env hoặc mặc định là admin
+      POSTGRES_DB: ${POSTGRES_DB:-gym_food_db}       # Tên DB mặc định
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data     # Lưu dữ liệu ra ngoài để không mất khi tắt
+    restart: always
+  # --- SERVICE 4: pgAdmin UI (Giao diện quản lý DB) (MỚI) ---
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: gym_pgadmin
+    ports:
+      - "5050:80"  # Truy cập UI qua http://localhost:5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@gymfood.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+    depends_on:
+      - postgres
+    restart: always
   # Service 3: Backend API (FastAPI)
   # backend:
   #   build: .

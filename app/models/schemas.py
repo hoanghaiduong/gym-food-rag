@@ -23,7 +23,9 @@ class ChatResponse(BaseModel):
     answer: str
     sources: List[Dict[str, Any]] # Trả về nguồn tham khảo để người dùng tin tưởng
     
-    
+# [THÊM MỚI] Step 0: Admin Creation
+class AdminSetupConfig(BaseModel):
+    admin_secret_key: str # Người dùng tự nhập mật khẩu quản trị mong muốn
 # Schema cho cấu hình mạng (STEP 1)
 # Step 1: Network
 class NetworkConfig(BaseModel):

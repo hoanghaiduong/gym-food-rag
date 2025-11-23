@@ -56,7 +56,7 @@ Thumbs.db
 ollama_models/
 qdrant_storage/
 qdrant_storage/*
-
+postgres_data/*
 # Databases, logs, and build artifacts
 *.db
 *.sqlite

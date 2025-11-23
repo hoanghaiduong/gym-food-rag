@@ -22,3 +22,38 @@ class FoodItem(BaseModel):
 class ChatResponse(BaseModel):
     answer: str
     sources: List[Dict[str, Any]] # Trả về nguồn tham khảo để người dùng tin tưởng
+    
+    
+# Schema cho cấu hình mạng (STEP 1)
+# Step 1: Network
+class NetworkConfig(BaseModel):
+    api_base_url: str
+    websocket_url: str
+
+# Step 2: Database
+class DatabaseConfig(BaseModel):
+    db_type: str = "PostgreSQL"
+    host: str
+    port: str
+    username: str
+    password: str
+    db_name: str
+
+# Step 3: Vector DB
+class VectorConfig(BaseModel):
+    provider: str = "Qdrant"
+    host: str
+    api_key: Optional[str] = None
+    collection_name: str
+
+# Step 4: LLM
+class LLMConfig(BaseModel):
+    provider: str = "Gemini"
+    api_key: str
+    model_name: str = "gemini-1.5-flash"
+
+# Step 5: General
+class GeneralConfig(BaseModel):
+    bot_name: str
+    welcome_message: str
+    language: str = "Vietnamese"

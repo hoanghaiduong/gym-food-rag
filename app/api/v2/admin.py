@@ -1,21 +1,21 @@
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 import os
 import uuid
-
 from app.services.embedding_factory import get_embedding_service
+# Lấy đúng service BGE
+from app.services.embedding_bge_service import get_bge_service 
 
 router = APIRouter()
 
-# Config
 QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "gym_food_v2")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME", "gym_food_hybrid_v1") # Đổi tên mới
 
 qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
-embedder = get_embedding_service()
+embedder = get_bge_service() # Dùng trực tiếp class đã sửa ở Bước 2
 
 class NewFoodItem(BaseModel):
     name: str
@@ -26,55 +26,65 @@ class NewFoodItem(BaseModel):
     description: str = ""
     group: str = "User Added"
 
+@router.post("/init-collection")
+async def init_hybrid_collection():
+    """API chạy 1 lần để tạo bảng dữ liệu Hybrid"""
+    if qdrant_client.collection_exists(COLLECTION_NAME):
+        return {"message": "Collection đã tồn tại."}
+    
+    qdrant_client.create_collection(
+        collection_name=COLLECTION_NAME,
+        vectors_config={
+            "dense": models.VectorParams(size=1024, distance=models.Distance.COSINE)
+        },
+        sparse_vectors_config={
+            "sparse": models.SparseVectorParams(index=models.SparseIndexParams(on_disk=False))
+        }
+    )
+    return {"message": f"Đã tạo Hybrid Collection: {COLLECTION_NAME}"}
+
 @router.post("/add-food")
 async def add_food_knowledge(item: NewFoodItem):
-    """
-    Admin API: Thêm món ăn mới vào trí tuệ của AI.
-    """
     try:
-        # 1. Tạo nội dung ngữ cảnh (Context)
-        # Tự động tạo câu mô tả chuẩn để AI dễ hiểu
         gym_advice = ""
         if item.protein > 20: gym_advice = "Giàu protein, tốt cho tăng cơ."
-        if item.calories > 500: gym_advice += " Năng lượng cao, cẩn thận khi cutting."
         
         content = (
             f"Món ăn: {item.name}. "
             f"Dinh dưỡng: {item.calories} kcal, Protein {item.protein}g, "
             f"Fat {item.fat}g, Carb {item.carbs}g. "
             f"{item.description}. {gym_advice} "
-            f"Nhóm: {item.group}. Nguồn: Admin cập nhật."
+            f"Nhóm: {item.group}."
         )
 
-        # 2. Vector hóa (Dùng BGE-M3 hoặc Gemini tùy cấu hình .env)
-        vector = embedder.embed_document(content)
+        # 1. Tạo Dense Vector
+        dense_vector = embedder.embed_dense(content)
+        
+        # 2. Tạo Sparse Vector (MỚI)
+        sparse_vector = embedder.embed_sparse(content)
 
-        # 3. Lưu vào Qdrant
-        # Dùng UUID để tạo ID duy nhất cho món mới
         point_id = str(uuid.uuid4())
         
+        # 3. Upsert kiểu Hybrid (Named Vectors)
         qdrant_client.upsert(
             collection_name=COLLECTION_NAME,
             points=[
                 models.PointStruct(
                     id=point_id,
-                    vector=vector,
+                    vector={
+                        "dense": dense_vector,
+                        "sparse": sparse_vector.as_object() # Convert object splade
+                    },
                     payload={
                         "name": item.name,
                         "content": content,
                         "protein_g": item.protein,
-                        "kcal": item.calories,
-                        "is_admin_added": True
+                        "kcal": item.calories
                     }
                 )
             ]
         )
 
-        return {
-            "status": "success", 
-            "message": f"Đã dạy AI học món '{item.name}' thành công!",
-            "id": point_id
-        }
-
+        return {"status": "success", "id": point_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

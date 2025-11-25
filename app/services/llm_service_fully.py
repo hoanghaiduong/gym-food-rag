@@ -1,4 +1,5 @@
 import os
+from openai import OpenAI
 import requests
 import google.generativeai as genai
 from app.core.config import settings
@@ -35,6 +36,14 @@ class LLMService:
         if self.backend == "ollama":
             print(f"   ╰─ Model: {self.ollama_model} @ {self.ollama_url}")
 
+        if self.backend == "openai":
+            api_key = os.getenv("OPENAI_API_KEY") or settings.OPENAI_API_KEY
+            if api_key:
+                self.openai_client = OpenAI(api_key=api_key)
+                self.openai_model = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
+                print(f"🤖 [LLM Service] Backend: OPENAI ({self.openai_model})")
+            else:
+                print("⚠️ Thiếu OPENAI_API_KEY!")
     # --- METHOD 1: DÀNH CHO API V2 (FIX LỖI CỦA BẠN) ---
     def generate_answer(self, prompt: str) -> str:
         """
@@ -43,6 +52,8 @@ class LLMService:
         """
         if self.backend == "ollama":
             return self._call_ollama(prompt)
+        elif self.backend == "openai":
+            return self._call_openai(prompt)
         else:
             return self._call_gemini(prompt)
 
@@ -87,7 +98,23 @@ class LLMService:
             return response.text
         except Exception as e:
             return f"Lỗi Gemini API: {str(e)}"
-
+    def _call_openai(self, prompt: str) -> str:
+        try:
+            if not hasattr(self, 'openai_client'):
+                return "Lỗi: Chưa cấu hình OpenAI Key."
+            
+            response = self.openai_client.chat.completions.create(
+                model=self.openai_model,
+                messages=[
+                    # Sửa ở đây: System prompt chung chung hơn để không override logic ở trên
+                    {"role": "system", "content": "Bạn là trợ lý AI tuân thủ tuyệt đối các hướng dẫn trong prompt của người dùng."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.5 # Giảm nhiệt độ xuống để AI bớt sáng tạo linh tinh
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            return f"Lỗi OpenAI API: {str(e)}"
     def _call_ollama(self, prompt: str) -> str:
         try:
             payload = {

@@ -8,6 +8,7 @@ users = Table('users', metadata,
     Column('username', String(50), unique=True, nullable=False),
     Column('email', String(100), unique=True, nullable=False),
     Column('password_hash', String(255), nullable=False),
+    Column('full_name', String(100), nullable=True),
     Column('role', String(20), default='user'),
     Column('is_active', Boolean, default=True), # Dùng Boolean chuẩn của SQLAlchemy
     Column('refresh_token', String(500), nullable=True),

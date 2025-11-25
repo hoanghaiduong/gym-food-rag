@@ -1,69 +1,99 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from fastapi.middleware.cors import CORSMiddleware # <--- BỔ SUNG IMPORT NÀY
 import asyncio
 import logging
+from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
-# Import các router và module system
+# Import các router
 from app.core.config import settings
 from app.api.v1 import chat
-from app.api.v2 import chat_v2, admin, system, setup, users
+from app.api.v2 import chat_v2, admin, system, setup, users, auth
 
-# --- CẤU HÌNH LOGGER (Để module system đọc được file log) ---
-# Encoding utf-8 để tránh lỗi khi log tiếng Việt trên Windows
+# --- LOGGING ---
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        logging.FileHandler("app.log", encoding='utf-8'), 
-        logging.StreamHandler()
-    ]
+    handlers=[logging.FileHandler("app.log", encoding="utf-8"), logging.StreamHandler()],
 )
+logger = logging.getLogger(__name__)
 
-# --- LIFESPAN HANDLER (Quản lý vòng đời ứng dụng) ---
+# --- LIFESPAN ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 1. STARTUP
-    print("🚀 System starting up...")
-    
-    # Kích hoạt task đọc log chạy ngầm
-    # system.watch_log_file() là hàm async chúng ta đã viết trong system.py
+    logger.info("🚀 System starting up...")
     log_task = asyncio.create_task(system.watch_log_file())
-    print("👀 Log Watcher started!")
-    
-    yield # Server bắt đầu phục vụ request tại đây
-    
-    # 2. SHUTDOWN
-    print("🛑 System shutting down...")
+    yield
+    logger.info("🛑 System shutting down...")
     log_task.cancel()
-    try:
-        await log_task
-    except asyncio.CancelledError:
-        print("✅ Log Watcher stopped gracefully.")
 
-# --- KHỞI TẠO APP ---
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    lifespan=lifespan
-)
+app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
-# --- [QUAN TRỌNG] CẤU HÌNH CORS ---
-# Cho phép Frontend (thường chạy ở port khác, vd: 3000) gọi API này
+# =================================================================
+# 🔥 UNIFIED EXCEPTION HANDLER (QUẢN LÝ LỖI TẬP TRUNG)
+# =================================================================
+
+def create_error_response(status_code: int, message: str, detail: str = None):
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "status": "error",
+            "code": status_code,
+            "message": message,
+            "detail": detail
+        },
+    )
+
+# 1. Bắt lỗi HTTP do bạn tự raise (HTTPException)
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    return create_error_response(exc.status_code, exc.detail)
+
+# 2. Bắt lỗi Validate dữ liệu (Pydantic - 422)
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    # Lấy chi tiết lỗi đầu tiên cho gọn
+    error_msg = exc.errors()[0].get("msg") if exc.errors() else "Invalid data"
+    return create_error_response(422, "Dữ liệu đầu vào không hợp lệ", str(exc.errors()))
+
+# 3. Bắt lỗi Kết nối Database (503)
+@app.exception_handler(OperationalError)
+async def db_connection_handler(request: Request, exc: OperationalError):
+    logger.error(f"DB Connection Failed: {exc}")
+    return create_error_response(503, "Không thể kết nối cơ sở dữ liệu. Hệ thống đang bảo trì.")
+
+# 4. Bắt lỗi SQL chung (500)
+@app.exception_handler(SQLAlchemyError)
+async def db_query_handler(request: Request, exc: SQLAlchemyError):
+    logger.error(f"SQL Error: {exc}")
+    return create_error_response(500, "Lỗi truy vấn dữ liệu.")
+
+# 5. Bắt tất cả lỗi không xác định còn lại (500)
+@app.exception_handler(Exception)
+async def global_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled Error: {exc}", exc_info=True)
+    return create_error_response(500, "Lỗi hệ thống nội bộ.", str(exc))
+
+# ... (Phần CORS và Router giữ nguyên) ...
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Trong môi trường Dev, để "*" là tiện nhất
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# --- ĐĂNG KÝ ROUTER ---
 app.include_router(setup.router, prefix="/api/v2/setup", tags=["Setup Wizard"])
 app.include_router(chat.router, prefix=settings.API_V1_STR, tags=["Chat V1 (Legacy)"])
 app.include_router(chat_v2.router, prefix="/api/v2", tags=["Chat V2 (Hybrid)"])
 app.include_router(admin.router, prefix="/api/v2/admin", tags=["Admin Data"])
 app.include_router(system.router, prefix="/api/v2/system", tags=["System Control"])
-app.include_router(users.router, prefix="/api/v2/users", tags=["Admin User Management"]) # <-- Thêm dòng này
+app.include_router(auth.router, prefix="/api/v2/auth", tags=["Authentication"])
+app.include_router(users.router, prefix="/api/v2/users", tags=["Admin User Management"])
+
 @app.get("/")
 def root():
-    return {"message": "Gym Food Recommendation API is running!"}
+    return {"message": "API is running!"}

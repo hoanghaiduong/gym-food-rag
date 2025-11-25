@@ -1,121 +1,3 @@
-# from fastapi import APIRouter, HTTPException
-# from pydantic import BaseModel
-# from qdrant_client import QdrantClient
-# import os
-
-# # Import Services
-# # Đảm bảo bạn đã có các file này trong thư mục app/services/
-# from app.services.embedding_factory import get_embedding_service
-# from app.services.llm_service_fully import get_llm_service
-# from app.services.cache_service import cache_service 
-
-# router = APIRouter()
-
-# # Config Qdrant
-# QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
-# QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
-# COLLECTION_NAME_V2 = os.getenv("COLLECTION_NAME", "gym_food_v2")
-
-# # Kết nối Qdrant (Dùng cho tìm kiếm dữ liệu chính)
-# qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
-
-# # Khởi tạo Services
-# # embedder: Sẽ là BGE-M3 (Local) nếu .env USE_LOCAL_EMBEDDING=True
-# embedder = get_embedding_service()
-# # llm_service: Sẽ là Gemini (Cloud) nếu .env LLM_BACKEND=gemini
-# llm_service = get_llm_service()
-
-# class ChatRequest(BaseModel):
-#     question: str
-
-# @router.post("/chat")
-# async def chat_v2(request: ChatRequest):
-#     """
-#     API V2 Hybrid + Semantic Cache (Tối ưu tốc độ & Chi phí):
-#     1. Embedding câu hỏi (Local BGE-M3).
-#     2. Check Cache (Siêu nhanh) -> Nếu có trả về ngay.
-#     3. Nếu Miss -> Search Qdrant (Dữ liệu sạch V2).
-#     4. Generate Answer (Gemini Cloud - Nhanh).
-#     5. Save Cache (Để lần sau hỏi lại không tốn công nữa).
-#     """
-#     try:
-#         # 1. Embedding câu hỏi
-#         # is_query=True giúp model BGE/E5 thêm prefix "query:" để tìm kiếm chính xác hơn
-#         query_vector = embedder.embed_text(request.question, is_query=True)
-
-#         # --- BƯỚC KIỂM TRA CACHE ---
-#         cached_answer = cache_service.check_cache(query_vector)
-        
-#         if cached_answer:
-#             # Lấy tên model embedding an toàn (để debug)
-#             emb_model_name = getattr(embedder, 'model_name', 'unknown-model')
-            
-#             return {
-#                 "answer": cached_answer,
-#                 "backend_llm": "semantic_cache", # Đánh dấu là lấy từ Cache
-#                 "backend_embedding": emb_model_name,
-#                 "context_used": ["Dữ liệu được lấy từ bộ nhớ đệm (Cache) để phản hồi tức thì."]
-#             }
-#         # ---------------------------
-
-#         # 2. Tìm kiếm Vector trong Qdrant (Nếu Cache Miss)
-#         search_result = qdrant_client.search(
-#             collection_name=COLLECTION_NAME_V2,
-#             query_vector=query_vector,
-#             limit=5
-#         )
-
-#         # 3. Tạo Context
-#         if not search_result:
-#             # Nếu không tìm thấy, trả lời khéo léo
-#             return {
-#                 "answer": "Xin lỗi, tôi chưa tìm thấy thông tin chính xác về món ăn này trong cơ sở dữ liệu dinh dưỡng của mình.",
-#                 "backend_llm": llm_service.backend,
-#                 "context_used": []
-#             }
-
-#         context_list = [hit.payload['content'] for hit in search_result]
-#         context = "\n".join(context_list)
-
-#         # 4. Tạo Prompt Chuyên gia
-#         prompt = f"""
-#         [INSTRUCTION]
-#         Bạn là trợ lý dinh dưỡng Gym người Việt Nam chuyên nghiệp.
-#         Nhiệm vụ: Trả lời câu hỏi của người dùng dựa trên CONTEXT dữ liệu bên dưới.
-        
-#         YÊU CẦU BẮT BUỘC:
-#         1. CHỈ ĐƯỢC SỬ DỤNG TIẾNG VIỆT.
-#         2. Phân tích rõ Protein/Calo cho mục tiêu Bulking (xả cơ) hay Cutting (siết cơ).
-#         3. Trả lời ngắn gọn, súc tích nhưng đầy đủ thông tin, văn phong thân thiện.
-        
-#         CONTEXT DỮ LIỆU:
-#         {context}
-        
-#         CÂU HỎI: "{request.question}"
-        
-#         TRẢ LỜI (BẰNG TIẾNG VIỆT):
-#         """
-        
-#         # 5. Gửi cho LLM Service (Gemini Cloud sẽ xử lý rất nhanh)
-#         answer = llm_service.generate_answer(prompt)
-        
-#         # --- BƯỚC LƯU CACHE ---
-#         # Lưu lại vector câu hỏi và câu trả lời vào Qdrant để dùng lại
-#         cache_service.save_to_cache(query_vector, request.question, answer)
-#         # ----------------------
-        
-#         # Lấy tên model embedding
-#         emb_model_name = getattr(embedder, 'model_name', 'unknown-model')
-
-#         return {
-#             "answer": answer,
-#             "backend_llm": llm_service.backend,
-#             "backend_embedding": emb_model_name,
-#             "context_used": context_list
-#         }
-
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -138,7 +20,58 @@ COLLECTION_NAME_V2 = os.getenv("COLLECTION_NAME", "gym_food_hybrid_v1")
 qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 embedder = get_bge_service()
 llm_service = get_llm_service()
+# --- [BƯỚC 1] KHAI BÁO SYSTEM PROMPT CỰC ĐOAN TẠI ĐÂY ---
+HARDCORE_SYSTEM_PROMPT = """
+# ROLE
+Bạn là Huấn luyện viên Dinh dưỡng Thể hình (Gym Coach).
 
+# STRICT OUTPUT RULES (QUY TẮC HIỂN THỊ NGHIÊM NGẶT)
+Nhiệm vụ của bạn là đọc dữ liệu từ CONTEXT và tạo thực đơn. Tuy nhiên, bạn phải tuân thủ bộ lọc ngôn ngữ sau:
+
+1. **BLACKLIST (TỪ CẤM & MÓN CẤM):**
+   - TỪ KHÓA CẤM HIỂN THỊ: "sống" (raw), "khô" (dry), "giã tay", "xát máy", "hạt", "bột".
+   - NHÓM THỰC PHẨM CẦN LOẠI BỎ (JUNK FOOD FILTER):
+     + Kẹo các loại (Kẹo sữa, kẹo dừa, kẹo chanh...).
+     + Đường tinh luyện (Đường cát, đường kính, mạch nha).
+     + Đồ ăn nhanh kém lành mạnh (Mỳ ăn liền, Khoai tây lát chiên/bim bim, Bánh quy công nghiệp quá ngọt).
+
+2. **SELECTION LOGIC (LOGIC CHỌN LỌC - QUAN TRỌNG):**
+   - Đừng liệt kê tràn lan. Chỉ chọn ra **Top 5-8 món tốt nhất** cho sức khỏe (Whole foods).
+   - Ưu tiên: Xôi, Cơm, Khoai lang, Chuối, Yến mạch, Các loại hạt.
+   - Nếu dữ liệu có quá nhiều món "rác" (kẹo, bánh), hãy dũng cảm bỏ qua chúng.
+
+3. **AUTO-RENAME PROTOCOL (CƠ CHẾ TỰ ĐỔI TÊN):**
+   Bạn phải áp dụng logic đổi tên sau đây trước khi in ra màn hình:
+   - Input: "Gạo tẻ... sống"    -> Output: "Cơm trắng (Nấu từ gạo tẻ)"
+   - Input: "Gạo nếp... sống"   -> Output: "Xôi nếp"
+   - Input: "Miến... khô"       -> Output: "Miến nấu (Canh/Xào)"
+   - Input: "Khoai... khô"      -> Output: "Khoai lang luộc/hấp"
+   - Input: "Bột..."            -> Output: "Bánh làm từ bột..." (Nếu không chắc chắn thì bỏ qua).
+
+4. **CONTEXT FIDELITY:**
+   - Giữ nguyên số liệu Calo/Carb trong Context.
+   - Thêm chú thích: *(Lưu ý: Số liệu dinh dưỡng tính trên 100g nguyên liệu thô)*.
+
+# RESPONSE FORMAT (ĐỊNH DẠNG CÂU TRẢ LỜI)
+Không chào hỏi rườm rà. Vào thẳng danh sách thực đơn:
+
+## ⚡ Thực đơn Nạp Năng Lượng (Pre-Workout)
+*(Đã chuyển đổi sang dạng món ăn thực tế)*
+
+1. **[Tên Món Ăn - Đã đổi tên]**
+   - Năng lượng: [Số liệu] kcal | Carb: [Số liệu]g
+   - Gợi ý: [Cách ăn nhanh gọn]
+
+2. ...
+
+# VÍ DỤ MINH HỌA (EXAMPLES)
+- Dữ liệu gốc: "Gạo tẻ sống" 
+-> Output: 
+"1. **Cơm trắng (Nấu chín)**
+    - 📊 Dinh dưỡng: 347 kcal | Carb: 75.7g
+    - 🔍 Minh chứng: Dữ liệu gốc là *'Gạo, trắng, tẻ, sống'*
+    - 💡 Gợi ý: Ăn 1 bát cơm nhỏ với thức ăn."
+"""
 class ChatRequest(BaseModel):
     question: str
 
@@ -187,7 +120,7 @@ async def chat_v2(request: ChatRequest):
             # Trộn kết quả bằng thuật toán RRF (Reciprocal Rank Fusion)
             # RRF giúp cân bằng: món nào vừa đúng ý nghĩa, vừa đúng từ khóa sẽ lên đầu
             query=models.FusionQuery(fusion=models.Fusion.RRF),
-            limit=50
+            limit=30
         )
 
         # 3. Xử lý kết quả
@@ -200,21 +133,22 @@ async def chat_v2(request: ChatRequest):
 
         context_list = [hit.payload['content'] for hit in search_result.points]
         context = "\n".join(context_list)
-
-        # 4. Tạo Prompt & Gọi Gemini (Giữ nguyên logic tốt của bạn)
-        prompt = f"""
-        [INSTRUCTION]
-        Bạn là chuyên gia dinh dưỡng Gym. Trả lời câu hỏi dựa trên CONTEXT bên dưới.
+        # --- [BƯỚC 2] SỬA PHẦN TẠO PROMPT ---
+        # Ghép System Prompt 
+        final_prompt = f"""
+        {HARDCORE_SYSTEM_PROMPT}
         
-        CONTEXT DỮ LIỆU:
+        ==============
+        CONTEXT DỮ LIỆU (NGUYÊN LIỆU THÔ):
         {context}
+        ==============
         
-        CÂU HỎI: "{request.question}"
+        CÂU HỎI CỦA NGƯỜI DÙNG: "{request.question}"
         
-        TRẢ LỜI (TIẾNG VIỆT):
+        HÃY TRẢ LỜI (TUÂN THỦ STRICT RULES):
         """
         
-        answer = llm_service.generate_answer(prompt)
+        answer = llm_service.generate_answer(final_prompt)
         
         # 5. Lưu Cache
         cache_service.save_to_cache(query_dense, request.question, answer)

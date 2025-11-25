@@ -8,54 +8,63 @@ class SemanticCacheService:
     def __init__(self):
         self.host = os.getenv("QDRANT_HOST", "localhost")
         self.port = int(os.getenv("QDRANT_PORT", 6333))
+        # Kết nối client nhưng chưa gọi API ngay
         self.client = QdrantClient(host=self.host, port=self.port)
         
-        # Tên collection dùng để lưu Cache
         self.collection_name = "gym_chat_cache"
-        # Ngưỡng tương đồng (0.0 -> 1.0). 
-        # Đặt 0.95 để đảm bảo chỉ câu hỏi RẤT GIỐNG nhau mới dùng lại câu trả lời.
         self.threshold = 0.95 
         
-        # Tự động tạo collection cache nếu chưa có
-        self._init_collection()
+        # [FIX]: Dùng biến cờ để đánh dấu trạng thái khởi tạo
+        self._is_initialized = False
 
-    def _init_collection(self):
+    def _ensure_collection(self):
         """
-        Khởi tạo Collection Cache an toàn.
-        Kiểm tra xem collection đã tồn tại chưa trước khi tạo.
+        Cơ chế Lazy Loading: Chỉ tạo collection khi thực sự cần dùng.
+        Nếu lần đầu thất bại (do Qdrant chưa up), lần sau gọi lại sẽ thử tạo lại.
         """
+        if self._is_initialized:
+            return
+
         try:
-            # Lấy danh sách các collection hiện có
+            # Kiểm tra collection
             collections = self.client.get_collections().collections
             exists = any(c.name == self.collection_name for c in collections)
 
             if not exists:
                 print(f"📦 [Cache] Đang tạo bộ nhớ đệm mới: {self.collection_name}")
-                # Lưu ý: Vector size phải khớp với model embedding (BGE-M3 = 1024)
                 self.client.create_collection(
                     collection_name=self.collection_name,
                     vectors_config=models.VectorParams(
-                        size=1024, 
+                        size=1024,  # Đảm bảo khớp với model embedding (BGE-M3 = 1024)
                         distance=models.Distance.COSINE
                     )
                 )
-            else:
-                print(f"✅ [Cache] Collection '{self.collection_name}' đã sẵn sàng.")
-                
+                print(f"✅ [Cache] Đã tạo collection '{self.collection_name}' thành công.")
+            
+            # Đánh dấu đã khởi tạo thành công để không check lại nhiều lần
+            self._is_initialized = True
+            
         except Exception as e:
-            # Log lỗi nhưng không crash app (có thể do lỗi mạng tạm thời)
-            print(f"⚠️ [Cache Warning] Không thể kiểm tra/tạo collection: {e}")
+            # Log lỗi nhưng không crash, để lần sau thử lại
+            print(f"⚠️ [Cache Init Warning] Không thể kết nối Qdrant: {e}")
 
     def check_cache(self, vector_query: list):
         """
         Tìm kiếm câu trả lời đã có trong quá khứ.
         """
+        # [FIX]: Luôn đảm bảo collection tồn tại trước khi search
+        self._ensure_collection()
+        
+        # Nếu vẫn chưa init được (do Qdrant chết), trả về None luôn để tránh lỗi crash
+        if not self._is_initialized:
+            return None
+
         try:
             search_result = self.client.search(
                 collection_name=self.collection_name,
                 query_vector=vector_query,
                 limit=1,
-                score_threshold=self.threshold # Chỉ lấy nếu độ giống > 95%
+                score_threshold=self.threshold 
             )
             
             if search_result:
@@ -63,16 +72,22 @@ class SemanticCacheService:
                 print(f"🔥 [CACHE HIT] Tìm thấy câu trả lời cũ (Score: {hit.score:.4f})")
                 return hit.payload['answer']
             
-            print("❄️ [CACHE MISS] Không tìm thấy trong cache, phải hỏi AI.")
+            print("❄️ [CACHE MISS] Không tìm thấy trong cache.")
             return None
         except Exception as e:
-            print(f"⚠️ [Cache Warning] Lỗi khi đọc cache: {e}")
+            print(f"⚠️ [Cache Read Error] {e}")
             return None
 
     def save_to_cache(self, vector_query: list, question: str, answer: str):
         """
         Lưu câu hỏi và câu trả lời mới vào Cache.
         """
+        # [FIX]: Đảm bảo collection tồn tại trước khi lưu
+        self._ensure_collection()
+
+        if not self._is_initialized:
+            return
+
         try:
             point_id = str(uuid.uuid4())
             self.client.upsert(
@@ -89,9 +104,9 @@ class SemanticCacheService:
                     )
                 ]
             )
-            print(f"💾 [CACHE SAVED] Đã lưu câu trả lời cho: '{question}'")
+            print(f"💾 [CACHE SAVED] Đã lưu cache: '{question}'")
         except Exception as e:
-            print(f"⚠️ [Cache Warning] Lỗi khi lưu cache: {e}")
+            print(f"⚠️ [Cache Write Error] {e}")
 
-# Singleton
+# Singleton Instance
 cache_service = SemanticCacheService()

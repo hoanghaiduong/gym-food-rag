@@ -2,6 +2,7 @@ import os
 import asyncio
 from fastapi import APIRouter, HTTPException, Depends
 from dotenv import set_key
+
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text, MetaData, Table, Column, Integer, String, Text, DateTime, func, inspect
 from sqlalchemy.sql import text as sql_text
@@ -11,13 +12,15 @@ import google.generativeai as genai
 
 # Import models và auth
 from app.api.deps import verify_admin
+from app.api.v2 import users
 from app.api.v2.system import log_manager 
 from app.core.config import settings
+from app.core.security import get_password_hash
 from app.db.migrations import run_db_migrations
 from app.db.seeds import seed_initial_data
-from app.db.schemas import system_settings # Import bảng settings để lưu Step 5
+from app.db.schemas import system_settings,users # Import bảng settings để lưu Step 5
 from app.models.schemas import (
-    AdminSetupConfig, DatabaseConfig, GeneralConfig, 
+    AdminSetupConfig, DatabaseConfig, FirstAdminRequest, GeneralConfig, 
     LLMConfig, NetworkConfig, VectorConfig
 )
 
@@ -27,57 +30,93 @@ class MigrationRequest(BaseModel):
 router = APIRouter()
 DEFAULT_ADMIN_KEY = "gym-food-super-admin"
 # Đường dẫn file .env
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 ENV_PATH = os.path.join(PROJECT_ROOT, ".env")
-
 def save_to_env(config_dict: dict):
-    """Hàm helper để lưu vào .env (Dùng cho Steps 0-4)"""
+    """Hàm helper để lưu vào .env"""
     try:
         for key, value in config_dict.items():
             env_key = key.upper()
-            set_key(ENV_PATH, env_key, str(value), quote_mode="never")
-            os.environ[env_key] = str(value)
+            
+            # [FIX] Đổi thành "always" để luôn bọc dấu ngoặc kép "..."
+            # Giúp xử lý tốt chuỗi có dấu cách hoặc ký tự đặc biệt
+            set_key(ENV_PATH, env_key, str(value), quote_mode="always")
+            
+            os.environ[env_key] = str(value) # Update RAM
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Lỗi lưu file .env: {str(e)}")
-
-
 @router.get("/status")
 async def get_system_status():
     """
-    Endpoint KHÔNG CẦN XÁC THỰC: Kiểm tra xem hệ thống đã sẵn sàng cho đăng nhập chưa.
-    Logic: Hoàn thành nếu Admin Key ĐÃ ĐƯỢC THAY ĐỔI.
+    Kiểm tra trạng thái hệ thống.
+    QUAN TRỌNG: Phải đọc trực tiếp từ os.getenv hoặc file .env để lấy giá trị mới nhất,
+    không được dùng object 'settings' đã cached từ lúc khởi động.
     """
     
-    # --- BƯỚC 1: KIỂM TRA BẢO MẬT (ADMIN KEY) ---
-    if settings.ADMIN_SECRET_KEY != DEFAULT_ADMIN_KEY:
-        # Nếu Key đã được thay đổi khỏi giá trị mặc định, coi như đã thiết lập xong.
-        return {
-            "status": "completed", 
-            "requires_auth": True, 
-            "message": "Security key set. Proceed to login."
-        }
+    # 1. Đọc trực tiếp biến môi trường mới nhất
+    # (Vì code setup vừa ghi vào os.environ ở các bước trước)
+    current_key = os.getenv("ADMIN_SECRET_KEY", "gym-food-super-admin")
+    default_key = "gym-food-super-admin"
 
-    # --- BƯỚC 2: KIỂM TRA DB (Nếu key là mặc định, xem đã tạo bảng chưa) ---
-    db_url = settings.DATABASE_URL
+    # 2. Logic kiểm tra Admin Key (Step 0)
+    if current_key == default_key:
+        return {
+            "status": "pending", 
+            "requires_auth": False, 
+            "step": 0,
+            "message": "Hệ thống chưa bảo mật (Admin Key mặc định)."
+        }
+    api_base = os.getenv("API_BASE_URL")
+    if not api_base:
+        return {
+            "status": "pending", 
+            "requires_auth": True, 
+            "step": 1, # <--- Trả về Step 1
+            "message": "Chưa cấu hình Network (API Base URL)."
+        }
+    # 3. Logic kiểm tra Database (Step 2 & 4)
+    db_url = os.getenv("DATABASE_URL")
     if not db_url:
-         # Nếu DATABASE_URL còn thiếu (chưa qua Step 2)
-         return {"status": "pending", "requires_auth": False, "message": "Database URL cần cấu hình (Step 2)."}
+         return {
+             "status": "pending", 
+             "requires_auth": True, # Đã có key nhưng thiếu DB
+             "step": 2,
+             "message": "Chưa cấu hình Database."
+         }
 
     try:
         engine = create_engine(db_url)
         inspector = inspect(engine)
         
-        # Kiểm tra xem bảng 'users' (bảng cốt lõi) đã tồn tại chưa
+        # 1. Check Bảng
         if 'users' not in inspector.get_table_names():
-            return {"status": "pending", "requires_auth": False, "message": "Core database tables missing (Migration required)."}
+            return {
+                "status": "pending", "requires_auth": True, "step": 4,
+                "message": "Chưa khởi tạo cấu trúc bảng (Cần Migrate)."
+            }
         
-        # Nếu bảng tồn tại nhưng Admin Key vẫn là mặc định: Bắt buộc set Key.
-        return {"status": "pending", "requires_auth": False, "message": "Admin security key needs to be set (Step 0)."}
+        # 2. [MỚI] Check Dữ Liệu Admin
+        with engine.connect() as conn:
+             admin_count = conn.execute(
+                 sql_text("SELECT count(*) FROM users WHERE role='admin'")
+             ).scalar()
+             
+             if admin_count == 0:
+                 return {
+                     "status": "pending", "requires_auth": True, 
+                     "step": 4.5, # Bước mới: Tạo Admin
+                     "message": "Chưa có tài khoản Admin (Cần tạo)."
+                 }
 
     except Exception as e:
-        # Lỗi kết nối DB (Container DB chưa chạy, hoặc lỗi cấu hình)
-        print(f"❌ Lỗi kết nối DB trong Setup Status: {e}")
-        return {"status": "pending", "requires_auth": False, "message": f"Database connection error: {e}"}
+        return {"status": "pending", "requires_auth": True, "step": 2, "message": str(e)}
+
+    # Nếu đã có Admin Key + Có Bảng + Có Admin User -> Completed
+    return {
+        "status": "completed", 
+        "requires_auth": True, 
+        "message": "Hệ thống đã sẵn sàng."
+    }
 # ============================================================
 # STEP 0: INIT ADMIN
 # ============================================================
@@ -160,7 +199,56 @@ async def execute_migration_endpoint(request: MigrationRequest):
     except Exception as e:
         await ws_log(f"[ERROR] {str(e)}")
         raise HTTPException(500, str(e))
+# ============================================================
+# STEP 2.6: CREATE FIRST ADMIN (Manual via UI)
+# ============================================================
+@router.post("/create-first-admin", dependencies=[Depends(verify_admin)])
+async def create_first_admin(data: FirstAdminRequest):
+    """
+    Tạo tài khoản Admin đầu tiên từ giao diện Setup.
+    Chỉ cho phép tạo nếu chưa có Admin nào trong hệ thống.
+    """
+    db_url = os.getenv("DATABASE_URL")
+    if not db_url:
+        raise HTTPException(400, "Chưa cấu hình Database.")
 
+    try:
+        engine = create_engine(db_url)
+        with engine.begin() as conn:
+            # 1. Kiểm tra an toàn: Nếu đã có admin rồi thì chặn lại (tránh ghi đè ác ý)
+            existing_admin = conn.execute(
+                sql_text("SELECT count(*) FROM users WHERE role='admin'")
+            ).scalar()
+            
+            if existing_admin > 0:
+                return {
+                    "status": "warning", 
+                    "message": "Tài khoản Admin đã tồn tại. Bỏ qua bước này."
+                }
+
+            raw_password = data.password
+            if len(raw_password.encode('utf-8')) > 72:
+                raw_password = raw_password[:72]
+            # 2. Hash mật khẩu
+            hashed_pw = get_password_hash(raw_password)
+
+            # 3. Insert vào DB
+            conn.execute(users.insert().values(
+                username=data.username,
+                email=data.email,
+                password_hash=hashed_pw,
+                full_name=data.full_name,
+                role='admin',     # Quyền cao nhất
+                is_active=True
+            ))
+            
+        return {
+            "status": "success", 
+            "message": f"Tài khoản Admin '{data.username}' đã được tạo thành công!"
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi tạo Admin: {str(e)}")
 # ============================================================
 # STEP 3: VECTOR SEARCH (Lưu .env)
 # ============================================================

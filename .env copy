@@ -1,0 +1,48 @@
+# App Config
+PROJECT_NAME="Gym Food RAG"
+API_V1_STR="/api/v1"
+
+ADMIN_SECRET_KEY="gym-food-super-admin"
+# Google Gemini API Key (Bắt buộc nếu LLM_BACKEND=gemini)
+GOOGLE_API_KEY="AIzaSyDo4SaCMOknO0wSqbmpijIS3byoBGw9PVQ"
+
+# --- 1. EMBEDDING CONFIG (DÙNG LOCAL) ---
+# Code Python trên máy thật sẽ tải model BGE-M3 về RAM của máy thật
+USE_LOCAL_EMBEDDING=True
+LOCAL_EMBEDDING_MODEL="BAAI/bge-m3"
+
+# --- 2. LLM CONFIG (GENERATION) ---
+# Chọn 'gemini' để tốc độ nhanh nhất.
+# Chọn 'ollama' nếu muốn test chat với Llama 3.1 (chậm hơn).
+LLM_BACKEND=gemini
+
+# [QUAN TRỌNG - HYBRID MODE]
+# Vì code chạy trên Windows, phải gọi Docker qua 'localhost'
+OLLAMA_BASE_URL="http://localhost:11434"
+OLLAMA_MODEL="llama3.1"
+
+# --- 3. VECTOR DB CONFIG (QDRANT) ---
+
+# [QUAN TRỌNG - HYBRID MODE]
+# Vì code chạy trên Windows, phải gọi Docker qua 'localhost'
+QDRANT_HOST="localhost"
+QDRANT_PORT=6333
+
+# Bắt buộc dùng collection V2 chứa vector 1024 chiều
+COLLECTION_NAME="gym_food_hybrid_v1"
+#"gym_food_v2"
+
+# Cấu hình PostgreSQL
+POSTGRES_HOST="localhost"
+POSTGRES_PORT=5432
+POSTGRES_USER="admin"
+POSTGRES_PASSWORD="admin"
+POSTGRES_DB="gym_food_db"
+
+# Cấu hình pgAdmin (UI)
+PGADMIN_EMAIL="admin@gymfood.com"
+PGADMIN_PASSWORD="admin"
+
+# Cấu hình Key
+OPENAI_API_KEY=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
+OPENAI_MODEL=GPT-4o

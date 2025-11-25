@@ -13,5 +13,7 @@ psutil
 sqlalchemy
 psycopg[binary]
 python-jose[cryptography]   # Xử lý JWT
-passlib[bcrypt]             # Băm mật khẩu an toàn
+passlib==1.7.4
+bcrypt==4.0.1
 python-multipart            # Xử lý Form Data khi Login
+openai>=1.0.0

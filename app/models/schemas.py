@@ -27,7 +27,12 @@ class FoodItem(BaseModel):
 # =================================================================
 # SETUP WIZARD CONFIG SCHEMAS (Step 0-5)
 # =================================================================
-
+class FirstAdminRequest(BaseModel):
+    username: str
+    email: str
+    password: str
+    full_name: Optional[str] = "System Administrator"
+    
 class AdminSetupConfig(BaseModel):
     admin_secret_key: str 
 
@@ -52,7 +57,7 @@ class VectorConfig(BaseModel):
 class LLMConfig(BaseModel):
     provider: str = "Gemini"
     api_key: str
-    model_name: str = "gemini-1.5-flash"
+    model_name: str = "gemini-2.5-flash"
 
 class GeneralConfig(BaseModel):
     bot_name: str
@@ -99,3 +104,14 @@ class Token(BaseModel):
 class RefreshTokenRequest(BaseModel):
     """Schema nhận Refresh Token từ Client"""
     refresh_token: str
+    
+class TokenData(BaseModel):
+    username: Optional[str] = None
+    role: Optional[str] = None
+    
+class PasswordResetRequest(BaseModel):
+    email: str
+
+class PasswordResetConfirm(BaseModel):
+    token: str
+    new_password: str

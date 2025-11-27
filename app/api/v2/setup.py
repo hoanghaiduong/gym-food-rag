@@ -292,7 +292,7 @@ async def test_llm_connection(config: LLMConfig):
 
 @router.post("/step4/save", dependencies=[Depends(verify_admin)])
 async def save_llm_config(config: LLMConfig):
-    save_to_env({"GOOGLE_API_KEY": config.api_key, "GEMINI_MODEL": config.model_name})
+    save_to_env({"LLM_BACKEND":config.provider,"GOOGLE_API_KEY": config.api_key, "GEMINI_MODEL": config.model_name})
     return {"status": "success", "message": "LLM credentials saved."}
 
 # ============================================================

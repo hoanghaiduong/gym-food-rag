@@ -18,10 +18,10 @@ users = Table('users', metadata,
 # 2. Bảng Chat History (Đã bổ sung mối quan hệ)
 chat_history = Table('chat_history', metadata,
     Column('id', Integer, primary_key=True),
-    # [FIX & BỔ SUNG] Khóa ngoại liên kết tới cột users.id
-    Column('user_id', Integer, ForeignKey('users.id'), nullable=False), 
+    Column('user_id', Integer, ForeignKey('users.id'), nullable=False), # Link với User
     Column('question', Text, nullable=False),
     Column('answer', Text, nullable=False),
+    Column('sources', Text, nullable=True), # [MỚI] Lưu JSON nguồn tham khảo
     Column('created_at', DateTime, server_default=func.now())
 )
 

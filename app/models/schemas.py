@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 
@@ -115,3 +116,13 @@ class PasswordResetRequest(BaseModel):
 class PasswordResetConfirm(BaseModel):
     token: str
     new_password: str
+    
+class ChatHistoryItem(BaseModel):
+    id: int
+    question: str
+    answer: str
+    sources: Optional[str] = None # JSON string
+    created_at: datetime
+
+    class Config:
+        from_attributes = True # Cho phép đọc từ SQLAlchemy Row

@@ -14,11 +14,18 @@ users = Table('users', metadata,
     Column('refresh_token', String(500), nullable=True),
     Column('created_at', DateTime, server_default=func.now())
 )
-
+chat_sessions = Table('chat_sessions', metadata,
+    Column('id', String(36), primary_key=True), # UUID string
+    Column('user_id', Integer, ForeignKey('users.id'), nullable=False),
+    Column('title', String(255)), # Tiêu đề cuộc trò chuyện (VD: "Tư vấn tăng cân")
+    Column('created_at', DateTime, server_default=func.now()),
+    Column('updated_at', DateTime, server_default=func.now(), onupdate=func.now()) # Để sort session mới nhất lên đầu
+)
 # 2. Bảng Chat History (Đã bổ sung mối quan hệ)
 chat_history = Table('chat_history', metadata,
     Column('id', Integer, primary_key=True),
     Column('user_id', Integer, ForeignKey('users.id'), nullable=False), # Link với User
+    Column('session_id', String(36), ForeignKey('chat_sessions.id'), nullable=False), # Link với Chat Session
     Column('question', Text, nullable=False),
     Column('answer', Text, nullable=False),
     Column('sources', Text, nullable=True), # [MỚI] Lưu JSON nguồn tham khảo

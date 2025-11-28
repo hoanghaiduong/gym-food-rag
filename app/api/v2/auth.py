@@ -45,24 +45,36 @@ async def register(user_in: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 # 2. ĐĂNG NHẬP (Trả về Access + Refresh Token)
+# 2. ĐĂNG NHẬP (Hỗ trợ Username hoặc Email)
 @router.post("/login", response_model=Token)
 async def login(form_data: UserLogin = Body(), db: Session = Depends(get_db)):
     try:
-        user = db.execute(text("SELECT * FROM users WHERE username = :u"), {"u": form_data.username}).fetchone()
+        # [SỬA ĐỔI] Tìm user theo username HOẶC email
+        # form_data.username chứa giá trị người dùng nhập (có thể là tên hoặc email)
+        user = db.execute(
+            text("SELECT * FROM users WHERE username = :u OR email = :u"), 
+            {"u": form_data.username}
+        ).fetchone()
+        
+        # Xử lý giới hạn độ dài mật khẩu (Bcrypt max 72 bytes)
         login_password = form_data.password
         if len(login_password.encode('utf-8')) > 72:
             login_password = login_password[:72]
+
+        # Kiểm tra mật khẩu
         if not user or not verify_password(login_password, user.password_hash):
             raise HTTPException(status_code=401, detail="Sai tài khoản hoặc mật khẩu")
         
+        # Kiểm tra tài khoản bị khóa
         if not user.is_active:
             raise HTTPException(status_code=400, detail="Tài khoản bị khóa")
 
         # Tạo Token
+        # Lưu ý: user.username lấy từ DB để đảm bảo thống nhất trong Token
         access_token = create_access_token(data={"sub": user.username, "role": user.role})
         refresh_token = create_refresh_token(data={"sub": user.username})
 
-        # Lưu Refresh Token vào DB để quản lý phiên
+        # Lưu Refresh Token vào DB
         db.execute(text("UPDATE users SET refresh_token = :rt WHERE id = :id"), 
                 {"rt": refresh_token, "id": user.id})
         db.commit()
@@ -72,9 +84,12 @@ async def login(form_data: UserLogin = Body(), db: Session = Depends(get_db)):
             "refresh_token": refresh_token, 
             "token_type": "bearer"
         }
+    except HTTPException as he:
+        raise he
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Lỗi Unauthorizard {e}")
-
+        # In lỗi ra console server để debug
+        print(f"Login Error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Lỗi hệ thống khi đăng nhập")
 # 3. LÀM MỚI TOKEN (Khi Access Token hết hạn)
 @router.post("/refresh", response_model=Token)
 async def refresh_token(request: RefreshTokenRequest, db: Session = Depends(get_db)):

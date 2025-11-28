@@ -6,14 +6,26 @@ from typing import List, Optional, Dict, Any
 # CORE CHAT/RAG SCHEMAS
 # =================================================================
 
+
 class ChatRequest(BaseModel):
     question: str
-    history: Optional[List[Dict[str, str]]] = [] 
-
-class ChatResponse(BaseModel):
-    answer: str
-    sources: List[Dict[str, Any]] 
-
+    session_id: Optional[str] = None  # [MỚI] Nếu null -> Tạo session mới
+    history: Optional[List[Dict[str, str]]] = []
+# Model cho Session hiển thị ở Sidebar
+class ChatSessionResponse(BaseModel):
+    id: str
+    title: str
+    created_at: datetime
+    updated_at: datetime
+    
+    # [BỔ SUNG] Thêm dòng này để mapping từ DB object
+    class Config:
+        from_attributes = True
+class ChatMessageResponse(BaseModel):
+    id: int
+    role: str = "user" # user/assistant
+    content: str
+    created_at: datetime
 class FoodItem(BaseModel):
     name: str
     group: str
@@ -117,12 +129,14 @@ class PasswordResetConfirm(BaseModel):
     token: str
     new_password: str
     
+# Model cho chi tiết lịch sử (Message) trong 1 Session
 class ChatHistoryItem(BaseModel):
     id: int
     question: str
     answer: str
     sources: Optional[str] = None # JSON string
     created_at: datetime
-
+    user_id: int
+    session_id: str
     class Config:
         from_attributes = True # Cho phép đọc từ SQLAlchemy Row

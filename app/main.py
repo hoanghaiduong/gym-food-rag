@@ -10,7 +10,7 @@ from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 # Import các router
 from app.core.config import settings
-from app.api.v1 import chat
+# from app.api.v1 import chat
 from app.api.v2 import chat_v2, admin, history, system, setup, users, auth
 
 # --- LOGGING ---
@@ -87,7 +87,7 @@ app.add_middleware(
 )
 
 app.include_router(setup.router, prefix="/api/v2/setup", tags=["Setup Wizard"])
-app.include_router(chat.router, prefix=settings.API_V1_STR, tags=["Chat V1 (Legacy)"])
+# app.include_router(chat.router, prefix=settings.API_V1_STR, tags=["Chat V1 (Legacy)"])
 app.include_router(chat_v2.router, prefix="/api/v2", tags=["Chat V2 (Hybrid)"])
 app.include_router(admin.router, prefix="/api/v2/admin", tags=["Admin Data"])
 app.include_router(system.router, prefix="/api/v2/system", tags=["System Control"])

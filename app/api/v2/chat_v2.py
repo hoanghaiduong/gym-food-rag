@@ -5,10 +5,13 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models  # [QUAN TRỌNG] Import models để dùng Prefetch
 import os
 
+from sqlalchemy.orm import Session
+
 # Import Services
 from app.api.deps import get_db
 from app.api.deps import get_current_user
 from app.core.response import success_response
+from app.models.schemas import ChatRequest
 from app.services.embedding_bge_service import (
     get_bge_service,
 )  # Dùng service mới đã sửa
@@ -124,123 +127,143 @@ Sau đó nhân BMR với hệ số (ví dụ: x1.55 nếu tập vừa phải).
 💡 Bạn có muốn tôi giúp tính luôn không? Hãy cho tôi biết chiều cao, cân nặng, tuổi và tần suất tập luyện của bạn."
 """
 
-class ChatRequest(BaseModel):
-    question: str
-
-
 @router.post("/chat")
 async def chat_v2(
     request: ChatRequest,
-    background_tasks: BackgroundTasks,  # [MỚI] Dùng để chạy ngầm
-    current_user=Depends(
-        get_current_user
-    ),  # [MỚI] Bắt buộc đăng nhập mới lưu được lịch sử
-    db=Depends(get_db)
+    background_tasks: BackgroundTasks,
+    current_user = Depends(get_current_user),
+    db: Session = Depends(get_db)
 ):
     """
-    API V2 Hybrid Search (Semantic + Keyword) + Cache
+    API V2 Hybrid Search + Cache + History + Session Management
     """
     try:
-        # 1. Tạo Vector cho câu hỏi (Cả 2 loại)
+        # ====================================================
+        # 1. XỬ LÝ SESSION (QUAN TRỌNG: PHẢI LÀM ĐẦU TIÊN)
+        # ====================================================
+        history_service = HistoryService(db_session=db)
+        session_id = request.session_id
+
+        # Nếu chưa có session_id, tạo mới ngay lập tức
+        if not session_id:
+            session_id = history_service.create_session(current_user['id'], request.question)
+
+        # ====================================================
+        # 2. VECTOR & CACHE
+        # ====================================================
         query_dense = embedder.embed_dense(request.question)
         query_sparse = embedder.embed_sparse(request.question)
 
-        # --- BƯỚC KIỂM TRA CACHE ---
-        # Với cache, ta tạm thời chỉ dùng Dense Vector để so sánh độ tương đồng nhanh
         cached_answer = cache_service.check_cache(query_dense)
-
+        
         if cached_answer:
             emb_model_name = getattr(embedder, "model_name", "unknown-model")
             
-            # [ĐÚNG] Bọc dữ liệu vào object rồi gọi success_response
+            # [QUAN TRỌNG] Ngay cả khi Cache Hit, vẫn phải lưu vào Lịch sử Chat
+            # để người dùng thấy tin nhắn này trong Sidebar
+            background_tasks.add_task(
+                history_service.save_interaction, 
+                user_id=current_user['id'],
+                session_id=session_id, # Đã có giá trị ở bước 1
+                question=request.question, 
+                answer=cached_answer, 
+                sources=["Cache Hit"]
+            )
+
+            # Trả về kết quả Cache kèm session_id
             response_data = {
                 "answer": cached_answer,
+                "session_id": session_id, # Trả về để Frontend cập nhật URL
                 "backend_llm": "semantic_cache",
                 "backend_embedding": emb_model_name,
                 "context_used": ["Dữ liệu lấy từ Cache."],
             }
-            # Trả về đúng cấu trúc chuẩn { data: { ... } }
-            return success_response(data=response_data, message="Lấy dữ liệu từ Cache thành công.")
-        # ---------------------------
+            return success_response(data=response_data, message="Lấy từ Cache thành công.")
 
-        # 2. [MỚI] HYBRID SEARCH (Tìm kiếm lai)
-        # Thay vì .search(), ta dùng .query_points() mạnh hơn
+        # ====================================================
+        # 3. HYBRID SEARCH (CACHE MISS)
+        # ====================================================
         search_result = qdrant_client.query_points(
             collection_name=COLLECTION_NAME_V2,
             prefetch=[
-                # Truy vấn 1: Tìm bằng Ngữ nghĩa (Dense) - Hiểu ý định
-                models.Prefetch(
-                    query=query_dense,
-                    using="dense",
-                    limit=100,
-                ),
-                # Truy vấn 2: Tìm bằng Từ khóa (Sparse) - Bắt chính xác tên món
-                models.Prefetch(
-                    query=query_sparse.as_object(),
-                    using="sparse",
-                    limit=100,
-                ),
+                models.Prefetch(query=query_dense, using="dense", limit=100),
+                models.Prefetch(query=query_sparse.as_object(), using="sparse", limit=100),
             ],
-            # Trộn kết quả bằng thuật toán RRF (Reciprocal Rank Fusion)
-            # RRF giúp cân bằng: món nào vừa đúng ý nghĩa, vừa đúng từ khóa sẽ lên đầu
             query=models.FusionQuery(fusion=models.Fusion.RRF),
             limit=30,
         )
 
-        # 3. Xử lý kết quả
+        # Xử lý khi không tìm thấy
         if not search_result.points:
-            return {
-                "answer": "Xin lỗi, tôi chưa tìm thấy thông tin về món này trong dữ liệu.",
-                "backend_llm": llm_service.backend,
-                "context_used": [],
-            }
+            # Vẫn nên lưu câu hỏi này vào lịch sử dù không tìm thấy
+            empty_answer = "Xin lỗi, tôi chưa tìm thấy thông tin về món này trong dữ liệu."
+            background_tasks.add_task(
+                history_service.save_interaction, 
+                user_id=current_user['id'],
+                session_id=session_id,
+                question=request.question, 
+                answer=empty_answer, 
+                sources=[]
+            )
+            
+            return success_response(data={
+                "answer": empty_answer,
+                "session_id": session_id,
+                "context_used": []
+            }, message="Không tìm thấy dữ liệu.")
 
         context_list = [hit.payload["content"] for hit in search_result.points]
         context = "\n".join(context_list)
-        # --- [BƯỚC 2] SỬA PHẦN TẠO PROMPT ---
-        # Ghép System Prompt
+
+        # ====================================================
+        # 4. GENERATE ANSWER (LLM)
+        # ====================================================
         final_prompt = f"""
         {HARDCORE_SYSTEM_PROMPT}
         
         ==============
-        CONTEXT DỮ LIỆU (NGUYÊN LIỆU THÔ):
+        CONTEXT DỮ LIỆU:
         {context}
         ==============
         
         CÂU HỎI CỦA NGƯỜI DÙNG: "{request.question}"
         
-        HÃY TRẢ LỜI (TUÂN THỦ STRICT RULES):
+        TRẢ LỜI (TUÂN THỦ STRICT RULES):
         """
 
         answer = llm_service.generate_answer(final_prompt)
-        # --- [BƯỚC 3] LƯU LỊCH SỬ VÀO DB Ở BACKGROUND ---
-        # Khởi tạo service
-        history_service = HistoryService(db_session=db)
-        
+
+        # ====================================================
+        # 5. SAVE HISTORY & CACHE
+        # ====================================================
+        # Lưu lịch sử chạy ngầm
         background_tasks.add_task(
             history_service.save_interaction, 
             user_id=current_user['id'],
+            session_id=session_id, # Đã có giá trị
             question=request.question, 
             answer=answer, 
             sources=context_list
         )
-        # 5. Lưu Cache
+        
+        # Lưu Cache vector
         cache_service.save_to_cache(query_dense, request.question, answer)
 
+        # ====================================================
+        # 6. RESPONSE
+        # ====================================================
         emb_model_name = getattr(embedder, "model_name", "unknown-model")
         response_data = {
             "answer": answer,
+            "session_id": session_id, # Trả về để Frontend cập nhật
             "backend_llm": llm_service.backend,
             "backend_embedding": emb_model_name,
             "context_used": context_list
         }
         
         return success_response(data=response_data, message="Trả lời thành công.")
-      
 
     except Exception as e:
-        # In lỗi ra console để debug dễ hơn
         import traceback
-
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))

@@ -102,8 +102,25 @@ class HistoryService:
         return result
 
     def clear_user_history(self, user_id: int):
-        """Xóa lịch sử"""
-        stmt = delete(chat_history).where(chat_history.c.user_id == user_id)
-        result = self.db_session.execute(stmt)
-        self.db_session.commit()
-        return result.rowcount
+        """Xóa TOÀN BỘ lịch sử chat (Sessions + Messages)"""
+        try:
+            # 1. Xóa tất cả tin nhắn thuộc về user này
+            # (Dùng subquery để tìm tin nhắn của các session do user này tạo)
+            stmt_messages = delete(chat_history).where(
+                chat_history.c.session_id.in_(
+                    select(chat_sessions.c.id).where(chat_sessions.c.user_id == user_id)
+                )
+            )
+            self.db_session.execute(stmt_messages)
+
+            # 2. Xóa tất cả sessions của user này
+            stmt_sessions = delete(chat_sessions).where(chat_sessions.c.user_id == user_id)
+            result = self.db_session.execute(stmt_sessions)
+            
+            self.db_session.commit()
+            return result.rowcount # Trả về số session đã xóa
+            
+        except Exception as e:
+            self.db_session.rollback()
+            print(f"❌ Clear History Error: {e}")
+            return 0

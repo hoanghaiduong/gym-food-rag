@@ -8,19 +8,18 @@ class SemanticCacheService:
     def __init__(self):
         self.host = os.getenv("QDRANT_HOST", "localhost")
         self.port = int(os.getenv("QDRANT_PORT", 6333))
-        # Kết nối client nhưng chưa gọi API ngay
+        # Kết nối client
         self.client = QdrantClient(host=self.host, port=self.port)
         
         self.collection_name = "gym_chat_cache"
         self.threshold = 0.95 
         
-        # [FIX]: Dùng biến cờ để đánh dấu trạng thái khởi tạo
+        # Biến cờ để đánh dấu trạng thái khởi tạo
         self._is_initialized = False
 
     def _ensure_collection(self):
         """
         Cơ chế Lazy Loading: Chỉ tạo collection khi thực sự cần dùng.
-        Nếu lần đầu thất bại (do Qdrant chưa up), lần sau gọi lại sẽ thử tạo lại.
         """
         if self._is_initialized:
             return
@@ -41,34 +40,32 @@ class SemanticCacheService:
                 )
                 print(f"✅ [Cache] Đã tạo collection '{self.collection_name}' thành công.")
             
-            # Đánh dấu đã khởi tạo thành công để không check lại nhiều lần
             self._is_initialized = True
             
         except Exception as e:
-            # Log lỗi nhưng không crash, để lần sau thử lại
             print(f"⚠️ [Cache Init Warning] Không thể kết nối Qdrant: {e}")
 
     def check_cache(self, vector_query: list):
         """
         Tìm kiếm câu trả lời đã có trong quá khứ.
         """
-        # [FIX]: Luôn đảm bảo collection tồn tại trước khi search
         self._ensure_collection()
         
-        # Nếu vẫn chưa init được (do Qdrant chết), trả về None luôn để tránh lỗi crash
         if not self._is_initialized:
             return None
 
         try:
-            search_result = self.client.search(
+            # [CHUẨN MỚI] Sử dụng query_points với tham số 'query'
+            search_result = self.client.query_points(
                 collection_name=self.collection_name,
-                query_vector=vector_query,
+                query=vector_query, # Sửa từ query_vector -> query
                 limit=1,
                 score_threshold=self.threshold 
             )
             
-            if search_result:
-                hit = search_result[0]
+            # Kiểm tra kết quả trong danh sách points
+            if search_result.points:
+                hit = search_result.points[0]
                 print(f"🔥 [CACHE HIT] Tìm thấy câu trả lời cũ (Score: {hit.score:.4f})")
                 return hit.payload['answer']
             
@@ -82,11 +79,18 @@ class SemanticCacheService:
         """
         Lưu câu hỏi và câu trả lời mới vào Cache.
         """
-        # [FIX]: Đảm bảo collection tồn tại trước khi lưu
         self._ensure_collection()
 
         if not self._is_initialized:
             return
+
+        # --- [AN TOÀN] CHỐNG LƯU LỖI VÀO CACHE ---
+        # Nếu câu trả lời chứa các từ khóa lỗi, tuyệt đối không lưu
+        error_keywords = ["Lỗi kết nối", "Error:", "Exception:", "tôi chưa tìm thấy thông tin"]
+        if any(kw in answer for kw in error_keywords) or len(answer) < 10:
+            print(f"🛑 [CACHE SKIP] Phát hiện nội dung lỗi hoặc quá ngắn, không lưu cache.")
+            return
+        # -------------------------------------------
 
         try:
             point_id = str(uuid.uuid4())

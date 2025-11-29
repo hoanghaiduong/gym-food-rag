@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     LOCAL_EMBEDDING_MODEL: str = "BAAI/bge-m3"
     
     LLM_BACKEND: str = "gemini"  # 'gemini' hoặc 'ollama'
-    
+    GEMINI_MODEL: str = "gemini-2.5-flash"
     # Cấu hình Ollama
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3.1"
@@ -45,7 +45,9 @@ class Settings(BaseSettings):
     # --- 6. PGADMIN (Optional - Backend ít dùng nhưng khai báo cho đủ bộ) ---
     PGADMIN_EMAIL: str = "admin@gymfood.com"
     PGADMIN_PASSWORD: str = "admin"
-
+    
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
     # --- HELPER PROPERTY ---
     # Tự động tạo chuỗi kết nối DB chuẩn Psycopg 3 từ các biến rời rạc
     @property
@@ -67,6 +69,7 @@ print(f"🔌 Database: {settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settin
 print(f"🧠 LLM Backend: {settings.LLM_BACKEND.upper()}")
 if settings.LLM_BACKEND == 'gemini':
     print(f"🔑 Google Key: {settings.GOOGLE_API_KEY[:5]}...{settings.GOOGLE_API_KEY[-5:] if settings.GOOGLE_API_KEY else 'MISSING'}")
+    print(f"🦙 Gemini Model: {settings.GEMINI_MODEL}")
 else:
     print(f"🦙 Ollama URL: {settings.OLLAMA_BASE_URL}")
 print(f"🚀 Vector DB: {settings.QDRANT_HOST} (Collection: {settings.COLLECTION_NAME})")

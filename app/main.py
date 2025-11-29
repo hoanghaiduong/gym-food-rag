@@ -9,6 +9,7 @@ import logging
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
 
 # Import các router
+from app.api.v3 import chat_v3
 from app.core.config import settings
 # from app.api.v1 import chat
 from app.api.v2 import chat_v2, admin, history, system, setup, users, auth
@@ -94,6 +95,7 @@ app.include_router(system.router, prefix="/api/v2/system", tags=["System Control
 app.include_router(auth.router, prefix="/api/v2/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/api/v2/users", tags=["Admin User Management"])
 app.include_router(history.router, prefix="/api/v2/history", tags=["User History"])
+app.include_router(chat_v3.router, prefix="/api/v3", tags=["Chat V3 (LangGraph Agent)"]) # [MỚI]
 @app.get("/")
 def root():
     return {"message": "API is running!"}

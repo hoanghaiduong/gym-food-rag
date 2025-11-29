@@ -91,13 +91,23 @@ class LLMService:
 
     # --- INTERNAL WORKERS ---
     def _call_gemini(self, prompt: str) -> str:
+        # Bỏ try-except hoặc giữ try-except nhưng phải raise lại
         try:
             if not hasattr(self, 'gemini_model'):
-                return "Lỗi: Chưa cấu hình API Key cho Gemini."
+                raise ValueError("Chưa cấu hình API Key cho Gemini.")
+            
             response = self.gemini_model.generate_content(prompt)
+            
+            # Kiểm tra nếu response bị chặn (safety filter)
+            if not response.text:
+                 raise ValueError("Gemini từ chối trả lời (Safety Filter).")
+                 
             return response.text
+            
         except Exception as e:
-            return f"Lỗi Gemini API: {str(e)}"
+            print(f"❌ Gemini Error: {e}")
+            # [QUAN TRỌNG] Ném lỗi ra ngoài để Controller biết mà dừng lại
+            raise e
     def _call_openai(self, prompt: str) -> str:
         try:
             if not hasattr(self, 'openai_client'):
@@ -131,9 +141,10 @@ class LLMService:
             if response.status_code == 200:
                 return response.json().get("response", "")
             else:
-                return f"Lỗi Ollama ({response.status_code}): {response.text}"
+                raise Exception(f"Ollama Error ({response.status_code}): {response.text}")
         except Exception as e:
-            return f"Không kết nối được Ollama tại {self.ollama_url}: {str(e)}"
+            print(f"❌ Ollama Error: {e}")
+            raise e # Ném lỗi ra ngoài
 
 # --- SINGLETON ACCESSOR ---
 _llm_instance = None

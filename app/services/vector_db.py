@@ -39,13 +39,13 @@ class QdrantService:
 
     def search_similar(self, query_vector: List[float], limit: int = 5) -> List[Dict[str, Any]]:
         """Tìm kiếm vector tương đồng"""
-        search_result = self.client.search(
+        search_result = self.client.query_points(
             collection_name=self.collection_name,
             query_vector=query_vector,
             limit=limit
         )
         
         # Trích xuất payload (dữ liệu gốc)
-        return [hit.payload for hit in search_result]
+        return [hit.payload for hit in search_result.points]
 
 vector_db = QdrantService()

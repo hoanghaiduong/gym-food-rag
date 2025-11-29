@@ -147,7 +147,22 @@ async def chat_v2(
         # Nếu chưa có session_id, tạo mới ngay lập tức
         if not session_id:
             session_id = history_service.create_session(current_user['id'], request.question)
-
+            chat_history_text = "" # Session mới thì chưa có lịch sử
+        else:
+            # [QUAN TRỌNG] Lấy 10 tin nhắn gần nhất để làm ngữ cảnh
+            raw_history = history_service.get_session_messages(session_id, current_user['id'])
+            # Format thành dạng text để đưa vào Prompt
+            # Ví dụ:
+            # User: Chào bạn
+            # AI: Chào bạn, tôi giúp gì được?
+            history_msgs = []
+            if raw_history:
+                # Lấy 6 tin gần nhất (3 cặp hỏi đáp) để tiết kiệm token nhưng vẫn nhớ
+                for msg in raw_history[-6:]: 
+                    role_name = "User" if msg['role'] == "user" else "AI Coach"
+                    history_msgs.append(f"{role_name}: {msg['content']}")
+            
+            chat_history_text = "\n".join(history_msgs)
         # ====================================================
         # 2. VECTOR & CACHE
         # ====================================================
@@ -222,13 +237,18 @@ async def chat_v2(
         {HARDCORE_SYSTEM_PROMPT}
         
         ==============
-        CONTEXT DỮ LIỆU:
+        LỊCH SỬ HỘI THOẠI (ĐỂ BẠN NHỚ NGỮ CẢNH):
+        {chat_history_text}
+        ==============
+
+        ==============
+        CONTEXT DỮ LIỆU (TRA CỨU ĐƯỢC TỪ DATABASE):
         {context}
         ==============
         
-        CÂU HỎI CỦA NGƯỜI DÙNG: "{request.question}"
+        CÂU HỎI MỚI CỦA USER: "{request.question}"
         
-        TRẢ LỜI (TUÂN THỦ STRICT RULES):
+        HÃY TRẢ LỜI (Dựa trên Context và Lịch sử, tuân thủ Strict Rules):
         """
 
         answer = llm_service.generate_answer(final_prompt)

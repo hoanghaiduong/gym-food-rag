@@ -39,3 +39,5 @@ FlagEmbedding>=1.2.0
 # Utils
 pandas>=2.2.0
 psutil>=6.0.0
+
+python-jose[cryptography]

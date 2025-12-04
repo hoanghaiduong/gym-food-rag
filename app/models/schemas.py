@@ -140,3 +140,32 @@ class ChatHistoryItem(BaseModel):
     session_id: str
     class Config:
         from_attributes = True # Cho phép đọc từ SQLAlchemy Row
+        
+
+# --- RBAC SCHEMAS (V3) ---
+class PermissionBase(BaseModel):
+    slug: str
+    name: str
+    description: Optional[str] = None
+
+class RoleBase(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class RoleCreate(RoleBase):
+    pass
+
+class PermissionCreate(PermissionBase):
+    pass
+
+class RoleUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    permissions: Optional[List[str]] = [] # Danh sách slug quyền muốn gán
+
+class RoleResponse(RoleBase):
+    id: int
+    permissions: List[str] = [] # Trả về danh sách quyền của role đó
+
+class UserRoleUpdate(BaseModel):
+    role_ids: List[int] # Danh sách ID các role muốn gán cho user

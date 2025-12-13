@@ -18,7 +18,7 @@ from app.core.config import settings
 from app.core.security import get_password_hash
 from app.db.migrations import run_db_migrations
 from app.db.seeds import seed_initial_data
-from app.db.schemas import system_settings,users # Import bảng settings để lưu Step 5
+from app.db.tables import system_settings,users # Import bảng settings để lưu Step 5
 from app.models.schemas import (
     AdminSetupConfig, DatabaseConfig, FirstAdminRequest, GeneralConfig, 
     LLMConfig, NetworkConfig, VectorConfig

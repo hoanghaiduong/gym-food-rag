@@ -2,7 +2,7 @@ import json
 import uuid
 from sqlalchemy.orm import Session  # Import thêm Session để type hint
 from sqlalchemy import func, insert, select, desc, delete, update
-from app.db.schemas import chat_history,chat_sessions
+from app.db.tables import chat_history,chat_sessions
 
 class HistoryService:
     def __init__(self, db_session: Session): 

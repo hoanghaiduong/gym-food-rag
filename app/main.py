@@ -89,13 +89,13 @@ app.add_middleware(
 
 app.include_router(setup.router, prefix="/api/v2/setup", tags=["Setup Wizard"])
 # app.include_router(chat.router, prefix=settings.API_V1_STR, tags=["Chat V1 (Legacy)"])
-app.include_router(chat_v2.router, prefix="/api/v2", tags=["Chat V2 (Hybrid)"])
+# app.include_router(chat_v2.router, prefix="/api/v2", tags=["Chat V2 (Hybrid)"])
 app.include_router(admin.router, prefix="/api/v2/admin", tags=["Admin Data"])
-app.include_router(system.router, prefix="/api/v2/system", tags=["System Control"])
+# app.include_router(system.router, prefix="/api/v2/system", tags=["System Control"])
 app.include_router(auth.router, prefix="/api/v2/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/api/v2/users", tags=["Admin User Management"])
-app.include_router(history.router, prefix="/api/v2/history", tags=["User History"])
-app.include_router(chat_v3.router, prefix="/api/v3", tags=["Chat V3 (LangGraph Agent)"]) # [MỚI]
+# app.include_router(history.router, prefix="/api/v2/history", tags=["User History"])
+# app.include_router(chat_v3.router, prefix="/api/v3", tags=["Chat V3 (LangGraph Agent)"]) # [MỚI]
 
 app.include_router(rbac.router, prefix="/api/v3/rbac", tags=["V3 Access Control (RBAC)"])
 app.include_router(users_v3.router, prefix="/api/v3/users", tags=["V3 User Management"])

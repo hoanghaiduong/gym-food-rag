@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, text as sql_text, inspect
 from sqlalchemy.schema import CreateColumn
 from sqlalchemy.ext.compiler import compiles
-from app.db.schemas import metadata  # Đảm bảo đúng tên file schema của bạn
+from app.db.tables import metadata  # Đảm bảo đúng tên file schema của bạn
 
 async def run_db_migrations(engine, force_reset: bool = False, log_func=None):
     """

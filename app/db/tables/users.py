@@ -1,0 +1,14 @@
+# app/db/tables/users.py
+from sqlalchemy import Table, Column, Integer, String, Boolean, DateTime, func
+from app.db.base import metadata
+
+users = Table('users', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('username', String(50), unique=True, nullable=False),
+    Column('email', String(100), unique=True, nullable=False),
+    Column('password_hash', String(255), nullable=False),
+    Column('full_name', String(100), nullable=True),
+    Column('is_active', Boolean, default=True),
+    Column('refresh_token', String(500), nullable=True),
+    Column('created_at', DateTime, server_default=func.now())
+)

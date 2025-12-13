@@ -1,6 +1,6 @@
 from sqlalchemy import text as sql_text
 from sqlalchemy import insert, select
-from app.db.schemas import users, roles, permissions, role_permissions, user_roles
+from app.db.tables import users, roles, permissions, role_permissions, user_roles
 from app.core.security import get_password_hash
 
 async def seed_initial_data(engine, log_func=None):

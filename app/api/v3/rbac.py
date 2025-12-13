@@ -4,7 +4,7 @@ from sqlalchemy import text, insert, select, delete, update
 from typing import List
 
 from app.api.deps import get_db, get_current_admin  # Chỉ Admin mới được vào đây
-from app.db.schemas import roles, permissions, role_permissions
+from app.db.tables import roles, permissions, role_permissions
 from app.models.schemas import RoleCreate, RoleResponse, PermissionCreate, RoleUpdate, PermissionBase
 
 router = APIRouter()

@@ -5,7 +5,7 @@ from typing import List
 
 from app.api.deps import get_db, get_current_admin
 from app.db.tables import user_roles
-from app.models.schemas import UserRoleUpdate, UserResponse
+from app.schemas import UserRoleUpdate, UserResponse
 
 router = APIRouter()
 

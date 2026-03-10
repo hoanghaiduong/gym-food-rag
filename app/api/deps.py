@@ -6,7 +6,6 @@ from jose import jwt, JWTError
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 from app.core.config import settings
-from app.models.schemas import TokenData
 
 # Cấu hình DB
 db_url = getattr(settings, "DATABASE_URL", None)
@@ -40,12 +39,15 @@ async def get_current_user(token_obj: HTTPAuthorizationCredentials = Depends(sec
         token = token_obj.credentials
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         username: str = payload.get("sub")
+        token_type: str = payload.get("type")
         
-        if username is None: raise auth_error
+        if username is None or token_type != "access":
+            raise auth_error
     except JWTError:
         raise auth_error
 
     # Lấy user (Mapping)
+    # Query này sẽ chỉ lấy các cột thực tế đang có trong bảng users
     result = db.execute(
         text("SELECT * FROM users WHERE username = :u"), 
         {"u": username}
@@ -61,6 +63,7 @@ async def get_current_user(token_obj: HTTPAuthorizationCredentials = Depends(sec
 def get_user_permissions(user_id: int, db: Session) -> Set[str]:
     """
     Lấy tất cả quyền của user từ các role họ sở hữu.
+    
     """
     query = text("""
         SELECT DISTINCT p.slug
@@ -80,26 +83,39 @@ class PermissionChecker:
         self.required_permission = required_permission
 
     async def __call__(self, current_user = Depends(get_current_user), db: Session = Depends(get_db)):
-        # 1. Lấy quyền từ bảng RBAC mới
+        # 1. Lấy danh sách quyền từ bảng RBAC
         perms = get_user_permissions(current_user['id'], db)
         
-        # 2. [QUAN TRỌNG] Backward Compatibility (Hỗ trợ admin cũ chưa migrate)
-        # Nếu user có role='admin' ở bảng users cũ -> Tự động cấp full quyền
-        if current_user['role'] == 'admin':
-            return current_user
-
-        # 3. Kiểm tra quyền
+        # 2. Kiểm tra quyền
+        # FIX: Đã xóa đoạn check "current_user['role'] == 'admin'" gây lỗi
         if self.required_permission not in perms:
+            # Bypass cho Admin: Nếu user có quyền quản trị hệ thống thì cho qua mọi check
+            if "system.config" in perms: 
+                return current_user
+                
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Bạn thiếu quyền: '{self.required_permission}'"
             )
         return current_user
 
-# --- 3. ADMIN CHECKER (Legacy - Giữ lại để không sửa code cũ quá nhiều) ---
-async def get_current_admin(current_user = Depends(get_current_user)):
-    if current_user['role'] != "admin":
-        raise HTTPException(403, "Yêu cầu quyền Admin.")
+# --- 3. ADMIN CHECKER (Đã sửa lại logic) ---
+async def get_current_admin(
+    current_user = Depends(get_current_user), 
+    db: Session = Depends(get_db) # Cần thêm db để lấy quyền
+):
+    """
+    Thay vì check cột 'role' (đã bị xóa), ta check xem user có quyền quản trị không.
+    """
+    perms = get_user_permissions(current_user['id'], db)
+    
+    # Check quyền 'system.config' (Quyền cao nhất của Admin)
+    # Hoặc bạn có thể check quyền 'user.view' tùy logic
+    if "system.config" not in perms:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Yêu cầu quyền Quản trị viên (Admin)."
+        )
     return current_user
 
 # --- 4. SETUP AUTH ---

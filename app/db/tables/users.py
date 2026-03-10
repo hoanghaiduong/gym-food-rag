@@ -10,5 +10,6 @@ users = Table('users', metadata,
     Column('full_name', String(100), nullable=True),
     Column('is_active', Boolean, default=True),
     Column('refresh_token', String(500), nullable=True),
+    Column('refresh_token_expires_at', DateTime, nullable=True),
     Column('created_at', DateTime, server_default=func.now())
 )

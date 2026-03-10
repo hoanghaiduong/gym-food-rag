@@ -1,31 +1,59 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import text, insert, select, delete, update
+from sqlalchemy import text, insert, select, delete, update, func
 from typing import List
 
-from app.api.deps import get_db, get_current_admin  # Chỉ Admin mới được vào đây
+from app.api.deps import get_db, PermissionChecker
+from app.core.response import BaseResponse, success_response
 from app.db.tables import roles, permissions, role_permissions
-from app.models.schemas import RoleCreate, RoleResponse, PermissionCreate, RoleUpdate, PermissionBase
+from app.schemas import RoleCreate, RoleResponse, PermissionCreate, RoleUpdate, PermissionBase
 
 router = APIRouter()
 
 # ==========================================
 # 1. QUẢN LÝ PERMISSIONS (Quyền hạn)
 # ==========================================
-@router.get("/permissions", response_model=List[PermissionBase])
-async def list_permissions(db: Session = Depends(get_db), admin=Depends(get_current_admin)):
-    result = db.execute(select(permissions)).mappings().all()
-    return result
+# ==========================================
+# 1. QUẢN LÝ PERMISSIONS (Quyền hạn)
+# ==========================================
+# ==========================================
+# 1. QUẢN LÝ PERMISSIONS (Quyền hạn)
+# ==========================================
+@router.get("/permissions", response_model=BaseResponse[List[PermissionBase]])
+async def list_permissions(
+    page: int = 1, 
+    limit: int = 20, 
+    db: Session = Depends(get_db), 
+    auth=Depends(PermissionChecker("system.config"))
+):
+    skip = (page - 1) * limit
+    
+    # Count Total
+    total = db.scalar(select(func.count()).select_from(permissions))
+    
+    # Fetch Data
+    result = db.execute(select(permissions).offset(skip).limit(limit)).mappings().all()
+    
+    # Meta
+    total_pages = (total + limit - 1) // limit if limit > 0 else 0
+    meta = {
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "total_pages": total_pages
+    }
+    
+    return success_response(data=result, message="Lấy danh sách quyền thành công", meta=meta)
 
-@router.post("/permissions", response_model=PermissionBase)
-async def create_permission(perm: PermissionCreate, db: Session = Depends(get_db), admin=Depends(get_current_admin)):
+@router.post("/permissions", response_model=BaseResponse[PermissionBase])
+async def create_permission(perm: PermissionCreate, db: Session = Depends(get_db), auth=Depends(PermissionChecker("system.config"))):
     try:
         stmt = insert(permissions).values(
             slug=perm.slug, name=perm.name, description=perm.description
         ).returning(permissions)
         result = db.execute(stmt).mappings().fetchone()
         db.commit()
-        return result
+        return success_response(data=result, message="Tạo quyền thành công")
     except Exception as e:
         db.rollback()
         raise HTTPException(400, f"Lỗi tạo quyền (có thể trùng slug): {str(e)}")
@@ -33,11 +61,21 @@ async def create_permission(perm: PermissionCreate, db: Session = Depends(get_db
 # ==========================================
 # 2. QUẢN LÝ ROLES (Vai trò)
 # ==========================================
-@router.get("/roles", response_model=List[RoleResponse])
-async def list_roles(db: Session = Depends(get_db), admin=Depends(get_current_admin)):
+@router.get("/roles", response_model=BaseResponse[List[RoleResponse]])
+async def list_roles(
+    page: int = 1, 
+    limit: int = 20, 
+    db: Session = Depends(get_db), 
+    auth=Depends(PermissionChecker("system.config"))
+):
     """Lấy danh sách Role kèm theo các quyền của nó"""
-    # Lấy tất cả roles
-    roles_list = db.execute(select(roles)).mappings().all()
+    skip = (page - 1) * limit
+    
+    # Count Total
+    total = db.scalar(select(func.count()).select_from(roles))
+    
+    # Fetch Roles
+    roles_list = db.execute(select(roles).offset(skip).limit(limit)).mappings().all()
     
     response = []
     for r in roles_list:
@@ -51,52 +89,66 @@ async def list_roles(db: Session = Depends(get_db), admin=Depends(get_current_ad
         
         response.append({**r, "permissions": list(perms)})
     
-    return response
+    # Meta
+    total_pages = (total + limit - 1) // limit if limit > 0 else 0
+    meta = {
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "total_pages": total_pages
+    }
+    
+    return success_response(data=response, message="Lấy danh sách vai trò thành công", meta=meta)
 
-@router.post("/roles", response_model=RoleResponse)
-async def create_role(role: RoleCreate, db: Session = Depends(get_db), admin=Depends(get_current_admin)):
+@router.post("/roles", response_model=BaseResponse[RoleResponse])
+async def create_role(role: RoleCreate, db: Session = Depends(get_db), auth=Depends(PermissionChecker("system.config"))):
     try:
         # 1. Tạo Role
         stmt = insert(roles).values(name=role.name, description=role.description).returning(roles)
         new_role = db.execute(stmt).mappings().fetchone()
         db.commit()
         
-        return {**new_role, "permissions": []}
+        data = {**new_role, "permissions": []}
+        return success_response(data=data, message="Tạo vai trò thành công")
     except Exception as e:
         db.rollback()
         raise HTTPException(400, f"Lỗi tạo role: {str(e)}")
 
-@router.put("/roles/{role_id}")
+@router.put("/roles/{role_id}", response_model=BaseResponse)
 async def update_role_permissions(
     role_id: int, 
     data: RoleUpdate, 
     db: Session = Depends(get_db), 
-    admin=Depends(get_current_admin)
+    auth=Depends(PermissionChecker("system.config"))
 ):
-    """Cập nhật tên Role và danh sách quyền (Permissions) của Role đó"""
-    # 1. Update thông tin cơ bản
-    if data.name or data.description:
-        update_values = {k: v for k, v in data.model_dump(exclude={"permissions"}).items() if v is not None}
-        if update_values:
-            db.execute(update(roles).where(roles.c.id == role_id).values(**update_values))
+    """Cập nhật Role và danh sách quyền (Permissions)"""
     
-    # 2. Update Permissions (Nếu có gửi lên)
+    # 1. Update thông tin cơ bản (Name, Description)
+    # exclude_unset=True: Chỉ lấy các trường có trong JSON gửi lên (bỏ qua các trường null mặc định)
+    # exclude={"permissions"}: Tách riêng permissions ra xử lý sau
+    update_data = data.model_dump(exclude_unset=True, exclude={"permissions"})
+    
+    if update_data:
+        db.execute(
+            update(roles)
+            .where(roles.c.id == role_id)
+            .values(**update_data)
+        )
+    
+    # 2. Update Permissions (Chỉ chạy nếu người dùng có gửi trường permissions)
     if data.permissions is not None:
-        # Xóa quyền cũ
+        # Xóa hết quyền cũ
         db.execute(delete(role_permissions).where(role_permissions.c.role_id == role_id))
         
-        # Thêm quyền mới
         if data.permissions:
             # Tìm ID của các slug quyền gửi lên
-            perm_slugs = data.permissions
             perm_ids = db.execute(
-                select(permissions.c.id).where(permissions.c.slug.in_(perm_slugs))
+                select(permissions.c.id).where(permissions.c.slug.in_(data.permissions))
             ).scalars().all()
             
             if perm_ids:
-                # Insert hàng loạt
                 values = [{"role_id": role_id, "permission_id": pid} for pid in perm_ids]
                 db.execute(insert(role_permissions), values)
     
     db.commit()
-    return {"message": "Cập nhật Role thành công"}
+    return success_response(data=None, message="Cập nhật vai trò thành công")

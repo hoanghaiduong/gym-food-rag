@@ -1,5 +1,5 @@
 # from fastapi import APIRouter, HTTPException
-# from app.models.schemas import ChatRequest, ChatResponse
+# from app.schemas import ChatRequest, ChatResponse
 # from app.services.llm_service import llm_service
 # from qdrant_client import QdrantClient
 # import traceback

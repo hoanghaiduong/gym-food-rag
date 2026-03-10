@@ -28,13 +28,21 @@ class EnvUpdate(BaseModel):
 # PHẦN 1: SYSTEM HEALTH & CONTROL (REST API)
 # ==================================================================
 
-@router.get("/health") 
+from app.core.response import BaseResponse, success_response
+
+# ... (Imports preserved, placed after existing)
+
+# ==================================================================
+# PHẦN 1: SYSTEM HEALTH & CONTROL (REST API)
+# ==================================================================
+
+@router.get("/health", response_model=BaseResponse) 
 async def system_health():
     """Kiểm tra trạng thái server, RAM, CPU"""
     process = psutil.Process(os.getpid())
     mem_info = process.memory_info()
     
-    return {
+    data = {
         "status": "online",
         "system": {
             "cpu_percent": psutil.cpu_percent(),
@@ -43,8 +51,9 @@ async def system_health():
         },
         "backend": "FastAPI Hybrid RAG"
     }
+    return success_response(data=data, message="Hệ thống hoạt động bình thường")
 
-@router.get("/config", dependencies=[Depends(verify_admin)])
+@router.get("/config", dependencies=[Depends(verify_admin)], response_model=BaseResponse)
 async def get_config():
     """Đọc file .env (Che giấu thông tin nhạy cảm)"""
     config = {}
@@ -58,9 +67,9 @@ async def get_config():
                     if "KEY" in key or "SECRET" in key or "PASSWORD" in key:
                         val = val[:5] + "..." + val[-3:] if len(val) > 10 else "***"
                     config[key] = val
-    return config
+    return success_response(data=config)
 
-@router.post("/config/update", dependencies=[Depends(verify_admin)])
+@router.post("/config/update", dependencies=[Depends(verify_admin)], response_model=BaseResponse)
 async def update_env(data: EnvUpdate):
     """Cập nhật biến môi trường (Ghi file & update RAM)"""
     try:
@@ -70,23 +79,20 @@ async def update_env(data: EnvUpdate):
         # 2. Cập nhật RAM
         os.environ[data.key] = data.value
         
-        return {
-            "status": "success", 
-            "message": f"Đã cập nhật {data.key}. Hãy Restart để áp dụng triệt để."
-        }
+        return success_response(message=f"Đã cập nhật {data.key}. Hãy Restart để áp dụng triệt để.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/system/restart", dependencies=[Depends(verify_admin)])
+@router.post("/system/restart", dependencies=[Depends(verify_admin)], response_model=BaseResponse)
 async def restart_server(background_tasks: BackgroundTasks):
     """Khởi động lại Server (Yêu cầu Docker restart: always)"""
     def kill_self():
         time.sleep(1) 
         print("💀 Admin yêu cầu Restart. Shutting down...")
         os._exit(1) 
-
+    
     background_tasks.add_task(kill_self)
-    return {"status": "restarting", "message": "Server đang khởi động lại..."}
+    return success_response(message="Server đang khởi động lại...")
 
 # ==================================================================
 # PHẦN 2: REAL-TIME LOGS (WEBSOCKET)

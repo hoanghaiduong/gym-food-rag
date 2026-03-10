@@ -16,16 +16,19 @@ from app.api.v2 import users
 from app.api.v2.system import log_manager 
 from app.core.config import settings
 from app.core.security import get_password_hash
-from app.db.migrations import run_db_migrations
+from app.db.migrations import run_db_migrations, run_single_table_migration
 from app.db.seeds import seed_initial_data
 from app.db.tables import system_settings,users # Import bảng settings để lưu Step 5
-from app.models.schemas import (
+from app.schemas import (
     AdminSetupConfig, DatabaseConfig, FirstAdminRequest, GeneralConfig, 
     LLMConfig, NetworkConfig, VectorConfig
 )
 
 class MigrationRequest(BaseModel):
     force_reset: bool = False
+
+class SingleTableMigrationRequest(BaseModel):
+    table_name: str
 
 router = APIRouter()
 DEFAULT_ADMIN_KEY = "gym-food-super-admin"
@@ -95,11 +98,22 @@ async def get_system_status():
                 "message": "Chưa khởi tạo cấu trúc bảng (Cần Migrate)."
             }
         
-        # 2. [MỚI] Check Dữ Liệu Admin
+        # 2. [FIX] Check Dữ Liệu Admin (RBAC-Compatible)
         with engine.connect() as conn:
-             admin_count = conn.execute(
-                 sql_text("SELECT count(*) FROM users WHERE role='admin'")
-             ).scalar()
+             # Check if roles table exists first to avoid crash if migration failed halfway
+             if 'roles' in inspector.get_table_names() and 'user_roles' in inspector.get_table_names():
+                 admin_count = conn.execute(
+                     sql_text("""
+                        SELECT count(*) 
+                        FROM users u
+                        JOIN user_roles ur ON u.id = ur.user_id
+                        JOIN roles r ON ur.role_id = r.id
+                        WHERE LOWER(r.name) = 'admin'
+                     """)
+                 ).scalar()
+             else:
+                 # Fallback logic if tables missing, effectively 0 admins
+                 admin_count = 0
              
              if admin_count == 0:
                  return {
@@ -107,6 +121,7 @@ async def get_system_status():
                      "step": 4.5, # Bước mới: Tạo Admin
                      "message": "Chưa có tài khoản Admin (Cần tạo)."
                  }
+
 
     except Exception as e:
         return {"status": "pending", "requires_auth": True, "step": 2, "message": str(e)}
@@ -199,6 +214,28 @@ async def execute_migration_endpoint(request: MigrationRequest):
     except Exception as e:
         await ws_log(f"[ERROR] {str(e)}")
         raise HTTPException(500, str(e))
+
+@router.post("/migrate-table", dependencies=[Depends(verify_admin)])
+async def migrate_single_table(request: SingleTableMigrationRequest):
+    """
+    API để chạy lại cấu trúc (thêm cột thiếu) cho RIÊNG 1 BẢNG.
+    Hữu ích khi dev thêm cột mới vào 1 bảng và không muốn quét lại toàn bộ DB.
+    """
+    db_url = os.getenv("DATABASE_URL")
+    if not db_url: raise HTTPException(400, "Missing DATABASE_URL.")
+    
+    async def ws_log(msg): 
+        # Tạm thời log ra console hoặc dùng log manager nếu cần
+        print(f"[SingleMigrate] {msg}")
+
+    try:
+        engine = create_engine(db_url)
+        await run_single_table_migration(engine, request.table_name, ws_log)
+        return {"status": "success", "message": f"Table '{request.table_name}' synced successfully."}
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    except Exception as e:
+        raise HTTPException(500, str(e))
 # ============================================================
 # STEP 2.6: CREATE FIRST ADMIN (Manual via UI)
 # ============================================================
@@ -216,8 +253,15 @@ async def create_first_admin(data: FirstAdminRequest):
         engine = create_engine(db_url)
         with engine.begin() as conn:
             # 1. Kiểm tra an toàn: Nếu đã có admin rồi thì chặn lại (tránh ghi đè ác ý)
+            # [FIX] RBAC Check Case-Insensitive
             existing_admin = conn.execute(
-                sql_text("SELECT count(*) FROM users WHERE role='admin'")
+                 sql_text("""
+                    SELECT count(*) 
+                    FROM users u
+                    JOIN user_roles ur ON u.id = ur.user_id
+                    JOIN roles r ON ur.role_id = r.id
+                    WHERE LOWER(r.name) = 'admin'
+                 """)
             ).scalar()
             
             if existing_admin > 0:
@@ -232,15 +276,32 @@ async def create_first_admin(data: FirstAdminRequest):
             # 2. Hash mật khẩu
             hashed_pw = get_password_hash(raw_password)
 
-            # 3. Insert vào DB
-            conn.execute(users.insert().values(
+            # 3. Insert vào DB (Users)
+            # [FIX] Remove 'role' column from insert
+            result = conn.execute(users.insert().values(
                 username=data.username,
                 email=data.email,
                 password_hash=hashed_pw,
                 full_name=data.full_name,
-                role='admin',     # Quyền cao nhất
                 is_active=True
-            ))
+            ).returning(users.c.id))
+            
+            new_user_id = result.scalar()
+
+            # 4. Assign Admin Role
+            # Tìm Role ID của admin (Case-Insensitive)
+            admin_role_id = conn.execute(sql_text("SELECT id FROM roles WHERE LOWER(name)='admin'")).scalar()
+            
+            # Nếu chưa có role admin (hiếm khi xảy ra nếu đã seed), tạo luôn
+            if not admin_role_id:
+                # Nếu không tìm thấy, tạo mới role 'admin' chuẩn (viết thường)
+                role_res = conn.execute(
+                    sql_text("INSERT INTO roles (name, description) VALUES ('admin', 'Super Admin') RETURNING id")
+                )
+                admin_role_id = role_res.scalar()
+            
+            # Insert vào bảng nối user_roles
+            conn.execute(sql_text("INSERT INTO user_roles (user_id, role_id) VALUES (:uid, :rid)"), {"uid": new_user_id, "rid": admin_role_id})
             
         return {
             "status": "success", 

@@ -5,7 +5,7 @@ from typing import List
 
 from app.api.deps import get_db, get_current_user
 from app.services.history_service import HistoryService
-from app.models.schemas import ChatHistoryItem
+from app.schemas import ChatHistoryItem
 from app.core.response import success_response
 
 router = APIRouter()

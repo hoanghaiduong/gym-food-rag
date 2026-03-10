@@ -12,24 +12,23 @@ services:
       - ./qdrant_storage:/qdrant/storage
     restart: always
 
-  # Service 2: Local LLM (Ollama)
-  # LƯU Ý: Phải thụt đầu dòng ngang bằng với 'qdrant' và 'backend'
-  ollama:
-    image: ollama/ollama:latest
-    container_name: gym_ollama
-    ports:
-      - "11434:11434"
-    volumes:
-      - ./ollama_models:/root/.ollama
-    # Uncomment bên dưới nếu dùng GPU NVIDIA
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
-    restart: always
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: gym_ollama
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     # Lưu model ra thư mục hiện tại để dễ quản lý file
+  #     - ./ollama_models:/root/.ollama
+  #   # Cấu hình GPU NVIDIA
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+  #   restart: always
   postgres:
     image: postgres:15-alpine
     container_name: gym_postgres
@@ -55,10 +54,11 @@ services:
       - postgres
     restart: always
   redis:
-    image: redis:alpine
+    image: redis/redis-stack:latest
     container_name: gym_redis
     ports:
-      - "6379:6379"
+      - "6379:6379"  # Port kết nối chính
+      - "8001:8001"  # Port UI (RedisInsight) - Bạn có thể vào http://localhost:8001 để xem dữ liệu
     volumes:
       - ./redis_data:/data
     restart: always

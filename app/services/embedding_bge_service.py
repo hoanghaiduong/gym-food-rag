@@ -46,3 +46,4 @@ def get_bge_service():
     if _service_instance is None:
         _service_instance = BGEEmbeddingService()
     return _service_instance
+    pass

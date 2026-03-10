@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_db
 from app.api.deps import get_current_user
 from app.core.response import success_response
-from app.models.schemas import ChatRequest
+from app.schemas import ChatRequest
 from app.services.embedding_bge_service import (
     get_bge_service,
 )  # Dùng service mới đã sửa

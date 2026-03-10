@@ -1,0 +1,274 @@
+{
+    "info": {
+        "title": "Gym Food RAG API",
+        "version": "2.0 (Hybrid)"
+    },
+    "endpoints": [
+        {
+            "method": "POST",
+            "endpoint": "/api/v3/auth/register",
+            "summary": "Register new user",
+            "request_body": {
+                "username": "string",
+                "email": "user@example.com",
+                "password": "string",
+                "full_name": "string (optional)"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Đăng ký thành công",
+                "data": {
+                    "id": 1,
+                    "username": "string",
+                    "email": "user@example.com",
+                    "full_name": "string",
+                    "is_active": true,
+                    "created_at": "2024-01-01T00:00:00Z"
+                },
+                "meta": null
+            }
+        },
+        {
+            "method": "POST",
+            "endpoint": "/api/v3/auth/login",
+            "summary": "Login",
+            "request_body": {
+                "username": "string (or email)",
+                "password": "string"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Đăng nhập thành công",
+                "data": {
+                    "access_token": "eyJhbGciOi...",
+                    "refresh_token": "uuid-string...",
+                    "token_type": "bearer",
+                    "permissions": [
+                        "user.view",
+                        "food.create"
+                    ]
+                },
+                "meta": null
+            }
+        },
+        {
+            "method": "GET",
+            "endpoint": "/api/v3/auth/me",
+            "summary": "Get current user profile",
+            "request_headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Lấy thông tin thành công",
+                "data": {
+                    "id": 1,
+                    "username": "string",
+                    "email": "string",
+                    "full_name": "string",
+                    "is_active": true,
+                    "created_at": "2024-01-01T00:00:00Z",
+                    "permissions": [
+                        "user.view"
+                    ]
+                },
+                "meta": null
+            }
+        },
+        {
+            "method": "POST",
+            "endpoint": "/api/v3/auth/refresh",
+            "summary": "Refresh Access Token",
+            "request_body": {
+                "refresh_token": "string"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Làm mới token thành công",
+                "data": {
+                    "access_token": "new-jwt-token...",
+                    "refresh_token": "new-refresh-token...",
+                    "token_type": "bearer"
+                },
+                "meta": null
+            }
+        },
+        {
+            "method": "POST",
+            "endpoint": "/api/v3/auth/logout",
+            "summary": "Logout",
+            "request_headers": {
+                "Authorization": "Bearer <access_token>"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Đăng xuất thành công",
+                "data": null,
+                "meta": null
+            }
+        },
+        {
+            "method": "GET",
+            "endpoint": "/api/v3/rbac/permissions",
+            "summary": "List permissions",
+            "query_params": {
+                "page": "int (default 1)",
+                "limit": "int (default 20)"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Lấy danh sách quyền thành công",
+                "data": [
+                    {
+                        "slug": "system.config",
+                        "name": "Configure System",
+                        "description": "Manage system settings"
+                    }
+                ],
+                "meta": {
+                    "page": 1,
+                    "limit": 20,
+                    "total": 50,
+                    "total_pages": 3
+                }
+            }
+        },
+        {
+            "method": "POST",
+            "endpoint": "/api/v3/rbac/permissions",
+            "summary": "Create permission",
+            "request_body": {
+                "slug": "string",
+                "name": "string",
+                "description": "string (optional)"
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Tạo quyền thành công",
+                "data": {
+                    "slug": "string",
+                    "name": "string",
+                    "description": "string"
+                },
+                "meta": null
+            }
+        },
+        {
+            "method": "GET",
+            "endpoint": "/api/v3/rbac/roles",
+            "summary": "List roles",
+            "query_params": {
+                "page": 1,
+                "limit": 20
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Lấy danh sách vai trò thành công",
+                "data": [
+                    {
+                        "id": 1,
+                        "name": "admin",
+                        "description": "Super Admin",
+                        "permissions": [
+                            "system.config",
+                            "user.edit"
+                        ]
+                    }
+                ],
+                "meta": {
+                    "page": 1,
+                    "limit": 20,
+                    "total": 5,
+                    "total_pages": 1
+                }
+            }
+        },
+        {
+            "method": "GET",
+            "endpoint": "/api/v3/users",
+            "summary": "List users",
+            "query_params": {
+                "page": 1,
+                "limit": 20
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Success",
+                "data": [
+                    {
+                        "id": 1,
+                        "username": "admin",
+                        "email": "admin@example.com",
+                        "roles": [
+                            "admin"
+                        ]
+                    }
+                ],
+                "meta": {
+                    "page": 1,
+                    "limit": 20,
+                    "total": 100,
+                    "total_pages": 5
+                }
+            }
+        },
+        {
+            "method": "POST",
+            "endpoint": "/api/v3/users/{user_id}/assign-roles",
+            "summary": "Assign roles to user",
+            "request_body": {
+                "role_ids": [
+                    1,
+                    2
+                ]
+            },
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "User roles updated successfully",
+                "data": null,
+                "meta": null
+            }
+        },
+        {
+            "method": "GET",
+            "endpoint": "/api/v2/system/health",
+            "summary": "Check system health",
+            "response_sample": {
+                "status": "success",
+                "code": 200,
+                "message": "Hệ thống hoạt động bình thường",
+                "data": {
+                    "status": "online",
+                    "system": {
+                        "cpu_percent": 12.5,
+                        "ram_usage_mb": 256.4,
+                        "uptime_seconds": 3600
+                    },
+                    "backend": "FastAPI Hybrid RAG"
+                },
+                "meta": null
+            }
+        },
+        {
+            "method": "GET",
+            "endpoint": "/api/v2/setup/status",
+            "summary": "Check setup status",
+            "response_sample": {
+                "status": "pending",
+                "requires_auth": true,
+                "step": 2,
+                "message": "Chưa cấu hình Database."
+            }
+        }
+    ]
+}

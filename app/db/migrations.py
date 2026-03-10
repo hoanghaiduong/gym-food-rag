@@ -3,9 +3,43 @@ from sqlalchemy.schema import CreateColumn
 from sqlalchemy.ext.compiler import compiles
 from app.db.tables import metadata  # Đảm bảo đúng tên file schema của bạn
 
+async def sync_table_columns(engine, table_name, table_obj, log_func):
+    """
+    Logic đồng bộ cột cho 1 bảng cụ thể.
+    """
+    async def log(msg):
+        if log_func: await log_func(msg)
+
+    inspector = inspect(engine)
+    existing_tables = inspector.get_table_names()
+
+    # Nếu bảng chưa tồn tại -> Create
+    if table_name not in existing_tables:
+        await log(f"🛠 Creating table '{table_name}'...")
+        table_obj.create(engine)
+        await log(f"✅ Table '{table_name}' created.")
+        return
+
+    # Nếu bảng đã tồn tại -> Check Columns
+    db_columns = [col['name'] for col in inspector.get_columns(table_name)]
+
+    with engine.begin() as conn:
+        for column in table_obj.columns:
+            if column.name not in db_columns:
+                await log(f"   ➕ Detected missing column: {table_name}.{column.name}")
+                
+                col_type = column.type.compile(engine.dialect)
+                alter_stmt = f"ALTER TABLE {table_name} ADD COLUMN {column.name} {col_type}"
+                
+                try:
+                    conn.execute(sql_text(alter_stmt))
+                    await log(f"      ✅ Added column '{column.name}' successfully.")
+                except Exception as e:
+                    await log(f"      ❌ Failed to add column '{column.name}': {e}")
+
 async def run_db_migrations(engine, force_reset: bool = False, log_func=None):
     """
-    Hệ thống Migration thông minh: Tự động đồng bộ cấu trúc Python -> Database.
+    Hệ thống Migration thông minh: Tự động đồng bộ cấu trúc Python -> Database (ALL TABLES).
     """
     async def log(msg):
         if log_func: await log_func(msg)
@@ -18,44 +52,26 @@ async def run_db_migrations(engine, force_reset: bool = False, log_func=None):
             conn.commit()
         await log("✅ Schema cleaned.")
 
-    # 2. Tạo các bảng chưa tồn tại (Cơ bản)
-    await log("🔍 Checking tables...")
-    metadata.create_all(engine)
+    await log("🔄 Syncing ALL tables...")
     
-    # 3. [NÂNG CẤP] AUTO-MIGRATE: Tự động phát hiện và thêm cột thiếu
-    await log("🔄 Syncing columns (Auto-Migration)...")
-    
-    inspector = inspect(engine)
-    existing_tables = inspector.get_table_names()
-
-    # Dùng transaction để đảm bảo an toàn
-    with engine.begin() as conn:
-        # Duyệt qua từng bảng được định nghĩa trong Code Python
-        for table_name, table_obj in metadata.tables.items():
-            
-            # Nếu bảng đã tồn tại trong DB, ta kiểm tra cột
-            if table_name in existing_tables:
-                # Lấy danh sách cột hiện có trong DB
-                db_columns = [col['name'] for col in inspector.get_columns(table_name)]
-                
-                # Duyệt qua từng cột trong Code Python
-                for column in table_obj.columns:
-                    # Nếu cột trong code chưa có trong DB -> Thêm ngay
-                    if column.name not in db_columns:
-                        await log(f"   ➕ Detected missing column: {table_name}.{column.name}")
-                        
-                        # Magic: Tự động tạo câu lệnh SQL đúng chuẩn loại dữ liệu
-                        # column.type.compile(engine.dialect) sẽ tự biến String -> VARCHAR, etc.
-                        col_type = column.type.compile(engine.dialect)
-                        
-                        # Xử lý nullable (Mặc định thêm cột mới nên để NULL để tránh lỗi dữ liệu cũ)
-                        # Nếu muốn NOT NULL, bạn phải set default value, ở đây ta đơn giản hóa
-                        alter_stmt = f"ALTER TABLE {table_name} ADD COLUMN {column.name} {col_type}"
-                        
-                        try:
-                            conn.execute(sql_text(alter_stmt))
-                            await log(f"      ✅ Added column '{column.name}' successfully.")
-                        except Exception as e:
-                            await log(f"      ❌ Failed to add column '{column.name}': {e}")
+    # Duyệt qua từng bảng được định nghĩa trong Code Python
+    for table_name, table_obj in metadata.tables.items():
+        await sync_table_columns(engine, table_name, table_obj, log_func)
 
     await log("🎉 Database synchronization complete.")
+
+async def run_single_table_migration(engine, table_name: str, log_func=None):
+    """
+    Chạy migration cho RIÊNG 1 BẢNG.
+    """
+    async def log(msg):
+        if log_func: await log_func(msg)
+
+    if table_name not in metadata.tables:
+        await log(f"❌ Table '{table_name}' not found in Python definitions.")
+        raise ValueError(f"Table '{table_name}' not defined in metadata.")
+
+    table_obj = metadata.tables[table_name]
+    await log(f"🔄 Syncing Single Table: {table_name}...")
+    await sync_table_columns(engine, table_name, table_obj, log_func)
+    await log(f"✅ Table '{table_name}' sync complete.")

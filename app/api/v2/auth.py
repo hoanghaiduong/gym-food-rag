@@ -7,7 +7,7 @@ from jose import jwt, JWTError
 from app.api.deps import get_db, get_current_user
 from app.core.security import create_reset_token, verify_password, get_password_hash, create_access_token, create_refresh_token
 from app.core.config import settings
-from app.models.schemas import PasswordResetConfirm, PasswordResetRequest, Token, UserCreate, UserLogin, UserResponse, RefreshTokenRequest
+from app.schemas import PasswordResetConfirm, PasswordResetRequest, Token, UserCreate, UserLogin, UserResponse, RefreshTokenRequest
 
 router = APIRouter()
 

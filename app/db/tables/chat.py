@@ -23,10 +23,3 @@ chat_history = Table('chat_history', metadata,
     Column('sources', Text, nullable=True), # Lưu JSON nguồn
     Column('created_at', DateTime, server_default=func.now())
 )
-
-# 8. Bảng System Settings (Cấu hình động)
-system_settings = Table('system_settings', metadata,
-    Column('key', String(50), primary_key=True),
-    Column('value', Text),
-    Column('updated_at', DateTime, server_default=func.now(), onupdate=func.now())
-)

@@ -1,7 +1,6 @@
-**/.classpath
+﻿**/.classpath
 **/.dockerignore
 **/.env
-**/myenv
 **/.git
 **/.gitignore
 **/.project
@@ -14,8 +13,8 @@
 **/*.jfm
 **/bin
 **/charts
-**/docker-compose*
 **/compose*
+**/docker-compose*
 **/Dockerfile*
 **/node_modules
 **/npm-debug.log
@@ -23,4 +22,8 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 LICENSE
-README.md
+logs/
+storage/
+data/cache/
+data/processed/
+myenv/

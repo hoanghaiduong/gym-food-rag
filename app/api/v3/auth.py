@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+﻿from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import text, insert, select, update,or_
 from datetime import timedelta
@@ -23,13 +23,13 @@ from app.schemas import (
 )
 from pydantic import BaseModel
 
-# Import Global Response Helper (Đảm bảo bạn đã tạo file app/core/response.py)
+# Import Global Response Helper (Äáº£m báº£o báº¡n Ä‘Ã£ táº¡o file app/core/response.py)
 from app.core.response import BaseResponse, success_response
 
 router = APIRouter()
 
 # ==========================================
-# DATA SCHEMAS (Cấu trúc dữ liệu bên trong 'data')
+# DATA SCHEMAS (Cáº¥u trÃºc dá»¯ liá»‡u bÃªn trong 'data')
 # ==========================================
 class LoginData(BaseModel):
     access_token: str
@@ -41,19 +41,19 @@ class UserData(UserResponse):
     permissions: List[str]
 
 # ==========================================
-# 1. REGISTER (ĐĂNG KÝ)
+# 1. REGISTER (ÄÄ‚NG KÃ)
 # ==========================================
 @router.post("/register", response_model=BaseResponse[UserResponse])
 async def register_v3(user_data: UserCreate, db: Session = Depends(get_db)):
-    # 1. Check user tồn tại
+    # 1. Check user tá»“n táº¡i
     existing_user = db.execute(
         select(users).where((users.c.email == user_data.email) | (users.c.username == user_data.username))
     ).fetchone()
     
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email hoặc Username đã tồn tại")
+        raise HTTPException(status_code=400, detail="Email hoáº·c Username Ä‘Ã£ tá»“n táº¡i")
 
-    # 2. Tạo User (Hash pass & Insert)
+    # 2. Táº¡o User (Hash pass & Insert)
     hashed_password = get_password_hash(user_data.password)
     
     try:
@@ -68,7 +68,7 @@ async def register_v3(user_data: UserCreate, db: Session = Depends(get_db)):
         
         new_user = db.execute(stmt).mappings().fetchone()
         
-        # 3. Gán Role mặc định 'user'
+        # 3. GÃ¡n Role máº·c Ä‘á»‹nh 'user'
         default_role_id = db.execute(
             select(roles.c.id).where(roles.c.name == 'user') 
         ).scalar_one_or_none()
@@ -78,54 +78,54 @@ async def register_v3(user_data: UserCreate, db: Session = Depends(get_db)):
                 insert(user_roles).values(user_id=new_user.id, role_id=default_role_id)
             )
         else:
-            # Nếu chưa có role 'user', tạo tạm thời hoặc log warning
-            print("WARNING: Role 'user' chưa tồn tại. User mới sẽ không có quyền.")
+            # Náº¿u chÆ°a cÃ³ role 'user', táº¡o táº¡m thá»i hoáº·c log warning
+            print("WARNING: Role 'user' chÆ°a tá»“n táº¡i. User má»›i sáº½ khÃ´ng cÃ³ quyá»n.")
 
         db.commit()
         
-        # Trả về Global Response
-        return success_response(data=new_user, message="Đăng ký thành công")
+        # Tráº£ vá» Global Response
+        return success_response(data=new_user, message="ÄÄƒng kÃ½ thÃ nh cÃ´ng")
 
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Lỗi hệ thống: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Lá»—i há»‡ thá»‘ng: {str(e)}")
 
 # ==========================================
-# 2. LOGIN (ĐĂNG NHẬP)
+# 2. LOGIN (ÄÄ‚NG NHáº¬P)
 # ==========================================
 @router.post("/login", response_model=BaseResponse[LoginData])
 async def login_v3(user_data: UserLogin, db: Session = Depends(get_db)):
-    # 1. Tìm user bằng Username HOẶC Email
-    # user_data.username là dữ liệu người dùng nhập vào (có thể là tên hoặc email)
+    # 1. TÃ¬m user báº±ng Username HOáº¶C Email
+    # user_data.username lÃ  dá»¯ liá»‡u ngÆ°á»i dÃ¹ng nháº­p vÃ o (cÃ³ thá»ƒ lÃ  tÃªn hoáº·c email)
     user = db.execute(
         select(users).where(
             or_(
-                users.c.username == user_data.username, # So khớp với cột username
-                users.c.email == user_data.username     # So khớp với cột email
+                users.c.username == user_data.username, # So khá»›p vá»›i cá»™t username
+                users.c.email == user_data.username     # So khá»›p vá»›i cá»™t email
             )
         )
     ).mappings().fetchone()
 
-    # --- Phần còn lại giữ nguyên ---
+    # --- Pháº§n cÃ²n láº¡i giá»¯ nguyÃªn ---
     if not user or not verify_password(user_data.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Tài khoản hoặc mật khẩu không chính xác",
+            detail="TÃ i khoáº£n hoáº·c máº­t kháº©u khÃ´ng chÃ­nh xÃ¡c",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # 2. Tạo Tokens
-    # Lưu ý: Dù đăng nhập bằng email, token vẫn nên lưu 'sub' là username gốc trong DB để thống nhất
+    # 2. Táº¡o Tokens
+    # LÆ°u Ã½: DÃ¹ Ä‘Äƒng nháº­p báº±ng email, token váº«n nÃªn lÆ°u 'sub' lÃ  username gá»‘c trong DB Ä‘á»ƒ thá»‘ng nháº¥t
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username, "id": user.id}, 
         expires_delta=access_token_expires
     )
     
-    # [NEW] Tạo Opaque Refresh Token
+    # [NEW] Táº¡o Opaque Refresh Token
     refresh_token, refresh_expires_at = create_refresh_token()
 
-    # 3. Update Refresh Token vào DB (Kèm Expiry)
+    # 3. Update Refresh Token vÃ o DB (KÃ¨m Expiry)
     db.execute(
         update(users).where(users.c.id == user.id).values(
             refresh_token=refresh_token,
@@ -134,19 +134,19 @@ async def login_v3(user_data: UserLogin, db: Session = Depends(get_db)):
     )
     db.commit()
 
-    # 4. Lấy Permissions
+    # 4. Láº¥y Permissions
     perms = get_user_permissions(user.id, db)
 
-    # 5. Trả về kết quả chuẩn
+    # 5. Tráº£ vá» káº¿t quáº£ chuáº©n
     data = {
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
         "permissions": list(perms)
     }
-    return success_response(data=data, message="Đăng nhập thành công")
+    return success_response(data=data, message="ÄÄƒng nháº­p thÃ nh cÃ´ng")
 # ==========================================
-# 3. GET ME (Lấy thông tin bản thân)
+# 3. GET ME (Láº¥y thÃ´ng tin báº£n thÃ¢n)
 # ==========================================
 @router.get("/me", response_model=BaseResponse[UserData])
 async def read_users_me_v3(
@@ -154,19 +154,19 @@ async def read_users_me_v3(
     db: Session = Depends(get_db)
 ):
     """
-    Trả về thông tin user hiện tại + danh sách quyền hạn
+    Tráº£ vá» thÃ´ng tin user hiá»‡n táº¡i + danh sÃ¡ch quyá»n háº¡n
     """
-    # 1. Lấy permissions
-    perms = get_user_permissions(current_user.id, db)
+    # 1. Láº¥y permissions
+    perms = get_user_permissions(current_user["id"], db)
     
     # 2. Convert User Object sang Dict
-    # FIX LỖI _mapping: Vì current_user là RowMapping (dict-like), ta chỉ cần ép kiểu dict()
+    # FIX Lá»–I _mapping: VÃ¬ current_user lÃ  RowMapping (dict-like), ta chá»‰ cáº§n Ã©p kiá»ƒu dict()
     try:
         user_dict = dict(current_user)
     except (TypeError, ValueError):
-        # Fallback nếu current_user là Pydantic model hoặc object khác
+        # Fallback náº¿u current_user lÃ  Pydantic model hoáº·c object khÃ¡c
         user_dict = {
-            "id": current_user.id,
+            "id": current_user["id"],
             "username": current_user.username,
             "email": current_user.email,
             "full_name": current_user.full_name,
@@ -174,10 +174,10 @@ async def read_users_me_v3(
             "created_at": current_user.created_at
         }
 
-    # 3. Gắn thêm permissions
+    # 3. Gáº¯n thÃªm permissions
     user_dict["permissions"] = list(perms)
     
-    return success_response(data=user_dict, message="Lấy thông tin thành công")
+    return success_response(data=user_dict, message="Láº¥y thÃ´ng tin thÃ nh cÃ´ng")
 
 # ==========================================
 # 4. REFRESH TOKEN
@@ -188,23 +188,23 @@ async def read_users_me_v3(
 @router.post("/refresh", response_model=BaseResponse[Token])
 async def refresh_token_v3(request: RefreshTokenRequest, db: Session = Depends(get_db)):
     """
-    Refresh Access Token bằng Opaque Refresh Token (Stateful).
+    Refresh Access Token báº±ng Opaque Refresh Token (Stateful).
     """
     token = request.refresh_token
     
-    # 1. Tìm User sở hữu token này
+    # 1. TÃ¬m User sá»Ÿ há»¯u token nÃ y
     user = db.execute(select(users).where(users.c.refresh_token == token)).mappings().fetchone()
     
     # 2. Validate
     if not user:
-         raise HTTPException(status_code=401, detail="Refresh token không hợp lệ (Không tìm thấy).")
+         raise HTTPException(status_code=401, detail="Refresh token khÃ´ng há»£p lá»‡ (KhÃ´ng tÃ¬m tháº¥y).")
          
     # Check Expiration
     from datetime import datetime
     if not user.refresh_token_expires_at or user.refresh_token_expires_at < datetime.utcnow():
-        raise HTTPException(status_code=401, detail="Refresh token đã hết hạn. Vui lòng đăng nhập lại.")
+        raise HTTPException(status_code=401, detail="Refresh token Ä‘Ã£ háº¿t háº¡n. Vui lÃ²ng Ä‘Äƒng nháº­p láº¡i.")
 
-    # 3. Token Rotation (Bảo mật: Đổi token mới để tránh Replay Attack)
+    # 3. Token Rotation (Báº£o máº­t: Äá»•i token má»›i Ä‘á»ƒ trÃ¡nh Replay Attack)
     new_refresh_token, new_expires_at = create_refresh_token()
     
     db.execute(
@@ -215,18 +215,18 @@ async def refresh_token_v3(request: RefreshTokenRequest, db: Session = Depends(g
     )
     db.commit()
 
-    # 4. Tạo Access Token mới
+    # 4. Táº¡o Access Token má»›i
     access_token = create_access_token(data={"sub": user.username, "id": user.id})
     
     data = {
         "access_token": access_token,
-        "refresh_token": new_refresh_token, # Trả về token mới
+        "refresh_token": new_refresh_token, # Tráº£ vá» token má»›i
         "token_type": "bearer"
     }
-    return success_response(data=data, message="Làm mới token thành công")
+    return success_response(data=data, message="LÃ m má»›i token thÃ nh cÃ´ng")
 
 # ==========================================
-# 5. LOGOUT (ĐĂNG XUẤT)
+# 5. LOGOUT (ÄÄ‚NG XUáº¤T)
 # ==========================================
 @router.post("/logout", response_model=BaseResponse)
 async def logout_v3(
@@ -234,21 +234,21 @@ async def logout_v3(
     db: Session = Depends(get_db)
 ):
     """
-    Đăng xuất người dùng: Xóa Refresh Token trong Database.
-    Client cũng cần xóa Access/Refresh Token ở localStorage/Cookies.
+    ÄÄƒng xuáº¥t ngÆ°á»i dÃ¹ng: XÃ³a Refresh Token trong Database.
+    Client cÅ©ng cáº§n xÃ³a Access/Refresh Token á»Ÿ localStorage/Cookies.
     """
     try:
-        # Set refresh_token = NULL cho user hiện tại
+        # Set refresh_token = NULL cho user hiá»‡n táº¡i
         db.execute(
-            update(users).where(users.c.id == current_user.id).values(
+            update(users).where(users.c.id == current_user["id"]).values(
                 refresh_token=None,
                 refresh_token_expires_at=None
             )
         )
         db.commit()
         
-        return success_response(data=None, message="Đăng xuất thành công")
+        return success_response(data=None, message="ÄÄƒng xuáº¥t thÃ nh cÃ´ng")
         
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=f"Lỗi đăng xuất: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Lá»—i Ä‘Äƒng xuáº¥t: {str(e)}")

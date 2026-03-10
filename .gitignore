@@ -1,67 +1,62 @@
-# Python related
+﻿# Python
 __pycache__/
 *.py[cod]
 *$py.class
 
 # Virtual environments
-venv/
 .venv/
+venv/
 env/
 ENV/
 myenv/
 Scripts/
 
-# Distribution / packaging
+# Build and packaging
 build/
 dist/
 *.egg-info/
 .eggs/
 *.egg
+*.whl
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage
+# Test and tooling caches
 .coverage
 .pytest_cache/
-nosetests.xml
 coverage.xml
 htmlcov/
-
-# Type checkers / linters / caches
 .mypy_cache/
 .pyre/
 .pytype/
 .ruff_cache/
 
-# IDEs and editors
+# IDE and OS files
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
-
-# OS files
 .DS_Store
 Thumbs.db
 
-# Environment variables
+# Environment files
 .env
 .env.*
-.envtemplate
-# Jupyter
-.ipynb_checkpoints
+!.env.example
 
-# Local model & storage directories
-ollama_models/
-qdrant_storage/
-qdrant_storage/*
-postgres_data/*
-# Databases, logs, and build artifacts
-*.db
-*.sqlite
+# Logs and runtime artifacts
+logs/
 *.log
-*.whl
+app/app.log
 
-# Optional: add `data/` if you want to ignore datasets
-# data/
+# Local storage volumes
+storage/
+postgres_data/
+qdrant_storage/
+redis_data/
+ollama_models/
+
+# Data artifacts
+data/cache/
+data/processed/
+
+# Jupyter
+.ipynb_checkpoints/

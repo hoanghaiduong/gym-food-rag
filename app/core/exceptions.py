@@ -1,41 +1,46 @@
-from fastapi import Request, status
-from fastapi.responses import JSONResponse
+﻿import logging
+
+from fastapi import Request
 from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
+from fastapi.responses import JSONResponse
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
-import logging
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from app.core.response import error_response
+
 
 logger = logging.getLogger(__name__)
 
-def create_error_response(status_code: int, message: str, detail: str = None):
+
+def create_error_response(status_code: int, message: str, detail: str | None = None):
     return JSONResponse(
         status_code=status_code,
-        content={
-            "status": "error",
-            "code": status_code,
-            "message": message,
-            "detail": detail
-        },
+        content=error_response(message=message, code=status_code, detail=detail),
     )
+
 
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
     return create_error_response(exc.status_code, exc.detail)
 
+
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    error_msg = exc.errors()[0].get("msg") if exc.errors() else "Invalid data"
     return create_error_response(422, "Validation Error", str(exc.errors()))
 
+
 async def db_connection_handler(request: Request, exc: OperationalError):
-    logger.error(f"DB Connection Failed: {exc}")
+    logger.error("DB Connection Failed: %s", exc)
     return create_error_response(503, "Database connection failed. System under maintenance.")
 
+
 async def db_query_handler(request: Request, exc: SQLAlchemyError):
-    logger.error(f"SQL Error: {exc}")
+    logger.error("SQL Error: %s", exc)
     return create_error_response(500, "Database query error.")
 
+
 async def global_handler(request: Request, exc: Exception):
-    logger.error(f"Unhandled Error: {exc}", exc_info=True)
+    logger.error("Unhandled Error: %s", exc, exc_info=True)
     return create_error_response(500, "Internal Server Error", str(exc))
+
 
 def add_exception_handlers(app):
     app.add_exception_handler(StarletteHTTPException, http_exception_handler)

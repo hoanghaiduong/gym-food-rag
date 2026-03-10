@@ -1,15 +1,13 @@
-version: "3.8"
+﻿version: "3.8"
 
 services:
-  # Service 1: Vector Database (Qdrant)
   qdrant:
     image: qdrant/qdrant:latest
     container_name: gym_qdrant
     ports:
       - "6333:6333"
     volumes:
-      # Sử dụng Bind Mount (lưu trực tiếp ra thư mục hiện tại) để dễ quản lý file
-      - ./qdrant_storage:/qdrant/storage
+      - ./storage/qdrant:/qdrant/storage
     restart: always
 
   # ollama:
@@ -18,9 +16,7 @@ services:
   #   ports:
   #     - "11434:11434"
   #   volumes:
-  #     # Lưu model ra thư mục hiện tại để dễ quản lý file
-  #     - ./ollama_models:/root/.ollama
-  #   # Cấu hình GPU NVIDIA
+  #     - ./storage/ollama:/root/.ollama
   #   deploy:
   #     resources:
   #       reservations:
@@ -29,45 +25,47 @@ services:
   #             count: 1
   #             capabilities: [gpu]
   #   restart: always
+
   postgres:
     image: postgres:15-alpine
     container_name: gym_postgres
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-admin}         # Lấy từ .env hoặc mặc định là admin
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin} # Lấy từ .env hoặc mặc định là admin
-      POSTGRES_DB: ${POSTGRES_DB:-gym_food_db}       # Tên DB mặc định
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      POSTGRES_DB: ${POSTGRES_DB:-gym_food_db}
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data     # Lưu dữ liệu ra ngoài để không mất khi tắt
+      - ./storage/postgres:/var/lib/postgresql/data
     restart: always
-  # --- SERVICE 4: pgAdmin UI (Giao diện quản lý DB) (MỚI) ---
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: gym_pgadmin
     ports:
-      - "5050:80"  # Truy cập UI qua http://localhost:5050
+      - "5050:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@gymfood.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
     depends_on:
       - postgres
     restart: always
+
   redis:
     image: redis/redis-stack:latest
     container_name: gym_redis
     ports:
-      - "6379:6379"  # Port kết nối chính
-      - "8001:8001"  # Port UI (RedisInsight) - Bạn có thể vào http://localhost:8001 để xem dữ liệu
+      - "6379:6379"
+      - "8001:8001"
     volumes:
-      - ./redis_data:/data
+      - ./storage/redis:/data
     restart: always
-  # Service 3: Backend API (FastAPI)
+
   # backend:
   #   build: .
   #   container_name: gym_backend
   #   ports:
-  #     - "7563:8000" # Host Port là 7563, Container Port là 8000
+  #     - "7563:8000"
   #   volumes:
   #     - .:/app
   #     - ./hf_cache:/root/.cache/huggingface

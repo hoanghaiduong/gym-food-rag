@@ -1,0 +1,168 @@
+from __future__ import annotations
+
+from typing import Any, Optional
+
+from app.schemas.nutrition import NutritionRecommendationRequest
+from app.schemas.nutrition_intent import NutritionIntent
+from app.services.nutrition_knowledge_service import ascii_normalize
+from app.services.nutrition_service import NutritionService
+
+from .models import WorkflowTargets
+from .constants import (
+    ACTIVITY_MAP,
+    ALLERGY_MAP,
+    DIETARY_MAP,
+    GENDER_MAP,
+    GOAL_MAP,
+    MEAL_TEMPLATES,
+    STRATEGY_TO_GOAL_FAMILY,
+)
+
+
+class WorkflowProfileTargetsMixin:
+    def normalize_profile_update(self, update_data: dict[str, Any]) -> dict[str, Any]:
+        normalized = {}
+        for field, value in update_data.items():
+            if value is None:
+                continue
+            if field == "gender":
+                normalized[field] = self._normalize_gender(value)
+            elif field == "activity_level":
+                normalized[field] = self._normalize_activity_level(value)
+            elif field == "dietary_preference":
+                normalized[field] = self._normalize_dietary_preference(value)
+            elif field == "target_goal":
+                normalized[field] = self._normalize_goal(value)
+            elif field == "allergies":
+                normalized[field] = ", ".join(self._normalize_allergies(value))
+            else:
+                normalized[field] = value
+        return normalized
+
+    def build_profile(self, current_user: dict[str, Any]) -> dict[str, Any]:
+        return {
+            "user_id": current_user["id"],
+            "username": current_user["username"],
+            "full_name": current_user.get("full_name"),
+            "age": current_user.get("age"),
+            "gender": self._normalize_gender(current_user.get("gender")),
+            "weight": current_user.get("weight"),
+            "height": current_user.get("height"),
+            "activity_level": self._normalize_activity_level(current_user.get("activity_level")),
+            "dietary_preference": self._normalize_dietary_preference(current_user.get("dietary_preference")),
+            "allergies": current_user.get("allergies"),
+            "target_goal": self._normalize_goal(current_user.get("target_goal")),
+            "allergy_tags": self._normalize_allergies(current_user.get("allergies")),
+        }
+
+    def _normalize_goal(self, value: Any) -> Optional[str]:
+        normalized = ascii_normalize(str(value or "")).replace(" ", "_")
+        return GOAL_MAP.get(normalized, "maintain" if normalized else None)
+
+    def _normalize_planning_strategy(self, value: Any) -> Optional[str]:
+        normalized = ascii_normalize(str(value or "")).replace(" ", "_")
+        if not normalized:
+            return None
+        return normalized if normalized in STRATEGY_TO_GOAL_FAMILY else None
+
+    def _resolve_planning_strategy(
+        self,
+        profile: dict[str, Any],
+        intent: Optional[NutritionIntent] = None,
+    ) -> Optional[str]:
+        return (
+            self._normalize_planning_strategy(profile.get("planning_strategy"))
+            or self._normalize_planning_strategy(getattr(intent, "planning_strategy", None))
+        )
+
+    def _resolve_goal_family(
+        self,
+        profile: dict[str, Any],
+        intent: Optional[NutritionIntent] = None,
+    ) -> str:
+        strategy = self._resolve_planning_strategy(profile, intent)
+        if strategy:
+            return STRATEGY_TO_GOAL_FAMILY.get(strategy, "maintain")
+        return self._normalize_goal(profile.get("target_goal")) or "maintain"
+
+    def _normalize_gender(self, value: Any) -> Optional[str]:
+        normalized = ascii_normalize(str(value or ""))
+        return GENDER_MAP.get(normalized, normalized or None)
+
+    def _normalize_activity_level(self, value: Any) -> Optional[str]:
+        normalized = ascii_normalize(str(value or "")).replace(" ", "_")
+        return ACTIVITY_MAP.get(normalized, "moderate" if normalized else None)
+
+    def _normalize_dietary_preference(self, value: Any) -> Optional[str]:
+        normalized = ascii_normalize(str(value or "")).replace(" ", "_")
+        return DIETARY_MAP.get(normalized, "omnivore" if normalized else None)
+
+    def _normalize_allergies(self, value: Any) -> list[str]:
+        if value is None:
+            return []
+        if isinstance(value, list):
+            raw_items = value
+        else:
+            raw_items = str(value).replace(";", ",").replace("/", ",").split(",")
+
+        tags: list[str] = []
+        for item in raw_items:
+            normalized = ascii_normalize(item).replace(" ", "_")
+            if not normalized:
+                continue
+            tags.append(ALLERGY_MAP.get(normalized, normalized))
+        return sorted(set(tags))
+
+    def _compute_targets(
+        self,
+        profile: dict[str, Any],
+        request: NutritionRecommendationRequest,
+    ) -> WorkflowTargets:
+        missing_fields = [
+            field
+            for field in ["age", "gender", "weight", "height", "activity_level"]
+            if not profile.get(field)
+        ]
+        if missing_fields:
+            raise ValueError(
+                "Missing profile fields for nutrition planning: " + ", ".join(missing_fields)
+            )
+        goal_family = self._resolve_goal_family(profile)
+        planning_strategy = self._resolve_planning_strategy(profile)
+
+        tdee = NutritionService.calculate_tdee(
+            age=int(profile["age"]),
+            gender=str(profile["gender"]),
+            weight=float(profile["weight"]),
+            height=float(profile["height"]),
+            activity_level=str(profile["activity_level"]),
+        )
+        macros = NutritionService.get_macro_targets(
+            tdee,
+            goal_family,
+            dietary_preference=str(profile.get("dietary_preference", "omnivore")),
+            weight=float(profile["weight"]),
+            strategy=planning_strategy,
+        )
+        meal_targets = []
+        for meal_name, ratio in MEAL_TEMPLATES.get(request.meal_count, MEAL_TEMPLATES[3]):
+            meal_targets.append(
+                {
+                    "meal_name": meal_name,
+                    "calories": round(macros["calories"] * ratio, 1),
+                    "protein_g": round(macros["protein"] * ratio, 1),
+                    "carbs_g": round(macros["carbs"] * ratio, 1),
+                    "fat_g": round(macros["fat"] * ratio, 1),
+                }
+            )
+
+        return {
+            "tdee": round(tdee, 1),
+            "daily_calories": round(macros["calories"], 1),
+            "protein_g": round(macros["protein"], 1),
+            "carbs_g": round(macros["carbs"], 1),
+            "fat_g": round(macros["fat"], 1),
+            "meal_targets": meal_targets,
+            "calorie_tolerance_pct": request.calorie_tolerance_pct,
+            "macro_tolerance_pct": request.macro_tolerance_pct,
+        }

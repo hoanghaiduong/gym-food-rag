@@ -1,7 +1,7 @@
 import os
 from openai import OpenAI
 import requests
-import google.generativeai as genai
+from google import genai
 from app.core.config import settings
 from dotenv import load_dotenv
 
@@ -14,23 +14,26 @@ class LLMService:
     """
     def __init__(self):
         # 1. Load cấu hình Backend
-        self.backend = os.getenv("LLM_BACKEND", "gemini").lower()
+        self.backend = os.getenv("LLM_BACKEND", "ollama").lower()
         
         # 2. Cấu hình Gemini (Luôn load để dùng cho Embedding cũ hoặc backup)
         try:
-            # Dùng settings hoặc os.getenv đều được, ưu tiên os.getenv cho linh hoạt Docker
             api_key = os.getenv("GOOGLE_API_KEY") or settings.GOOGLE_API_KEY
             if api_key:
-                genai.configure(api_key=api_key)
-                self.gemini_model = genai.GenerativeModel('gemini-2.5-flash')
+                self.gemini_client = genai.Client(api_key=api_key)
+                self.gemini_model_name = 'gemini-2.5-flash'
                 self.embedding_model = 'models/text-embedding-004'
+                print("☁️ [System] Đã kích hoạt Gemini Client.")
+            else:
+                self.gemini_client = None
         except Exception as e:
             print(f"⚠️ [LLM Service] Cảnh báo cấu hình Gemini: {e}")
+            self.gemini_client = None
 
         # 3. Cấu hình Ollama (Quan trọng cho Docker)
         # Lưu ý: Trong Docker, URL này thường là http://ollama:11434
         self.ollama_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        self.ollama_model = os.getenv("OLLAMA_MODEL", "llama3.1")
+        self.ollama_model = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
 
         print(f"⚙️ [LLM Service] Backend đang chạy: {self.backend.upper()}")
         if self.backend == "ollama":
@@ -78,13 +81,15 @@ class LLMService:
     # --- METHOD 3: EMBEDDING CŨ (LEGACY) ---
     def get_embedding(self, text: str) -> list:
         try:
+            if not hasattr(self, 'gemini_client') or self.gemini_client is None:
+                print("⚠️ No Gemini client for embedding")
+                return []
             clean_text = text.replace("\n", " ")
-            result = genai.embed_content(
+            result = self.gemini_client.models.embed_content(
                 model=self.embedding_model,
-                content=clean_text,
-                task_type="retrieval_document"
+                contents=clean_text,
             )
-            return result['embedding']
+            return result.embedding if hasattr(result, 'embedding') else result.get('embedding', [])
         except Exception as e:
             print(f"❌ Lỗi Embedding (Gemini Legacy): {e}")
             return []
@@ -93,10 +98,13 @@ class LLMService:
     def _call_gemini(self, prompt: str) -> str:
         # Bỏ try-except hoặc giữ try-except nhưng phải raise lại
         try:
-            if not hasattr(self, 'gemini_model'):
+            if not hasattr(self, 'gemini_client') or self.gemini_client is None:
                 raise ValueError("Chưa cấu hình API Key cho Gemini.")
             
-            response = self.gemini_model.generate_content(prompt)
+            response = self.gemini_client.models.generate_content(
+                model=self.gemini_model_name,
+                contents=prompt,
+            )
             
             # Kiểm tra nếu response bị chặn (safety filter)
             if not response.text:

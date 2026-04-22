@@ -51,7 +51,7 @@ async def register_v3(user_data: UserCreate, db: Session = Depends(get_db)):
     ).fetchone()
     
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email hoáº·c Username Ä‘Ã£ tá»“n táº¡i")
+        raise HTTPException(status_code=400, detail="Email hoặc Username đã tồn tại")
 
     # 2. Táº¡o User (Hash pass & Insert)
     hashed_password = get_password_hash(user_data.password)
@@ -84,7 +84,7 @@ async def register_v3(user_data: UserCreate, db: Session = Depends(get_db)):
         db.commit()
         
         # Tráº£ vá» Global Response
-        return success_response(data=new_user, message="ÄÄƒng kÃ½ thÃ nh cÃ´ng")
+        return success_response(data=new_user, message="Đăng ký thành công")
 
     except Exception as e:
         db.rollback()
@@ -110,7 +110,7 @@ async def login_v3(user_data: UserLogin, db: Session = Depends(get_db)):
     if not user or not verify_password(user_data.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="TÃ i khoáº£n hoáº·c máº­t kháº©u khÃ´ng chÃ­nh xÃ¡c",
+            detail="Tài khoản hoặc mật khẩu không chính xác",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
@@ -144,7 +144,7 @@ async def login_v3(user_data: UserLogin, db: Session = Depends(get_db)):
         "token_type": "bearer",
         "permissions": list(perms)
     }
-    return success_response(data=data, message="ÄÄƒng nháº­p thÃ nh cÃ´ng")
+    return success_response(data=data, message="Đăng nhập thành công")
 # ==========================================
 # 3. GET ME (Láº¥y thÃ´ng tin báº£n thÃ¢n)
 # ==========================================
@@ -177,7 +177,7 @@ async def read_users_me_v3(
     # 3. Gáº¯n thÃªm permissions
     user_dict["permissions"] = list(perms)
     
-    return success_response(data=user_dict, message="Láº¥y thÃ´ng tin thÃ nh cÃ´ng")
+    return success_response(data=user_dict, message="Lấy thông tin thành công")
 
 # ==========================================
 # 4. REFRESH TOKEN
@@ -197,7 +197,7 @@ async def refresh_token_v3(request: RefreshTokenRequest, db: Session = Depends(g
     
     # 2. Validate
     if not user:
-         raise HTTPException(status_code=401, detail="Refresh token khÃ´ng há»£p lá»‡ (KhÃ´ng tÃ¬m tháº¥y).")
+         raise HTTPException(status_code=401, detail="Refresh token không hợp lệ (Không tìm thấy).")
          
     # Check Expiration
     from datetime import datetime
@@ -223,7 +223,7 @@ async def refresh_token_v3(request: RefreshTokenRequest, db: Session = Depends(g
         "refresh_token": new_refresh_token, # Tráº£ vá» token má»›i
         "token_type": "bearer"
     }
-    return success_response(data=data, message="LÃ m má»›i token thÃ nh cÃ´ng")
+    return success_response(data=data, message="Làm mới token thành công")
 
 # ==========================================
 # 5. LOGOUT (ÄÄ‚NG XUáº¤T)
@@ -247,7 +247,7 @@ async def logout_v3(
         )
         db.commit()
         
-        return success_response(data=None, message="ÄÄƒng xuáº¥t thÃ nh cÃ´ng")
+        return success_response(data=None, message="Đăng xuất thành công")
         
     except Exception as e:
         db.rollback()

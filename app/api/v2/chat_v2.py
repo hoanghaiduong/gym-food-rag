@@ -24,7 +24,7 @@ router = APIRouter()
 QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 # Đảm bảo tên collection khớp với bên admin.py
-COLLECTION_NAME_V2 = os.getenv("COLLECTION_NAME", "gym_food_hybrid_v1")
+COLLECTION_NAME_V2 = os.getenv("COLLECTION_NAME_ACTIVE") or os.getenv("COLLECTION_NAME", "gym_food_hybrid_v1")
 
 qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 embedder = get_bge_service()
@@ -166,8 +166,9 @@ async def chat_v2(
         # ====================================================
         # 2. VECTOR & CACHE
         # ====================================================
-        query_dense = embedder.embed_dense(request.question)
-        query_sparse = embedder.embed_sparse(request.question)
+        query_embedding = embedder.encode_hybrid(request.question)
+        query_dense = query_embedding.dense
+        query_sparse = query_embedding.sparse
 
         cached_answer = cache_service.check_cache(query_dense)
         

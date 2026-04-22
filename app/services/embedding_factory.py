@@ -1,7 +1,7 @@
 import os
 import sys
 from typing import List
-import google.generativeai as genai
+from google import genai
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 import torch
@@ -22,23 +22,35 @@ class GeminiEmbeddingService(BaseEmbeddingService):
         if not api_key:
             # Fallback nếu chưa cấu hình, tránh crash app ngay lập tức
             print("⚠️ [Warning] Thiếu GOOGLE_API_KEY. Gemini Service sẽ không hoạt động.")
+            self.client = None
             return
         try:
-            genai.configure(api_key=api_key)
+            self.client = genai.Client(api_key=api_key)
             print("☁️ [System] Đã kích hoạt Gemini Embedding API (Cloud).")
         except Exception as e:
             print(f"❌ [Gemini Error] Lỗi cấu hình: {e}")
+            self.client = None
 
     def embed_batch(self, texts: List[str], is_query: bool = False) -> List[List[float]]:
         if not texts: return []
+        if not hasattr(self, 'client') or self.client is None:
+            print("⚠️ No Gemini client available for embedding")
+            return []
         try:
             # Gemini embedding-004 output 768 chiều
-            result = genai.embed_content(
+            result = self.client.models.embed_content(
                 model="models/text-embedding-004",
-                content=texts,
-                task_type="retrieval_query" if is_query else "retrieval_document"
+                contents=texts if len(texts) > 1 else texts[0],
+                config={
+                    "task_type": "retrieval_query" if is_query else "retrieval_document"
+                }
             )
-            return result['embedding']
+            # New SDK returns list or object; adapt
+            if isinstance(result, list):
+                return result
+            elif hasattr(result, 'embedding'):
+                return [result.embedding] if not isinstance(result.embedding, list) or len(texts) == 1 else result.embedding
+            return result.get('embedding', []) if isinstance(result, dict) else []
         except Exception as e:
             print(f"❌ [Gemini Error] {e}")
             return []

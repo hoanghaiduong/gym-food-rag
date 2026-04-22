@@ -1,0 +1,5 @@
+Chưa cần nâng cấp ngay
+
+Chưa cần đổi model chỉ để “cứu” hệ thống. Với repo hiện tại, ưu tiên sửa deterministic retrieval/rerank trước.
+Chưa cần chạy lại full retrieval 300 ngay. Slice khó còn đỏ thì full run chỉ tốn thời gian.
+Chưa cần lấy judge_production_readiness.py làm gate chính lúc này, vì retrieval exact-id đang chặt hơn chất lượng thực tế của endpoint.

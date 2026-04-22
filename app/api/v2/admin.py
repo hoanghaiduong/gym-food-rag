@@ -14,7 +14,7 @@ router = APIRouter()
 QDRANT_HOST = os.getenv("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.getenv("QDRANT_PORT", 6333))
 # Dùng tên collection mới hỗ trợ Hybrid
-COLLECTION_NAME = os.getenv("COLLECTION_NAME", "gym_food_hybrid_v1")
+COLLECTION_NAME = os.getenv("COLLECTION_NAME_ACTIVE") or os.getenv("COLLECTION_NAME", "gym_food_hybrid_v1")
 
 qdrant_client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 embedder = get_bge_service()
@@ -48,10 +48,11 @@ async def add_food_knowledge(item: NewFoodItem, dependencies=[Depends(verify_adm
 
         # --- [SỬA ĐỔI QUAN TRỌNG] TẠO HYBRID VECTOR ---
         # 1. Vector Ngữ nghĩa (Dense)
-        dense_vector = embedder.embed_dense(content)
+        hybrid_embedding = embedder.encode_hybrid(content)
+        dense_vector = hybrid_embedding.dense
         
         # 2. Vector Từ khóa (Sparse) - Cần thiết cho Hybrid Search
-        sparse_vector = embedder.embed_sparse(content)
+        sparse_vector = hybrid_embedding.sparse
 
         point_id = str(uuid.uuid4())
         

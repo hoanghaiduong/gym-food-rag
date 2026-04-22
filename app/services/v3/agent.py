@@ -60,21 +60,54 @@ class GymAgentV3:
 
     async def call_model(self, state: AgentState):
         messages = state["messages"]
+        user_profile = state.get("user_profile", {})
+        
+        # 1. Tạo System Prompt động với User Context
+        dynamic_system = HARDCORE_SYSTEM_PROMPT + "\n\n[USER CONTEXT]\n"
+        if user_profile:
+            dynamic_system += f"- Độ tuổi: {user_profile.get('age', 'N/A')}\n"
+            dynamic_system += f"- Cân nặng: {user_profile.get('weight', 'N/A')} kg\n"
+            dynamic_system += f"- Mục tiêu: {user_profile.get('target_goal', 'Duy trì')}\n"
+            dynamic_system += f"- Dị ứng: {user_profile.get('allergies', 'Không')}\n"
+            dynamic_system += f"- Chế độ ăn ưu tiên: {user_profile.get('dietary_preference', 'Bình tĩnh')}\n"
+            if 'tdee' in user_profile:
+                dynamic_system += f"- Tổng Calo tiêu hao (TDEE): {user_profile['tdee']} kcal\n"
+            if 'macros' in user_profile:
+                m = user_profile['macros']
+                dynamic_system += f"- Macro tối ưu/ngày: {m.get('calories')} kcal, Đạm: {m.get('protein')}g, Carb: {m.get('carbs')}g, Béo: {m.get('fat')}g\n"
+        
+        # 2. Xử lý System Message
         if not messages or not isinstance(messages[0], SystemMessage):
-            messages = [SystemMessage(content=HARDCORE_SYSTEM_PROMPT)] + messages
+            messages = [SystemMessage(content=dynamic_system)] + messages
+        else:
+            # Ghi đè SystemMessage cũ bằng phiên bản mới nhất
+            messages[0] = SystemMessage(content=dynamic_system)
         
         response = await self.llm_with_tools.ainvoke(messages)
         return {"messages": [response]}
 
-    async def process_question(self, session_id: str, question: str):
-        config = {"configurable": {"thread_id": session_id}}
+    async def process_question(self, session_id: str, question: str, user_dict: dict = None):
+        if user_dict is None:
+            user_dict = {}
+        config = {
+            "configurable": {"thread_id": session_id},
+            "recursion_limit": 10
+        }
         input_msg = HumanMessage(content=question)
         
-        final_state = await self.app.ainvoke(
-            {"messages": [input_msg]}, 
-            config=config
-        )
-        return final_state["messages"][-1].content
+        try:
+            final_state = await self.app.ainvoke(
+                {
+                    "messages": [input_msg],
+                    "user_profile": user_dict
+                }, 
+                config=config
+            )
+            return final_state["messages"][-1].content
+        except Exception as e:
+            if "recursion" in str(e).lower():
+                return "Xin lỗi bạn, yêu cầu cân bằng dinh dưỡng này quá phức tạp và tôi không thể tìm được cấu trúc thực đơn tối ưu trong thời gian giới hạn. Hãy thử nới lỏng các yêu cầu (VD: Không cần chính xác 100% macro) hoặc hỏi một câu khác nhé!"
+            raise e
 
 # Singleton Instance
 # agent_service_v3 = GymAgentV3()

@@ -4,16 +4,18 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.api.router import api_router
 from app.api.v2 import system
 from app.core.config import settings
 from app.core.exceptions import add_exception_handlers
-from app.core.paths import LOG_FILE_PATH
+from app.core.paths import LOG_FILE_PATH, STORAGE_DIR
 from app.core.response import BaseResponse, success_response
 
 
 LOG_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
+STORAGE_DIR.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -45,6 +47,7 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
+app.mount("/assets", StaticFiles(directory=STORAGE_DIR), name="assets")
 
 
 @app.get("/", response_model=BaseResponse[dict])

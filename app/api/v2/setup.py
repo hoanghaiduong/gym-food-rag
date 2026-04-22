@@ -1,6 +1,6 @@
 ﻿import os
 
-import google.generativeai as genai
+from google import genai
 from dotenv import set_key
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -326,9 +326,11 @@ async def save_vector_config(config: VectorConfig):
 @router.post("/step4/test", dependencies=[Depends(verify_admin)], response_model=BaseResponse[dict])
 async def test_llm_connection(config: LLMConfig):
     try:
-        genai.configure(api_key=config.api_key)
-        model = genai.GenerativeModel(config.model_name)
-        response = model.generate_content("Hello")
+        client = genai.Client(api_key=config.api_key)
+        response = client.models.generate_content(
+            model=config.model_name,
+            contents="Hello",
+        )
         if response.text:
             return success_response(message="LLM connected successfully.")
         raise ValueError("Empty response")

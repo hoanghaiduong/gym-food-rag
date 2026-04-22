@@ -35,6 +35,14 @@ class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     password: Optional[str] = None
     is_active: Optional[bool] = None
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    weight: Optional[float] = None
+    height: Optional[float] = None
+    activity_level: Optional[str] = None
+    dietary_preference: Optional[str] = None
+    allergies: Optional[str] = None
+    target_goal: Optional[str] = None
 
 class UserResponse(BaseModel):
     id: int
@@ -43,6 +51,14 @@ class UserResponse(BaseModel):
     full_name: Optional[str]
     is_active: bool
     created_at: datetime
+    age: Optional[int] = None
+    gender: Optional[str] = None
+    weight: Optional[float] = None
+    height: Optional[float] = None
+    activity_level: Optional[str] = None
+    dietary_preference: Optional[str] = None
+    allergies: Optional[str] = None
+    target_goal: Optional[str] = None
     
     class Config:
         from_attributes = True

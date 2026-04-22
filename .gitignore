@@ -53,7 +53,7 @@ postgres_data/
 qdrant_storage/
 redis_data/
 ollama_models/
-
+assets/
 # Data artifacts
 data/cache/
 data/processed/

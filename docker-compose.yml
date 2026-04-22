@@ -10,21 +10,14 @@ services:
       - ./storage/qdrant:/qdrant/storage
     restart: always
 
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: gym_ollama
-  #   ports:
-  #     - "11434:11434"
-  #   volumes:
-  #     - ./storage/ollama:/root/.ollama
-  #   deploy:
-  #     resources:
-  #       reservations:
-  #         devices:
-  #           - driver: nvidia
-  #             count: 1
-  #             capabilities: [gpu]
-  #   restart: always
+  ollama:
+    image: ollama/ollama:latest
+    container_name: gym_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./storage/ollama:/root/.ollama
+    restart: always
 
   postgres:
     image: postgres:15-alpine

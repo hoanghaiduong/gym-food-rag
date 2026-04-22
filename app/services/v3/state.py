@@ -1,6 +1,7 @@
-from typing import Annotated, TypedDict,List
+from typing import Annotated, TypedDict, List, Dict, Any
 from langgraph.graph.message import add_messages
 
-# State của Agent: Đơn giản là một danh sách tin nhắn được cộng dồn
+# State của Agent: Lưu lịch sử chat và context của user
 class AgentState(TypedDict):
     messages: Annotated[List, add_messages]
+    user_profile: Dict[str, Any]

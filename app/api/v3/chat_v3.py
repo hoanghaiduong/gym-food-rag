@@ -9,12 +9,14 @@ from app.core.response import success_response
 from app.services.history_service import HistoryService
 from app.services.cache_service import cache_service
 from app.services.embedding_bge_service import get_bge_service
+from app.services.nutrition_intent_service import nutrition_intent_service
 
 # Import Agent V3
 from app.services.v3.agent import agent_service_v3
+from app.services.nutrition_service import NutritionService
 
 router = APIRouter()
-# embedder = get_bge_service() # Singleton Embedder
+embedder = get_bge_service()  # Singleton Embedder
 
 class ChatRequestV3(BaseModel):
     question: str
@@ -38,6 +40,29 @@ async def chat_agent_v3(
         session_id = request.session_id
         if not session_id:
             session_id = history_service.create_session(current_user['id'], request.question)
+
+        user_dict = dict(current_user)
+        clarification = nutrition_intent_service.get_chat_clarification(user_dict, request.question)
+        if clarification:
+            answer = clarification["question"]
+            background_tasks.add_task(
+                history_service.save_interaction,
+                user_id=current_user['id'],
+                session_id=session_id,
+                question=request.question,
+                answer=answer,
+                sources=["Nutrition Intent Clarifier"]
+            )
+            return success_response(
+                data={
+                    "answer": answer,
+                    "session_id": session_id,
+                    "engine": "Nutrition Intent Clarifier",
+                    "context_used": [],
+                    "clarification": clarification,
+                },
+                message="Cần làm rõ ý định trước khi tư vấn."
+            )
 
         # ====================================================
         # 2. LỚP CACHE (TỐC ĐỘ CAO)
@@ -70,9 +95,30 @@ async def chat_agent_v3(
         # ====================================================
         # 3. LỚP AGENT (THÔNG MINH - LOCAL LLM)
         # ====================================================
-        # Nếu không có Cache, gọi Agent
-        # Agent sẽ tự quyết định gọi Tool (trong Tool mới dùng Hybrid Search Dense + Sparse)
-        answer = await agent_service_v3.process_question(session_id, request.question)
+        # A. Chuẩn bị User Profile
+        user_dict = dict(current_user)
+        # Tính toán TDEE và Macros nếu đủ dữ liệu
+        if user_dict.get('weight') and user_dict.get('height') and user_dict.get('age') and user_dict.get('gender'):
+            try:
+                tdee = NutritionService.calculate_tdee(
+                    age=user_dict['age'],
+                    gender=user_dict['gender'],
+                    weight=user_dict['weight'],
+                    height=user_dict['height'],
+                    activity_level=user_dict.get('activity_level', 'moderate')
+                )
+                user_dict['tdee'] = round(tdee, 0)
+                
+                goal = user_dict.get('target_goal', 'maintain')
+                dietary = user_dict.get('dietary_preference', 'omnivore')
+                user_dict['macros'] = NutritionService.get_macro_targets(
+                    tdee, goal, dietary, user_dict.get('weight')
+                )
+            except Exception as e:
+                print(f"Error calculating TDEE: {e}")
+
+        # B. Gọi Agent xử lý
+        answer = await agent_service_v3.process_question(session_id, request.question, user_dict)
 
         # ====================================================
         # 4. HẬU XỬ LÝ (LƯU LẠI)

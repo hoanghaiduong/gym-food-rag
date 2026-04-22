@@ -13,12 +13,6 @@ router = APIRouter()
 # ==========================================
 # 1. QUẢN LÝ PERMISSIONS (Quyền hạn)
 # ==========================================
-# ==========================================
-# 1. QUẢN LÝ PERMISSIONS (Quyền hạn)
-# ==========================================
-# ==========================================
-# 1. QUẢN LÝ PERMISSIONS (Quyền hạn)
-# ==========================================
 @router.get("/permissions", response_model=BaseResponse[List[PermissionBase]])
 async def list_permissions(
     page: int = 1, 

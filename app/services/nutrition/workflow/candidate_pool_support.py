@@ -16,6 +16,7 @@ _DIRECT_EDIBLE_BUN_TUOI = "bun tuoi"
 _DIRECT_EDIBLE_FRUIT_FAMILY = "fruit_family"
 _DIRECT_EDIBLE_GENERIC_FRUIT_HINTS = {"trai cay", "hoa qua", "fruit"}
 _PRODUCE_ONLY_LOCAL_HINTS = {"rau xanh", "trai cay", "hoa qua"}
+_EXPLICIT_CARB_GENERIC_HINTS = {"gao", "com", "gao lut"}
 _LOCAL_SUPPLEMENT_CHANNEL = "local_supplement"
 _LOCAL_SUPPLEMENT_QUERY_LIMITS = {
     "must_include": 3,
@@ -24,9 +25,26 @@ _LOCAL_SUPPLEMENT_QUERY_LIMITS = {
     "diet_hint": 2,
     "goal_hint": 2,
 }
+_DISH_BACKED_LOCAL_HINTS = {
+    "gao",
+    "com",
+    "gao lut",
+    "trung",
+}
 
 
 class WorkflowCandidatePoolSupportMixin:
+    def _must_include_hint_coverage(
+        self,
+        candidates: list[dict[str, Any]],
+        hints: list[str],
+    ) -> dict[str, bool]:
+        return {
+            hint: any(self._candidate_matches_hint(candidate, hint) for candidate in candidates)
+            for hint in hints
+            if hint
+        }
+
     def _is_produce_only_hint_request(
         self,
         request: NutritionRecommendationRequest,
@@ -244,14 +262,29 @@ class WorkflowCandidatePoolSupportMixin:
         goal = self._resolve_goal_family(profile, intent)
         role_counts = self._pool_role_counts(candidates, goal)
         produce_only_request = self._is_produce_only_hint_request(request, intent)
+        must_include_coverage = self._must_include_hint_coverage(candidates, request.must_include or [])
         must_include_candidates = self._collect_must_include_candidates(candidates, request)
         if produce_only_request:
             if role_counts["produce"] < min(max(len(request.must_include or []), 1), 2):
                 return True
             return bool(request.must_include) and len(must_include_candidates) < min(len(request.must_include), 2)
 
+        missing_specific_hints = [
+            hint
+            for hint, covered in must_include_coverage.items()
+            if not covered
+            and (
+                not self._is_generic_support_hint(hint)
+                or ascii_normalize(hint) in _EXPLICIT_CARB_GENERIC_HINTS
+            )
+        ]
+        if missing_specific_hints:
+            return True
+
         minimum_protein = 3 if self._is_plant_based_diet(profile.get("dietary_preference")) else 2
         if role_counts["protein"] < minimum_protein or role_counts["carb"] < 1:
+            return True
+        if goal == "lose_weight" and role_counts["produce"] < 1:
             return True
         if self._requires_balanced_health_bias(
             request,
@@ -271,14 +304,21 @@ class WorkflowCandidatePoolSupportMixin:
         source_kind: str,
         limit: int,
         required_role_tags: Optional[list[str]] = None,
+        semantic_hint: Optional[str] = None,
     ) -> list[dict[str, Any]]:
+        normalized_hint = ascii_normalize(semantic_hint or query)
+        entity_types = (
+            ["food", "dish"]
+            if normalized_hint in _DISH_BACKED_LOCAL_HINTS
+            else ["food"]
+        )
         results = self.knowledge.search_local_candidates(
             query,
             limit=limit,
             dietary_preference=profile.get("dietary_preference"),
             allergy_tags=profile.get("allergy_tags"),
             excluded_foods=request.excluded_foods,
-            entity_types=["food"],
+            entity_types=entity_types,
         )
         if required_role_tags:
             required_role_tag_set = set(required_role_tags)
@@ -286,6 +326,12 @@ class WorkflowCandidatePoolSupportMixin:
                 candidate
                 for candidate in results
                 if required_role_tag_set.intersection(set(candidate.get("meal_role_tags") or []))
+            ]
+        if semantic_hint:
+            results = [
+                candidate
+                for candidate in results
+                if self._candidate_matches_hint(candidate, semantic_hint)
             ]
         return [
             self._annotate_local_supplement_candidate(
@@ -313,6 +359,19 @@ class WorkflowCandidatePoolSupportMixin:
 
         goal = self._resolve_goal_family(profile, intent)
         produce_only_request = self._is_produce_only_hint_request(request, intent)
+        primary_role_counts = self._pool_role_counts(filtered_primary, goal)
+        needs_balanced_produce = (
+            not produce_only_request
+            and primary_role_counts["produce"] < 1
+            and (
+                goal == "lose_weight"
+                or self._requires_balanced_health_bias(
+                    request,
+                    intent,
+                    self._resolve_retrieval_strategy(profile, intent),
+                )
+            )
+        )
         supplements: list[dict[str, Any]] = []
 
         for hint in request.must_include:
@@ -332,6 +391,7 @@ class WorkflowCandidatePoolSupportMixin:
                         required_role_tags=["produce_support"]
                         if produce_only_request or ascii_normalize(hint) in _PRODUCE_ONLY_LOCAL_HINTS
                         else None,
+                        semantic_hint=hint,
                     )
                 )
 
@@ -348,6 +408,7 @@ class WorkflowCandidatePoolSupportMixin:
                             required_role_tags=["produce_support"]
                             if produce_only_request or ascii_normalize(hint) in _PRODUCE_ONLY_LOCAL_HINTS
                             else None,
+                            semantic_hint=hint,
                         )
                     )
 
@@ -360,8 +421,23 @@ class WorkflowCandidatePoolSupportMixin:
                     source_kind="bundle_query",
                     limit=_LOCAL_SUPPLEMENT_QUERY_LIMITS["bundle_query"],
                     required_role_tags=["produce_support"] if produce_only_request else None,
+                    semantic_hint=query,
                 )
             )
+
+        if needs_balanced_produce:
+            for query in ["rau luoc", "cai xanh", "rau xanh"]:
+                supplements.extend(
+                    self._search_local_supplement_candidates(
+                        profile,
+                        request,
+                        query=query,
+                        source_kind="balanced_produce",
+                        limit=_LOCAL_SUPPLEMENT_QUERY_LIMITS["bundle_query"],
+                        required_role_tags=["produce_support"],
+                        semantic_hint="rau xanh",
+                    )
+                )
 
         if not produce_only_request:
             diet_local_hints = self._prune_anchor_terms_for_allergies(
@@ -376,6 +452,7 @@ class WorkflowCandidatePoolSupportMixin:
                         query=hint,
                         source_kind="diet_hint",
                         limit=_LOCAL_SUPPLEMENT_QUERY_LIMITS["diet_hint"],
+                        semantic_hint=hint,
                     )
                 )
 
@@ -388,6 +465,7 @@ class WorkflowCandidatePoolSupportMixin:
                             query=variant,
                             source_kind="goal_hint",
                             limit=_LOCAL_SUPPLEMENT_QUERY_LIMITS["goal_hint"],
+                            semantic_hint=hint,
                         )
                     )
 

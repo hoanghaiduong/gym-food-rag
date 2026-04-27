@@ -16,6 +16,7 @@ from scripts.lib.nutrition_bench.common.artifacts import (
     prune_debug_pipeline_runs,
     referenced_debug_roots,
 )
+from scripts.lib.nutrition_bench.common.production_preflight import check_canonical_artifacts
 from scripts.lib.nutrition_bench.retrieval_eval import io as retrieval_io
 
 
@@ -196,6 +197,38 @@ class NutritionArtifactContractTests(unittest.TestCase):
             self.assertEqual({path.name for path in removed}, {"stale_run"})
             self.assertTrue(latest_run.exists())
             self.assertTrue(suite_dir.exists())
+
+    def test_production_preflight_reports_all_missing_canonical_inputs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            artifact_root = Path(tmpdir) / "nutrition_case_runs"
+            artifact_root.mkdir(parents=True, exist_ok=True)
+            (artifact_root / "retrieval_dataset_evaluation.json").write_text("{}", encoding="utf-8")
+
+            result = check_canonical_artifacts(artifact_root=artifact_root)
+
+            self.assertFalse(result.passed)
+            self.assertIn("intent_dataset_evaluation.json", result.missing_filenames)
+            self.assertIn("summary.json", result.missing_filenames)
+
+    def test_production_preflight_rejects_unexpected_root_entries(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            artifact_root = Path(tmpdir) / "nutrition_case_runs"
+            artifact_root.mkdir(parents=True, exist_ok=True)
+            for filename in (
+                "intent_dataset_evaluation.json",
+                "intent_classification_report.json",
+                "retrieval_dataset_lint.json",
+                "retrieval_dataset_evaluation.json",
+                "retrieval_classification_report.json",
+                "summary.json",
+            ):
+                (artifact_root / filename).write_text("{}", encoding="utf-8")
+            (artifact_root / "debug_probe.json").write_text("{}", encoding="utf-8")
+
+            result = check_canonical_artifacts(artifact_root=artifact_root)
+
+            self.assertFalse(result.passed)
+            self.assertEqual([path.name for path in result.unexpected_entries], ["debug_probe.json"])
 
 
 if __name__ == "__main__":

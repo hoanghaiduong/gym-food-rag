@@ -282,13 +282,21 @@ def safe_float(value: Any, default: float | None = 0.0) -> float | None:
 
 
 def preparation_style(name: Any) -> str | None:
+    raw_text = str(name or "").lower()
     normalized = ascii_normalize(name)
     if not normalized:
         return None
     for style, patterns in PREPARATION_PATTERNS:
-        if _contains_any_pattern(normalized, [pattern.strip() for pattern in patterns]):
+        normalized_patterns = [pattern.strip() for pattern in patterns]
+        if "canh" in normalized_patterns and not re.search(r"(?iu)\bcanh\b", raw_text):
+            normalized_patterns = [pattern for pattern in normalized_patterns if pattern != "canh"]
+        if _contains_any_pattern(normalized, normalized_patterns):
             return style
     return None
+
+
+def has_prepared_style(name: Any) -> bool:
+    return preparation_style(name) in PREPARED_STYLE_CODES
 
 
 def canonical_name_key(name: Any) -> str:
@@ -380,15 +388,7 @@ def _is_ready_processed_record(record: dict[str, Any], context: dict[str, str]) 
     normalized_name = context["name"]
     taxonomy_level_1 = context["taxonomy_level_1"]
     taxonomy_level_2 = context["taxonomy_level_2"]
-    cooked_marker_present = _contains_any_pattern(
-        normalized_name,
-        [
-            pattern.strip()
-            for style, patterns in PREPARATION_PATTERNS
-            if style != "raw"
-            for pattern in patterns
-        ],
-    )
+    cooked_marker_present = has_prepared_style(record.get("name"))
     if entity_type == "dish":
         return True
     if _has_raw_state_marker(normalized_name) and not cooked_marker_present:
@@ -413,15 +413,7 @@ def _build_safe_display_name(record: dict[str, Any], consumption_state: str) -> 
         return name
     normalized_name = ascii_normalize(name)
     if consumption_state == CONSUMPTION_STATE_PREPARED_READY:
-        cooked_marker_present = _contains_any_pattern(
-            normalized_name,
-            [
-                pattern.strip()
-                for style, patterns in PREPARATION_PATTERNS
-                if style != "raw"
-                for pattern in patterns
-            ],
-        )
+        cooked_marker_present = has_prepared_style(name)
         if cooked_marker_present:
             cleaned = re.sub(r"(?iu)\b(tươi|tuoi|sống|song|raw|fresh)\b", " ", name)
             cleaned = re.sub(r"\s+,", ",", cleaned)

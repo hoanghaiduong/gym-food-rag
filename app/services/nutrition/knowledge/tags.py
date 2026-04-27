@@ -26,6 +26,10 @@ PLANT_GROUP_KEYWORDS = {
     "raw": ["rau", "quáº£", "cá»§", "ngÅ© cá»‘c", "Ä‘áº­u Ä‘á»—", "háº¡t", "trÃ¡i cÃ¢y"],
     "normalized": ["vegetable", "fruit", "grain", "bean", "legume", "ngu coc", "dau do", "trai cay"],
 }
+TOFU_KEYWORDS = {
+    "raw": [],
+    "normalized": ["dau phu", "dau hu", "tofu", "bean curd"],
+}
 
 
 def contains_keyword(
@@ -104,7 +108,20 @@ def derive_diet_tags(record: dict[str, Any], allergen_tags: Optional[list[str]] 
     if safe_float(record.get("carbs_g")) >= 20:
         tags.append("high_carb")
 
-    is_plant_group = contains_keyword(raw_group, raw_group_tokens, normalized_group, group_tokens, PLANT_GROUP_KEYWORDS) or (
+    is_tofu_like = contains_keyword(
+        raw_combined,
+        raw_combined_tokens,
+        normalized_combined,
+        combined_tokens,
+        TOFU_KEYWORDS,
+    )
+    is_plant_group = is_tofu_like or contains_keyword(
+        raw_group,
+        raw_group_tokens,
+        normalized_group,
+        group_tokens,
+        PLANT_GROUP_KEYWORDS,
+    ) or (
         not group_text and contains_keyword(raw_name, raw_name_tokens, normalized_name, name_tokens, PLANT_GROUP_KEYWORDS)
     )
     has_animal_keyword = contains_keyword(

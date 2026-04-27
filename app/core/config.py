@@ -26,6 +26,10 @@ class Settings(BaseSettings):
 
     LLM_BACKEND: str = "ollama"
     GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MAX_RETRIES: int = 2
+    GEMINI_RETRY_BASE_SECONDS: float = 2.0
+    GEMINI_RETRY_MAX_SECONDS: float = 20.0
+    GEMINI_QUOTA_COOLDOWN_SECONDS: int = 900
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "qwen2.5:3b"
     OLLAMA_REQUEST_TIMEOUT_SECONDS: int = 600

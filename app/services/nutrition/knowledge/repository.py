@@ -5,6 +5,7 @@ from typing import Any, Iterable, Optional
 
 from app.core.config import settings
 
+from .exclusion_matching import normalized_text_matches_exclusion
 from .normalize import ascii_normalize
 from .payloads import payload_to_food
 
@@ -112,7 +113,7 @@ class RepositoryMixin:
                 if not entity_id:
                     continue
                 normalized_name = ascii_normalize(food.get("name"))
-                if any(item and item in normalized_name for item in normalized_exclusions):
+                if any(normalized_text_matches_exclusion(normalized_name, item) for item in normalized_exclusions):
                     continue
                 current = merged.get(entity_id)
                 food["source_channels"] = [channel]

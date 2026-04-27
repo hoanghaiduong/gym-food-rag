@@ -40,6 +40,28 @@ class RetrievalSuiteHintMatchingTests(unittest.TestCase):
 
         self.assertFalse(candidate_matches_benchmark_hint(candidate, "rau xanh"))
 
+    def test_cooked_vegetables_match_greens_family(self) -> None:
+        candidates = [
+            {
+                "entity_id": "eggplant_1",
+                "name": "Ca tim, luoc",
+                "name_en": "Aubergine, boiled",
+                "meal_family_key": "ca tim",
+                "meal_role_tags": ["produce_support"],
+            },
+            {
+                "entity_id": "longbean_1",
+                "name": "Dau dua, luoc",
+                "meal_family_key": "dau dua",
+                "meal_role_tags": ["produce_support"],
+            },
+        ]
+
+        for candidate in candidates:
+            with self.subTest(candidate=candidate["entity_id"]):
+                self.assertTrue(candidate_matches_benchmark_hint(candidate, "rau xanh"))
+                self.assertEqual(candidate_equivalence_family_keys(candidate), ["greens_family"])
+
     def test_real_fish_still_matches_fish_hint(self) -> None:
         candidate = {
             "entity_id": "fish_1",
@@ -116,10 +138,44 @@ class RetrievalSuiteHintMatchingTests(unittest.TestCase):
             "meal_family_key": "muc",
             "meal_role_tags": ["protein_anchor"],
         }
+        corn_candidate = {
+            "entity_id": "corn_1",
+            "name": "Ngo, ca bap, nep, luoc",
+            "name_en": "Corn on cob, boiled",
+            "meal_family_key": "ngo nep",
+            "meal_role_tags": ["carb_anchor"],
+        }
+        carrot_candidate = {
+            "entity_id": "carrot_1",
+            "name": "Ca rot, luoc",
+            "name_en": "Carrot, boiled",
+            "meal_family_key": "ca rot",
+            "meal_role_tags": ["produce_support"],
+        }
+        buffalo_shank_candidate = {
+            "entity_id": "buffalo_1",
+            "name": "Thit trau bap, luoc",
+            "meal_family_key": "thit trau bap",
+            "meal_role_tags": ["protein_anchor"],
+        }
+        nem_chao_candidate = {
+            "entity_id": "nem_1",
+            "name": "Nem chao",
+            "name_en": "Pork skin rolled with rice paper",
+            "meal_family_key": "nem",
+            "meal_role_tags": ["protein_anchor"],
+        }
 
         self.assertEqual(candidate_equivalence_family_keys(rice_candidate), ["rice_family"])
         self.assertEqual(candidate_equivalence_family_keys(banana_candidate), ["fruit_family"])
         self.assertEqual(candidate_equivalence_family_keys(squid_candidate), ["id:squid_1"])
+        self.assertEqual(candidate_equivalence_family_keys(corn_candidate), ["corn_family"])
+        self.assertEqual(candidate_equivalence_family_keys(carrot_candidate), ["root_family"])
+        self.assertEqual(
+            candidate_equivalence_family_keys(buffalo_shank_candidate),
+            ["id:buffalo_1"],
+        )
+        self.assertEqual(candidate_equivalence_family_keys(nem_chao_candidate), ["id:nem_1"])
 
 
 if __name__ == "__main__":

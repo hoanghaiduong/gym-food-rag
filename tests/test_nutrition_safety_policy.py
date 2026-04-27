@@ -33,6 +33,27 @@ class NutritionSafetyPolicyTests(unittest.TestCase):
         self.assertEqual(record["unsafe_output_reason"], "raw_animal_protein")
         self.assertFalse(record["production_retrieval_enabled"])
 
+    def test_raw_chicken_wing_does_not_match_soup_marker(self) -> None:
+        record = enrich_meal_ready_record(
+            {
+                "entity_id": "food_test_chicken_wing_raw",
+                "entity_type": "food",
+                "name": "Thịt gà công nghiệp, cánh, tươi",
+                "group_name": "Thit va san pham che bien",
+                "taxonomy_level_1": "protein_foods",
+                "taxonomy_level_2": "meats",
+                "energy_kcal": 188,
+                "protein_g": 19.1,
+                "carbs_g": 0.0,
+                "fat_g": 12.4,
+            }
+        )
+
+        self.assertEqual(record["consumption_state"], CONSUMPTION_STATE_REQUIRES_PREPARATION)
+        self.assertFalse(record["final_output_allowed"])
+        self.assertEqual(record["unsafe_output_reason"], "raw_animal_protein")
+        self.assertFalse(record["production_retrieval_enabled"])
+
     def test_raw_corn_requires_preparation(self) -> None:
         record = enrich_meal_ready_record(
             {

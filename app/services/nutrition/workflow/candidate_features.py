@@ -4,7 +4,9 @@ import re
 from typing import Any, Optional
 
 from app.schemas.nutrition_intent import NutritionIntent
+from app.services.nutrition.knowledge.hint_matching import candidate_matches_runtime_hint
 from app.services.nutrition_knowledge_service import ascii_normalize, safe_float
+from app.services.nutrition.knowledge.exclusion_matching import normalized_text_matches_exclusion
 
 from .constants import (
     AFFORDABLE_FOOD_KEYWORDS,
@@ -20,7 +22,18 @@ from .constants import (
 
 class WorkflowCandidateFeaturesMixin:
     def _candidate_matches_hint(self, candidate: dict[str, Any], hint: str) -> bool:
-        variants = self._expand_hint_variants(hint)
+        semantic_match = candidate_matches_runtime_hint(candidate, hint)
+        if semantic_match is not None:
+            return semantic_match
+        return self._candidate_matches_hint_variants(candidate, self._expand_hint_variants(hint))
+
+    def _candidate_matches_strict_hint(self, candidate: dict[str, Any], hint: str) -> bool:
+        normalized_hint = ascii_normalize(hint)
+        if not normalized_hint:
+            return False
+        return normalized_text_matches_exclusion(self._candidate_match_text(candidate), normalized_hint)
+
+    def _candidate_match_text(self, candidate: dict[str, Any]) -> str:
         candidate_text = " ".join(
             str(item)
             for item in [
@@ -34,7 +47,10 @@ class WorkflowCandidateFeaturesMixin:
             ]
             if item
         )
-        normalized_text = ascii_normalize(candidate_text)
+        return ascii_normalize(candidate_text)
+
+    def _candidate_matches_hint_variants(self, candidate: dict[str, Any], variants: list[str]) -> bool:
+        normalized_text = self._candidate_match_text(candidate)
         text_tokens = set(re.sub(r"[^a-z0-9]+", " ", normalized_text).split())
         for variant in variants:
             if not variant:
@@ -190,20 +206,22 @@ class WorkflowCandidateFeaturesMixin:
             for keyword in ["hat ", "dau ", "lac", "oc cho", "macca", "hanh nhan"]
         ):
             discouraged_reasons.append("shellfish_specialty")
+        plant_based_prepared_protein = (
+            self._is_plant_based_diet(dietary_preference)
+            and any(keyword in normalized_name for keyword in ["dau phu", "dau hu", "tofu"])
+            and not any(keyword in normalized_name for keyword in ["chien", "ran"])
+        )
         if goal == "lose_weight" and protein >= 15 and fat >= 8 and "low_fat" not in diet_tags:
             if "fish" in allergen_tags and fat <= 12 and energy <= 260:
                 preferred_reasons.append("healthy_fat_protein_support")
-            elif self._is_plant_based_diet(dietary_preference) and any(
-                tag in diet_tags for tag in ("vegetarian", "vegan")
-            ) and fat <= 14:
-                # Vegetarian protein sources (tofu, legumes) commonly have moderate fat
-                # but are essential — treat as acceptable, not discouraged
+            elif plant_based_prepared_protein and fat <= 18 and energy <= 280:
+                # Plain tofu is a practical plant protein even in weight-loss plans.
                 preferred_reasons.append("plant_protein_acceptable_fat")
             else:
                 discouraged_reasons.append("high_fat_protein_for_weight_loss")
         if fat >= 25 and energy >= 250 and not portion_safe_nut_name:
             discouraged_reasons.append("very_high_fat")
-        if portion_safe_nut_name and fat >= 18:
+        if goal == "lose_weight" and portion_safe_nut_name and fat >= 18 and (fat >= 25 or energy >= 280):
             discouraged_reasons.append("seed_nut_heavy")
         if "produce" in diet_tags and not normalized_group.startswith("rau") and carbs < 15 and protein < 8:
             discouraged_reasons.append("weak_produce_anchor")

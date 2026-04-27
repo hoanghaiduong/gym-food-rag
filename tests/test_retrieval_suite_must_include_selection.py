@@ -121,6 +121,37 @@ class RetrievalSuiteMustIncludeSelectionTests(unittest.TestCase):
         self.assertEqual(list(result.selected_hints), ["rau xanh", "trai cay"])
         self.assertEqual(list(result.deferred_hints), [])
 
+    def test_selection_adds_role_diverse_fallback_when_seed_hints_are_unavailable(self) -> None:
+        candidates = (
+            {
+                "entity_id": "greens_1",
+                "name": "Sup lo xanh",
+                "group_name": "Rau",
+                "meal_role_tags": ["produce_support"],
+            },
+            {
+                "entity_id": "rice_1",
+                "name": "Com trang",
+                "meal_role_tags": ["carb_anchor"],
+            },
+        )
+
+        with patch(
+            "scripts.lib.nutrition_bench.retrieval_suite.must_include_selection._cached_candidate_pool",
+            return_value=candidates,
+        ):
+            result = select_benchmark_must_include(
+                dietary_preference="vegan",
+                allergy_tags=["shellfish"],
+                excluded_foods=["tom", "cua", "oc"],
+                seed_hints=["rau xanh", "dau xanh", "yen mach"],
+                target_count=2,
+            )
+
+        self.assertEqual(list(result.selected_hints), ["rau xanh", "gao"])
+        self.assertEqual(list(result.fallback_hints), ["gao"])
+        self.assertIn("dau xanh", result.unavailable_hints)
+
 
 if __name__ == "__main__":
     unittest.main()

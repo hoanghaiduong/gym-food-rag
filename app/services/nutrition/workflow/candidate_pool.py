@@ -125,13 +125,13 @@ class WorkflowCandidatePoolMixin:
             filtered = [
                 item
                 for item in filtered
-                if not any(self._candidate_matches_hint(item, hint) for hint in request.excluded_foods)
+                if not any(self._candidate_matches_strict_hint(item, hint) for hint in request.excluded_foods)
             ]
         if intent and intent.soft_preferences.disliked_foods:
             filtered = [
                 item
                 for item in filtered
-                if not any(self._candidate_matches_hint(item, hint) for hint in intent.soft_preferences.disliked_foods)
+                if not any(self._candidate_matches_strict_hint(item, hint) for hint in intent.soft_preferences.disliked_foods)
             ]
         # Keep true snack/dessert/beverage intrusions out of full meal plans.
         # `pre_workout_friendly` is not a negative role here: many staple carbs
@@ -144,6 +144,7 @@ class WorkflowCandidatePoolMixin:
                 tag in negative_role_tags
                 for tag in (item.get("meal_role_tags") or []) + (item.get("diet_tags") or [])
             )
+            or self._is_healthy_fat_support(item, goal)
             or any(
                 self._candidate_matches_hint(item, hint)
                 for hint in (getattr(request, "must_include", []) or [])

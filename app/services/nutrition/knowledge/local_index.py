@@ -6,6 +6,9 @@ from typing import Any, Iterable, Optional
 
 from app.core.paths import PROCESSED_DATA_DIR
 
+from .diet_compatibility import matches_dietary_preference
+from .exclusion_matching import normalized_text_matches_exclusion
+from .hint_matching import candidate_matches_runtime_hint
 from .normalize import ascii_normalize, safe_float
 from .payloads import build_vector_payload, is_qdrant_ready_record, payload_to_food
 
@@ -77,17 +80,12 @@ class LocalIndexMixin:
         self._all_records_by_name = all_records_by_name
         self._all_records_by_family_key = all_records_by_family_key
 
-    def _matches_preference_locally(self, dietary_preference: Optional[str], diet_tags: list[str]) -> bool:
-        preference = ascii_normalize(dietary_preference)
-        if not preference or preference == "omnivore":
-            return True
-        if preference == "vegetarian":
-            return any(tag in diet_tags for tag in ["vegetarian", "vegan"])
-        if preference == "vegan":
-            return "vegan" in diet_tags
-        if preference == "pescatarian":
-            return any(tag in diet_tags for tag in ["pescatarian", "vegetarian", "vegan"])
-        return True
+    def _matches_preference_locally(self, dietary_preference: Optional[str], payload: dict[str, Any]) -> bool:
+        return matches_dietary_preference(
+            dietary_preference,
+            payload.get("diet_tags") or [],
+            payload,
+        )
 
     def _payload_matches_filters(
         self,
@@ -109,7 +107,7 @@ class LocalIndexMixin:
         if entity_type_values and payload.get("entity_type") not in entity_type_values:
             return False
 
-        if not self._matches_preference_locally(dietary_preference, payload.get("diet_tags") or []):
+        if not self._matches_preference_locally(dietary_preference, payload):
             return False
 
         allergy_values = {item for item in (allergy_tags or []) if item}
@@ -118,7 +116,7 @@ class LocalIndexMixin:
 
         normalized_name = ascii_normalize(payload.get("name"))
         normalized_exclusions = [ascii_normalize(item) for item in (excluded_foods or []) if item]
-        if any(item and item in normalized_name for item in normalized_exclusions):
+        if any(normalized_text_matches_exclusion(normalized_name, item) for item in normalized_exclusions):
             return False
 
         return True
@@ -188,6 +186,10 @@ class LocalIndexMixin:
             ):
                 continue
 
+            semantic_hint_match = candidate_matches_runtime_hint(payload, normalized_query)
+            if semantic_hint_match is False:
+                continue
+
             overlap = self._name_overlap_score(normalized_query, payload)
             anchor_overlap = self._phrase_alignment_score(payload, [normalized_query])
             candidate_name = ascii_normalize(payload.get("name"))
@@ -195,6 +197,7 @@ class LocalIndexMixin:
             exact_match = 1.0 if candidate_name == normalized_query else 0.0
             contains_match = 1.0 if normalized_query in candidate_name or candidate_name in normalized_query else 0.0
             anchor_contains_match = 1.0 if normalized_query in anchor_text else 0.0
+            semantic_bonus = 1.0 if semantic_hint_match is True else 0.0
             role_bonus = 0.0
             if normalized_query in {"rau", "rau xanh", "rau luoc", "trai cay", "hoa qua"}:
                 role_bonus = 1.0 if "produce_support" in (payload.get("meal_role_tags") or []) else 0.0
@@ -203,6 +206,21 @@ class LocalIndexMixin:
             elif normalized_query in {"ca", "trung", "thit ga", "dau hu", "dau nanh"}:
                 role_bonus = 1.0 if "protein_anchor" in (payload.get("meal_role_tags") or []) else 0.0
             quality = safe_float(payload.get("quality_score"), 0.0)
+            carbs = safe_float(payload.get("carbs_g"), 0.0)
+            protein = safe_float(payload.get("protein_g"), 0.0)
+            fat = safe_float(payload.get("fat_g"), 0.0)
+            staple_bonus = 0.0
+            mixed_meal_penalty = 0.0
+            if normalized_query in {"gao", "com", "gao lut"} and semantic_hint_match is True:
+                staple_bonus += 0.30 * min(carbs / 60.0, 1.2)
+                if fat <= 6:
+                    staple_bonus += 0.35
+                if protein <= 10:
+                    staple_bonus += 0.15
+                if fat >= 15:
+                    mixed_meal_penalty += 0.45
+                if protein >= 20 and fat >= 12:
+                    mixed_meal_penalty += 0.20
             score = (
                 0.35 * overlap
                 + 0.20 * anchor_overlap
@@ -210,7 +228,10 @@ class LocalIndexMixin:
                 + 0.10 * contains_match
                 + 0.10 * anchor_contains_match
                 + 0.05 * role_bonus
+                + 0.20 * semantic_bonus
+                + staple_bonus
                 + 0.10 * quality
+                - mixed_meal_penalty
             )
             if score <= 0:
                 continue

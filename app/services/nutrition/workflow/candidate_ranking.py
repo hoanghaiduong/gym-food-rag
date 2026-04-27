@@ -216,7 +216,7 @@ class WorkflowCandidateRankingMixin:
             default=0.0,
         )
         score += preferred_bonus
-        if any(self._candidate_matches_hint(candidate, item) for item in disliked_hints):
+        if any(self._candidate_matches_strict_hint(candidate, item) for item in disliked_hints):
             score -= 0.9
 
         priorities = set(intent.priorities or [])
@@ -329,6 +329,14 @@ class WorkflowCandidateRankingMixin:
         elif normalized_hint in {"gao", "com"}:
             if "ngu coc" in normalized_group or any(keyword in normalized_name for keyword in ["gao", "com", "rice"]):
                 bonus += 0.8
+            if carbs >= 35 and safe_float(candidate.get("fat_g"), 0.0) <= 6:
+                bonus += 2.0
+            if protein <= 12:
+                bonus += 0.4
+            if safe_float(candidate.get("fat_g"), 0.0) >= 12:
+                bonus -= 1.2
+            if any(keyword in normalized_name for keyword in ["com suon", "com rang"]):
+                bonus -= 1.0
             if "dau" in normalized_group or "dau" in normalized_name:
                 bonus -= 0.4
         elif normalized_hint == "rau xanh":

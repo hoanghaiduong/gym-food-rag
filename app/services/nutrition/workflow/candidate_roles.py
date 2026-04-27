@@ -36,6 +36,19 @@ class WorkflowCandidateRolesMixin:
         is_carb_preferred = any(keyword in normalized_name for keyword in PREFERRED_CARB_KEYWORDS) or any(
             keyword in normalized_group for keyword in ["khoai", "ngu coc", "bot", "banh mi"]
         )
+        carb_dominant_dual_anchor = (
+            "protein_anchor" in meal_role_tags
+            and "carb_anchor" in meal_role_tags
+            and (
+                is_carb_preferred
+                or any(
+                    keyword in normalized_name
+                    for keyword in ["nui", "bun", "pho", "gao", "com", "ngo", "khoai", "xoi", "mien", "mi "]
+                )
+            )
+            and carbs >= max(protein * 2.5, 25.0)
+            and fat <= max(protein, 10.0)
+        )
         tofu_like = any(keyword in normalized_name for keyword in ["dau phu", "dau hu", "tofu"])
         seed_protein_like = any(
             keyword in normalized_name
@@ -59,7 +72,11 @@ class WorkflowCandidateRolesMixin:
             if carbs >= 25:
                 return "carb"
             return "produce"
-        if "protein_anchor" in meal_role_tags and not (produce_like and not is_protein_preferred):
+        if (
+            "protein_anchor" in meal_role_tags
+            and not carb_dominant_dual_anchor
+            and not (produce_like and not is_protein_preferred)
+        ):
             return "protein"
         if "carb_anchor" in meal_role_tags and not (produce_like and not is_carb_preferred and carbs < 30):
             return "carb"
@@ -95,6 +112,31 @@ class WorkflowCandidateRolesMixin:
         if goal == "lose_weight" and "produce" in diet_tags:
             return "produce"
         return "balanced"
+
+    def _candidate_is_main_meal_protein_anchor(
+        self,
+        candidate: dict[str, Any],
+        goal: str,
+        dietary_preference: Optional[str] = None,
+    ) -> bool:
+        if self._candidate_role(candidate, goal) == "protein":
+            return True
+        if not self._is_plant_based_diet(dietary_preference):
+            return False
+
+        meal_role_tags = {ascii_normalize(tag) for tag in (candidate.get("meal_role_tags") or [])}
+        if "protein_anchor" not in meal_role_tags:
+            return False
+        protein = safe_float(candidate.get("protein_g"), 0.0)
+        carbs = safe_float(candidate.get("carbs_g"), 0.0)
+        fat = safe_float(candidate.get("fat_g"), 0.0)
+        if protein < 4:
+            return False
+        # Avoid counting pasta/staples as the only protein anchor just because
+        # their source data carries a broad protein tag.
+        if carbs > max(protein * 2.5, 20.0) and fat < protein:
+            return False
+        return True
 
     def _is_healthy_fat_support(self, candidate: dict[str, Any], goal: str) -> bool:
         realism = self._candidate_realism_profile(candidate, goal)

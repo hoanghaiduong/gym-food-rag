@@ -26,9 +26,11 @@ INTENT_EVAL_MODULES = [
     "scripts.lib.nutrition_bench.intent_eval.reports",
 ]
 TEST_CASE_MODULES = [
+    "app.services.nutrition.knowledge.diet_compatibility",
     "scripts.lib.nutrition_bench.common.artifacts",
     "scripts.lib.nutrition_bench.common.auth",
     "scripts.lib.nutrition_bench.common.http",
+    "scripts.lib.nutrition_bench.common.production_preflight",
     "scripts.lib.nutrition_bench.common.reports",
     "scripts.lib.nutrition_bench.test_cases.cases",
     "scripts.lib.nutrition_bench.test_cases.metrics",
@@ -39,6 +41,7 @@ CLI_WRAPPERS = [
     PROJECT_ROOT / "scripts" / "build_retrieval_eval_suite.py",
     PROJECT_ROOT / "scripts" / "lint_retrieval_dataset.py",
     PROJECT_ROOT / "scripts" / "promote_nutrition_case_artifacts.py",
+    PROJECT_ROOT / "scripts" / "verify_production_artifacts.py",
     PROJECT_ROOT / "scripts" / "test_nutrition_cases.py",
 ]
 OPTIONAL_IMPORT_HINTS = ("email_validator", "email-validator", "pydantic_settings")

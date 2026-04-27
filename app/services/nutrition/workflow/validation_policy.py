@@ -6,6 +6,8 @@ from typing import Any, Optional
 from app.schemas.nutrition import NutritionRecommendationRequest
 from app.schemas.nutrition_intent import NutritionIntent
 from app.services.nutrition_knowledge_service import ascii_normalize, safe_float
+from app.services.nutrition.knowledge.diet_compatibility import matches_dietary_preference
+from app.services.nutrition.knowledge.exclusion_matching import normalized_text_matches_exclusion
 from app.services.nutrition_record_policy import ANIMAL_PROTEIN_PATTERNS, STARCH_STAPLE_PATTERNS
 
 
@@ -35,7 +37,6 @@ class WorkflowValidationPolicyMixin:
             )
             failed_checks += 1
 
-        present_food_names = []
         unresolved_items = []
         gram_issues = []
         allergy_hits = []
@@ -51,9 +52,9 @@ class WorkflowValidationPolicyMixin:
         goal = self._resolve_goal_family(profile)
         for meal in meals:
             meal_roles = []
+            meal_has_protein_anchor = False
             meal_items = meal.get("items", [])
             for item in meal_items:
-                present_food_names.append(ascii_normalize(item.get("food_name")))
                 if not item.get("resolved"):
                     unresolved_items.append(item.get("food_name"))
                 if item.get("grams", 0) < 30 or item.get("grams", 0) > 400:
@@ -78,7 +79,11 @@ class WorkflowValidationPolicyMixin:
                     substituted_to_safe_variant_count += 1
                 if set(profile.get("allergy_tags") or []).intersection(set(item.get("allergen_tags") or [])):
                     allergy_hits.append(item.get("food_name"))
-                if not self._matches_preference(profile.get("dietary_preference"), item.get("diet_tags") or []):
+                if not self._matches_preference(
+                    profile.get("dietary_preference"),
+                    item.get("diet_tags") or [],
+                    item,
+                ):
                     preference_hits.append(item.get("food_name"))
                 realism = self._candidate_realism_profile(
                     item,
@@ -88,6 +93,12 @@ class WorkflowValidationPolicyMixin:
                 item_role = self._candidate_role(item, goal)
                 role_counts[item_role] += 1
                 meal_roles.append(item_role)
+                if self._candidate_is_main_meal_protein_anchor(
+                    item,
+                    goal,
+                    profile.get("dietary_preference"),
+                ):
+                    meal_has_protein_anchor = True
                 if realism["hard_block"]:
                     realism_blocked.append(
                         {
@@ -106,7 +117,7 @@ class WorkflowValidationPolicyMixin:
                     )
                     discouraged_energy_kcal += safe_float(item.get("energy_kcal"), 0.0)
             if self._is_main_meal_name(meal.get("meal_name")):
-                if "protein" not in meal_roles:
+                if not meal_has_protein_anchor:
                     main_meal_role_issues.append(
                         {
                             "meal_name": meal.get("meal_name"),
@@ -191,10 +202,27 @@ class WorkflowValidationPolicyMixin:
         normalized_exclusions = [ascii_normalize(item) for item in request.excluded_foods]
         if normalized_exclusions:
             total_checks += 1
+            all_resolved_items = [item for meal in meals for item in meal.get("items", [])]
             violated_exclusions = [
-                food_name
-                for food_name in present_food_names
-                if any(item in food_name for item in normalized_exclusions)
+                item.get("food_name")
+                for item in all_resolved_items
+                if any(
+                    normalized_text_matches_exclusion(
+                        ascii_normalize(
+                            " ".join(
+                                str(value)
+                                for value in [
+                                    item.get("food_name"),
+                                    item.get("source_food_name"),
+                                    item.get("safe_display_name"),
+                                ]
+                                if value
+                            )
+                        ),
+                        exclusion,
+                    )
+                    for exclusion in normalized_exclusions
+                )
             ]
             if violated_exclusions:
                 issues.append(
@@ -437,16 +465,13 @@ class WorkflowValidationPolicyMixin:
                 )
         return [item for item in grounded.values() if item]
 
-    def _matches_preference(self, dietary_preference: Optional[str], diet_tags: list[str]) -> bool:
-        if not dietary_preference or dietary_preference == "omnivore":
-            return True
-        if dietary_preference == "vegetarian":
-            return any(tag in diet_tags for tag in ["vegetarian", "vegan"])
-        if dietary_preference == "vegan":
-            return "vegan" in diet_tags
-        if dietary_preference == "pescatarian":
-            return any(tag in diet_tags for tag in ["pescatarian", "vegetarian", "vegan"])
-        return True
+    def _matches_preference(
+        self,
+        dietary_preference: Optional[str],
+        diet_tags: list[str],
+        item: Optional[dict[str, Any]] = None,
+    ) -> bool:
+        return matches_dietary_preference(dietary_preference, diet_tags, item)
 
     def _is_unsafe_output_label(self, item: dict[str, Any]) -> bool:
         normalized_name = ascii_normalize(item.get("food_name"))

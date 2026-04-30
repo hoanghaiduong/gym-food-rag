@@ -26,7 +26,13 @@ class WorkflowCandidateRolesMixin:
         energy = safe_float(candidate.get("energy_kcal"), 0.0)
         diet_tags = set(candidate.get("diet_tags") or [])
         meal_role_tags = set(candidate.get("meal_role_tags") or [])
-        normalized_name = ascii_normalize(candidate.get("name"))
+        display_name = (
+            candidate.get("name")
+            or candidate.get("food_name")
+            or candidate.get("safe_display_name")
+            or candidate.get("source_food_name")
+        )
+        normalized_name = ascii_normalize(display_name)
         normalized_group = ascii_normalize(candidate.get("group_name"))
         produce_like = self._is_produce_like_candidate(candidate)
 

@@ -6,7 +6,7 @@ from typing import Any, Optional
 from app.schemas.nutrition_intent import NutritionIntent
 from app.services.nutrition.knowledge.hint_matching import candidate_matches_runtime_hint
 from app.services.nutrition_knowledge_service import ascii_normalize, safe_float
-from app.services.nutrition.knowledge.exclusion_matching import normalized_text_matches_exclusion
+from app.services.nutrition.knowledge.exclusion_matching import payload_matches_exclusion
 
 from .constants import (
     AFFORDABLE_FOOD_KEYWORDS,
@@ -31,7 +31,7 @@ class WorkflowCandidateFeaturesMixin:
         normalized_hint = ascii_normalize(hint)
         if not normalized_hint:
             return False
-        return normalized_text_matches_exclusion(self._candidate_match_text(candidate), normalized_hint)
+        return payload_matches_exclusion(candidate, normalized_hint)
 
     def _candidate_match_text(self, candidate: dict[str, Any]) -> str:
         candidate_text = " ".join(

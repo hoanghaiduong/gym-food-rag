@@ -37,6 +37,15 @@ class DietCompatibilityTests(unittest.TestCase):
         self.assertNotIn("vegetarian", tags)
         self.assertFalse(matches_dietary_preference("vegetarian", payload["diet_tags"], payload))
 
+    def test_cooked_sweet_potato_is_inferred_as_vegan(self):
+        payload = {"name": "Khoai lang, luoc", "diet_tags": ["high_carb", "low_fat"]}
+
+        tags = effective_diet_tags(payload)
+
+        self.assertIn("vegan", tags)
+        self.assertIn("vegetarian", tags)
+        self.assertTrue(matches_dietary_preference("vegan", payload["diet_tags"], payload))
+
     def test_plain_tofu_derives_vegan_and_vegetarian_tags(self):
         record = {
             "name": "Dau phu luoc",

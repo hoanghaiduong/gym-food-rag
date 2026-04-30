@@ -4,6 +4,7 @@ import unittest
 
 from app.schemas.nutrition import NutritionRecommendationRequest
 from app.schemas.nutrition_intent import NutritionIntent
+from app.services.nutrition.knowledge.hint_matching import candidate_matches_runtime_hint
 from app.services.nutrition.workflow.candidate_pool_support import WorkflowCandidatePoolSupportMixin
 from app.services.nutrition.workflow.retrieval_queries import WorkflowRetrievalQueriesMixin
 from app.services.nutrition.workflow.retrieval_support_queries import WorkflowRetrievalSupportQueriesMixin
@@ -229,6 +230,19 @@ class RetrievalSafetyRuntimeTests(unittest.TestCase):
         self.assertIn("trai cay", queries)
         self.assertNotIn("thit ga", queries)
         self.assertNotIn("gao", queries)
+
+    def test_khoai_lang_hint_matches_staple_not_rau_khoai_lang(self) -> None:
+        staple_candidate = {
+            "name": "Khoai lang, luoc",
+            "meal_role_tags": ["carb_anchor"],
+        }
+        leafy_candidate = {
+            "name": "Rau khoai lang, luoc",
+            "meal_role_tags": ["produce_support"],
+        }
+
+        self.assertTrue(candidate_matches_runtime_hint(staple_candidate, "khoai lang"))
+        self.assertFalse(candidate_matches_runtime_hint(leafy_candidate, "khoai lang"))
 
 
 if __name__ == "__main__":

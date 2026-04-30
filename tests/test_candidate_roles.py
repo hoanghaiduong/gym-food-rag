@@ -26,6 +26,20 @@ class CandidateRolesTests(unittest.TestCase):
 
         self.assertEqual(self.workflow._candidate_role(candidate, "gain_muscle"), "carb")
 
+    def test_resolved_food_name_is_used_when_name_is_missing(self) -> None:
+        candidate = {
+            "food_name": "Xoi trung op la",
+            "group_name": "Cac mon xoi, che",
+            "meal_role_tags": ["protein_anchor", "carb_anchor", "main_meal"],
+            "diet_tags": [],
+            "protein_g": 8.3,
+            "carbs_g": 33.5,
+            "fat_g": 8.5,
+            "energy_kcal": 243.9,
+        }
+
+        self.assertEqual(self.workflow._candidate_role(candidate, "maintain"), "carb")
+
     def test_real_fish_anchor_stays_protein(self) -> None:
         candidate = {
             "name": "Ca nuc, nuong",

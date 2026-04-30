@@ -1,7 +1,7 @@
 # Luong Du lieu End-to-End
 
-> Cap nhat lan cuoi: 2026-04-06  
-> Source code: `app/services/nutrition_workflow_service.py`, `app/api/v3/nutrition.py`
+> Cap nhat lan cuoi: 2026-04-28
+> Source code: `app/services/nutrition_workflow_service.py`, `app/services/nutrition/orchestration/`, `app/api/v3/nutrition.py`
 
 ## Luong Goi y Dinh duong (Core Flow)
 
@@ -119,43 +119,48 @@ score = protein_density_score
 
 ---
 
-## Luong Chat V3 (LangGraph Agent)
+## Luong Shadow LangGraph Nutrition Agent
 
 ```
-POST /api/v3/chat
+POST /api/v3/nutrition/recommendation-agent
     |
     v
-[1] Semantic Cache Check (Qdrant)
-    | Embed query -> cosine similarity >= 0.95
-    | Hit -> tra ve cached answer
+[1] Auth & Permission Check
+    | JWT -> PermissionChecker("chat.use")
     v
-[2] Cache Miss -> LangGraph Agent
-    | Agent node: Ollama LLM (qwen2.5:3b)
-    | Conditional edge: co can goi tool khong?
-    |
-    |--[Co]--> Tool: search_gym_food
-    |          | Hybrid search trong Qdrant
-    |          | Tra ve thong tin dinh duong
-    |          v
-    |          Agent node (tiep tuc suy nghi)
-    |
-    |--[Co]--> Tool: optimize_meal_plan
-    |          | Tim thuc pham tu Qdrant
-    |          | Goi SciPy optimizer
-    |          | Tra ve gram chinh xac
-    |          v
-    |          Agent node (tiep tuc suy nghi)
-    |
-    |--[Khong]--> Final answer
+[2] normalize_request
+    | Tach session_id, chuan hoa payload ve NutritionRecommendationRequest
     v
-[3] Save to Semantic Cache
-    |
+[3] clarify_intent
+    | Co the hoi lai neu request qua mo ho
+    | LLM chi phuc vu hoi thoai/dien giai, khong quyet dinh mon final
     v
-[4] Save to Chat History (background task)
-    | PostgreSQL: chat_sessions + chat_history
+[4] run_core_recommendation
+    | LangChain tool duy nhat: recommend_nutrition_plan_tool
+    | Tool delegate vao NutritionWorkflowService.run_main_flow()
     v
-Return ChatResponse
+[5] NutritionWorkflowService
+    | Qdrant retrieval -> macro targets -> optimization -> validation
+    v
+[6] inspect_validation
+    | Neu validation fail hoac co unsafe item -> needs_revision
+    | Khong cho LLM tu sua bang mon ngoai candidate pool
+    v
+[7] generate_explanation
+    | Dien giai plan da validate bang text an toan
+    v
+[8] finalize_response
+    | recommendation = core NutritionRecommendationResponse neu validation_passed=true
+    | recommendation = null neu needs_clarification/needs_revision
+    v
+Return NutritionAgentRecommendationResponse
 ```
+
+LangGraph trong flow nay la lop orchestration/chat shadow de demo va so sanh theo de tai. Endpoint production `POST /api/v3/nutrition/recommendation` van di thang vao `NutritionWorkflowService` va khong bi thay doi.
+
+Flow agent khong expose cac tool cu nhu `search_gym_food` hoac `optimize_meal_plan` cho recommendation, vi cac tool do co the bypass safety/validation. Moi final meal plan phai den tu core engine da validate.
+
+Pham vi y khoa: flow nay chi ho tro quyet dinh cho gym/fitness pho thong. Ket qua khong thay the bac si hoac chuyen gia dinh duong khi user co benh nen, thai ky, roi loan an uong, hoac nhu cau dieu tri.
 
 ---
 
@@ -189,13 +194,13 @@ scripts/ingest_v3.py hoac scripts/reindex_qdrant.py
     | Encode embeddings (dense + sparse)
     | Upsert vao Qdrant
     v
-Qdrant Collection (gym_food_hybrid_v1)
+Qdrant Collection (blue-green versioned collection)
     |
     v
 scripts/cutover_qdrant_alias.py
     | Chuyen alias -> collection moi (blue-green)
     v
-gym_food_hybrid_active (alias)
+gym_food_hybrid_active (alias, hien tro toi gym_food_hybrid_v2_20260426_safetyfix)
 ```
 
 ---

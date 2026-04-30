@@ -27,6 +27,8 @@ _HINT_ROLE_OVERRIDES = {
     "gao": "carb",
     "com": "carb",
     "gao lut": "carb",
+    "khoai": "carb",
+    "khoai lang": "carb",
     "bun tuoi": "carb",
     "ngo": "carb",
     "bap": "carb",
@@ -232,6 +234,26 @@ def _matches_corn(candidate: dict[str, Any]) -> bool:
     return bool(tokens & {"ngo", "bap", "corn"})
 
 
+def _matches_root_starch(candidate: dict[str, Any]) -> bool:
+    if not _candidate_has_role(candidate, "carb"):
+        return False
+    tokens = _candidate_primary_tokens(candidate)
+    if not tokens:
+        return False
+    if tokens & {"rau", "leaf", "leaves", "greens"}:
+        return False
+    return bool(tokens & {"khoai", "potato", "cassava", "san"})
+
+
+def _matches_sweet_potato(candidate: dict[str, Any]) -> bool:
+    if not _candidate_has_role(candidate, "carb"):
+        return False
+    tokens = _candidate_primary_tokens(candidate)
+    if not tokens or tokens & {"rau", "leaf", "leaves", "greens"}:
+        return False
+    return {"khoai", "lang"}.issubset(tokens) or {"sweet", "potato"}.issubset(tokens)
+
+
 def _matches_bun_tuoi(candidate: dict[str, Any]) -> bool:
     tokens = _candidate_search_tokens(candidate)
     return "bun" in tokens and "tuoi" in tokens
@@ -298,6 +320,8 @@ _RUNTIME_HINT_MATCHERS: dict[str, Callable[[dict[str, Any]], bool]] = {
     "gao": _matches_rice,
     "com": _matches_rice,
     "gao lut": _matches_brown_rice,
+    "khoai": _matches_root_starch,
+    "khoai lang": _matches_sweet_potato,
     "ngo": _matches_corn,
     "bap": _matches_corn,
     "bun tuoi": _matches_bun_tuoi,

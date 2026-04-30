@@ -8,6 +8,8 @@ from app.api.deps import PermissionChecker, get_db
 from app.core.response import BaseResponse, success_response
 from app.db.tables import users
 from app.schemas.nutrition import (
+    NutritionAgentRecommendationRequest,
+    NutritionAgentRecommendationResponse,
     NutritionEvaluationResponse,
     NutritionProfile,
     NutritionProfileUpdate,
@@ -15,7 +17,9 @@ from app.schemas.nutrition import (
     NutritionRecommendationResponse,
     WorkflowStateResponse,
 )
+from app.core.config import settings
 from app.services.nutrition_evaluation_service import nutrition_evaluation_service
+from app.services.nutrition.orchestration import nutrition_agent_service
 from app.services.nutrition_workflow_service import nutrition_workflow_service
 from app.services.redis_state_service import redis_state_service
 
@@ -91,6 +95,39 @@ async def generate_nutrition_recommendation(
     except Exception as exc:
         logger.exception(
             "Nutrition recommendation failed | user_id=%s | error=%s",
+            current_user["id"],
+            exc,
+        )
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@router.post("/recommendation-agent", response_model=BaseResponse[NutritionAgentRecommendationResponse])
+async def generate_nutrition_recommendation_agent(
+    payload: NutritionAgentRecommendationRequest,
+    current_user=Depends(PermissionChecker("chat.use")),
+):
+    if not settings.NUTRITION_AGENT_ENABLED:
+        raise HTTPException(status_code=404, detail="Nutrition LangGraph agent is disabled.")
+    try:
+        result = nutrition_agent_service.run(dict(current_user), payload)
+        logger.info(
+            "Nutrition recommendation agent completed | user_id=%s | session_id=%s | status=%s | passed=%s",
+            current_user["id"],
+            result.get("session_id"),
+            result.get("status"),
+            result.get("validation_passed"),
+        )
+        return success_response(data=result, message="Tạo khuyến nghị dinh dưỡng qua LangGraph orchestration thành công.")
+    except ValueError as exc:
+        logger.warning(
+            "Nutrition recommendation agent validation error | user_id=%s | error=%s",
+            current_user["id"],
+            exc,
+        )
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception(
+            "Nutrition recommendation agent failed | user_id=%s | error=%s",
             current_user["id"],
             exc,
         )

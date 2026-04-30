@@ -7,7 +7,7 @@ from typing import Any, Iterable, Optional
 from app.core.paths import PROCESSED_DATA_DIR
 
 from .diet_compatibility import matches_dietary_preference
-from .exclusion_matching import normalized_text_matches_exclusion
+from .exclusion_matching import payload_matches_exclusion
 from .hint_matching import candidate_matches_runtime_hint
 from .normalize import ascii_normalize, safe_float
 from .payloads import build_vector_payload, is_qdrant_ready_record, payload_to_food
@@ -114,9 +114,8 @@ class LocalIndexMixin:
         if allergy_values.intersection(set(payload.get("allergen_tags") or [])):
             return False
 
-        normalized_name = ascii_normalize(payload.get("name"))
         normalized_exclusions = [ascii_normalize(item) for item in (excluded_foods or []) if item]
-        if any(normalized_text_matches_exclusion(normalized_name, item) for item in normalized_exclusions):
+        if any(payload_matches_exclusion(payload, item) for item in normalized_exclusions):
             return False
 
         return True

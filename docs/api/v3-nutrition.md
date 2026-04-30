@@ -1,7 +1,7 @@
 # Nutrition V3 Endpoints
 
-> Cap nhat lan cuoi: 2026-04-06  
-> Source code: `app/api/v3/nutrition.py`, `app/schemas/nutrition.py`
+> Cap nhat lan cuoi: 2026-04-28
+> Source code: `app/api/v3/nutrition.py`, `app/schemas/nutrition.py`, `app/services/nutrition/orchestration/`
 
 ## Tong quan
 
@@ -161,6 +161,76 @@ Cap nhat ho so dinh duong. He thong tu dong normalize gia tri (VD: `"nam"` -> `"
   }
 }
 ```
+
+---
+
+### POST /api/v3/nutrition/recommendation-agent
+
+**Endpoint shadow LangGraph** - dung cho demo luan van, orchestration/chat trace va so sanh. Endpoint nay khong thay the endpoint production `/recommendation`.
+
+**Permission:** `chat.use`
+
+**Request Schema:** `NutritionAgentRecommendationRequest`
+
+Schema nay ke thua `NutritionRecommendationRequest` va them `session_id` de checkpoint/trace hoi thoai.
+
+```json
+{
+  "session_id": "demo-session-001",
+  "instruction": "Toi muon tang co, khong an hai san, uu tien bua don gian",
+  "meal_count": 3,
+  "top_k": 18,
+  "max_revision_rounds": 3,
+  "use_cache": true,
+  "must_include": ["uc ga", "com gao lut"]
+}
+```
+
+**Safety contract:**
+
+| Rule | Mo ta |
+|------|------|
+| Core decision only | LangGraph chi goi `recommend_nutrition_plan_tool`, tool nay delegate vao `NutritionWorkflowService.run_main_flow()`. |
+| No direct food tools | Agent recommendation khong expose `search_gym_food` hoac `optimize_meal_plan`. |
+| No LLM final plan | LLM chi hoi lai/dien giai, khong duoc tu tao danh sach mon final. |
+| Validation gate | Neu core validation fail hoac co unsafe item, `recommendation=null` va `status=needs_revision`. |
+| Safe labels | Mon hien thi phai den tu core response da validate va policy `safe_display_name`. |
+
+**Response Schema:** `NutritionAgentRecommendationResponse`
+
+```json
+{
+  "status": "success",
+  "data": {
+    "session_id": "demo-session-001",
+    "answer": "Minh da tao thuc don 3 bua...",
+    "recommendation": {
+      "request_id": "uuid-...",
+      "validation": {"passed": true},
+      "plan": {"meals": []}
+    },
+    "orchestration_trace": [
+      {"node": "normalize_request", "status": "completed"},
+      {"node": "clarify_intent", "status": "completed"},
+      {"node": "run_core_recommendation", "status": "completed"},
+      {"node": "inspect_validation", "status": "completed"},
+      {"node": "generate_explanation", "status": "completed"},
+      {"node": "finalize_response", "status": "completed"}
+    ],
+    "engine": {
+      "orchestrator": "langgraph",
+      "tooling": "langchain_structured_tool",
+      "decision_engine": "NutritionWorkflowService",
+      "decision_contract": "validated_core_response_only",
+      "llm_role": "intent_clarification_and_explanation_only"
+    },
+    "validation_passed": true,
+    "status": "completed"
+  }
+}
+```
+
+Neu can hoi lai thong tin, response co `status=needs_clarification` va `recommendation=null`. Neu core engine khong validate duoc plan, response co `status=needs_revision` va agent khong tu bia plan thay the.
 
 ---
 

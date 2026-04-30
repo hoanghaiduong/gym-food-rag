@@ -46,6 +46,10 @@ class NutritionRecommendationRequest(BaseModel):
     must_include: List[str] = Field(default_factory=list)
 
 
+class NutritionAgentRecommendationRequest(NutritionRecommendationRequest):
+    session_id: Optional[str] = None
+
+
 class RetrievedFood(BaseModel):
     entity_id: str
     food_id: Optional[str] = None
@@ -205,6 +209,16 @@ class NutritionRecommendationResponse(BaseModel):
     response_time_seconds: float
     workflow_trace: List[WorkflowStep]
     debug: Optional[Dict[str, Any]] = None
+
+
+class NutritionAgentRecommendationResponse(BaseModel):
+    session_id: str
+    answer: str
+    recommendation: Optional[NutritionRecommendationResponse] = None
+    orchestration_trace: List[Dict[str, Any]] = Field(default_factory=list)
+    engine: Dict[str, str]
+    validation_passed: bool
+    status: str
 
 
 class WorkflowStateResponse(BaseModel):

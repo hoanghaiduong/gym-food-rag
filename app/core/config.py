@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "qwen2.5:3b"
     OLLAMA_REQUEST_TIMEOUT_SECONDS: int = 600
+    NUTRITION_AGENT_ENABLED: bool = True
+    NUTRITION_AGENT_MODEL: str = ""
+    NUTRITION_AGENT_REDIS_CHECKPOINT: bool = True
 
     QDRANT_HOST: str = "localhost"
     QDRANT_PORT: int = 6333
@@ -80,6 +83,10 @@ class Settings(BaseSettings):
         if self.REDIS_URL:
             return self.REDIS_URL
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
+
+    @property
+    def nutrition_agent_model(self) -> str:
+        return self.NUTRITION_AGENT_MODEL or self.OLLAMA_MODEL
 
     @property
     def serving_collection_name(self) -> str:

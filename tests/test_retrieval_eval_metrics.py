@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.lib.nutrition_bench.retrieval_eval import metrics
+from scripts.lib.nutrition_bench.retrieval_eval import metrics, reports
 
 
 class RetrievalEvalMetricsTests(unittest.TestCase):
@@ -52,6 +52,43 @@ class RetrievalEvalMetricsTests(unittest.TestCase):
         self.assertEqual(result["expected_family_keys"], ["fruit_family", "greens_family"])
         self.assertEqual(result["hit_family_keys"], ["fruit_family", "greens_family"])
         self.assertEqual(result["recall"], 1.0)
+
+    def test_post_workout_friendly_tag_is_contextual_for_classification(self) -> None:
+        def result_row(case_id: str, expected_tags: list[str], observed_tags: list[str]) -> dict:
+            return {
+                "id": case_id,
+                "split": "recommendation",
+                "metrics": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 1,
+                    "precision": 1.0,
+                    "recall": 1.0,
+                    "f1": 1.0,
+                    "accuracy": 1.0,
+                    "support": 1,
+                },
+                "tag_sets": {
+                    "expected_positive_tags": expected_tags,
+                    "observed_positive_tags": observed_tags,
+                },
+            }
+
+        classification_report, _ = reports.build_retrieval_artifacts(
+            [
+                result_row("non_post", ["protein_anchor"], ["protein_anchor", "post_workout_friendly"]),
+                result_row(
+                    "post",
+                    ["protein_anchor", "post_workout_friendly"],
+                    ["protein_anchor", "post_workout_friendly"],
+                ),
+            ]
+        )
+
+        per_label = classification_report["tasks"]["positive_tag_coverage"]["per_label"]
+        self.assertEqual(per_label["post_workout_friendly"]["fp"], 0)
+        self.assertEqual(per_label["post_workout_friendly"]["f1"], 1.0)
 
 
 if __name__ == "__main__":

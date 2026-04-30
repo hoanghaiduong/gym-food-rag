@@ -5,7 +5,7 @@ from typing import Any, Iterable, Optional
 
 from app.core.config import settings
 
-from .exclusion_matching import normalized_text_matches_exclusion
+from .exclusion_matching import payload_matches_exclusion
 from .normalize import ascii_normalize
 from .payloads import payload_to_food
 
@@ -112,8 +112,7 @@ class RepositoryMixin:
                 entity_id = food["entity_id"]
                 if not entity_id:
                     continue
-                normalized_name = ascii_normalize(food.get("name"))
-                if any(normalized_text_matches_exclusion(normalized_name, item) for item in normalized_exclusions):
+                if any(payload_matches_exclusion(food, item) for item in normalized_exclusions):
                     continue
                 current = merged.get(entity_id)
                 food["source_channels"] = [channel]
@@ -160,7 +159,14 @@ class RepositoryMixin:
             expected_role_tags=query_entries[0].get("expected_role_tags") or None,
             rerank=True,
         )
-        return [payload_to_food(point["payload"], point["score"]) for point in fallback_result][:limit]
+        fallback_foods = [payload_to_food(point["payload"], point["score"]) for point in fallback_result]
+        if normalized_exclusions:
+            fallback_foods = [
+                food
+                for food in fallback_foods
+                if not any(payload_matches_exclusion(food, item) for item in normalized_exclusions)
+            ]
+        return fallback_foods[:limit]
 
     def resolve_food_reference(
         self,

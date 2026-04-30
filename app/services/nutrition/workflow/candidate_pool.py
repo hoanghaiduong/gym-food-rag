@@ -72,6 +72,12 @@ class WorkflowCandidatePoolMixin:
                 request,
                 intent,
             )
+            if request.excluded_foods:
+                safe_candidates = [
+                    item
+                    for item in safe_candidates
+                    if not any(self._candidate_matches_strict_hint(item, hint) for hint in request.excluded_foods)
+                ]
         filtered = [
             item
             for item in safe_candidates

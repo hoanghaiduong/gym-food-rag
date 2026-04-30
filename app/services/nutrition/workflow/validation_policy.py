@@ -7,7 +7,7 @@ from app.schemas.nutrition import NutritionRecommendationRequest
 from app.schemas.nutrition_intent import NutritionIntent
 from app.services.nutrition_knowledge_service import ascii_normalize, safe_float
 from app.services.nutrition.knowledge.diet_compatibility import matches_dietary_preference
-from app.services.nutrition.knowledge.exclusion_matching import normalized_text_matches_exclusion
+from app.services.nutrition.knowledge.exclusion_matching import payload_matches_exclusion
 from app.services.nutrition_record_policy import ANIMAL_PROTEIN_PATTERNS, STARCH_STAPLE_PATTERNS
 
 
@@ -207,20 +207,7 @@ class WorkflowValidationPolicyMixin:
                 item.get("food_name")
                 for item in all_resolved_items
                 if any(
-                    normalized_text_matches_exclusion(
-                        ascii_normalize(
-                            " ".join(
-                                str(value)
-                                for value in [
-                                    item.get("food_name"),
-                                    item.get("source_food_name"),
-                                    item.get("safe_display_name"),
-                                ]
-                                if value
-                            )
-                        ),
-                        exclusion,
-                    )
+                    payload_matches_exclusion(item, exclusion)
                     for exclusion in normalized_exclusions
                 )
             ]

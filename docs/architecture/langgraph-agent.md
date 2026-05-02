@@ -37,7 +37,7 @@ User
 | Node | Vai tro |
 |------|---------|
 | `normalize_request` | Chuyen request agent ve `NutritionRecommendationRequest` core, tach `session_id` khoi cache key. |
-| `clarify_intent` | Hoi lai neu instruction qua mo ho; neu can hoi lai thi khong goi core engine. |
+| `clarify_intent` | Hoi lai neu instruction qua mo ho hoac thieu thong tin an toan co ban ve benh nen/di ung; neu can hoi lai thi khong goi core engine. |
 | `run_core_recommendation` | Chi goi `recommend_nutrition_plan_tool`, tool nay delegate vao `NutritionWorkflowService.run_main_flow()`. |
 | `inspect_validation` | Doc validation cua core; neu fail hoac co unsafe output thi khong tra final plan. |
 | `generate_explanation` | Tao cau tra loi tu plan da validate; LLM chi duoc dung o lop dien giai/hop thoai. |
@@ -47,6 +47,7 @@ User
 
 - LangGraph khong expose tool `search_gym_food` va `optimize_meal_plan` cho luong recommendation-agent.
 - LLM khong duoc tu lap danh sach mon an cuoi.
+- Truoc khi goi core, agent hoi lai neu chua co xac nhan ve benh nen va di ung/kieng thuc pham, dac biet hai san nhu ca, tom, cua, muc, oc.
 - Neu `validation.passed=false`, response agent co `recommendation=null`.
 - Neu bat ky item co `final_output_allowed=false` hoac `consumption_state=requires_preparation`, agent chan final plan.
 - User-facing label phai di qua `safe_display_name` trong core response.

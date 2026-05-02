@@ -1,94 +1,76 @@
 # Chat V3 Endpoints
 
-> Cap nhat lan cuoi: 2026-04-06  
+> Updated: 2026-05-02
 > Source code: `app/api/v3/chat_v3.py`
 
-## Tong quan
+## Overview
 
-Chat V3 su dung **LangGraph Agent** voi **Semantic Cache** (Qdrant) de xu ly cau hoi ve dinh duong.
+Chat V3 is now active as a safe general-chat endpoint. It is intentionally not a
+meal-plan generator. Personalized meal recommendations must go through
+`/api/v3/nutrition/recommendation-agent`, where `NutritionWorkflowService`
+performs macro calculation, retrieval, validation, and safety checks.
 
-> **Trang thai:** Endpoint da duoc viet nhung **chua mount** trong `app/api/router.py` hien tai. Agent service la placeholder (`agent_service_v3 = None`). Luong nutrition chinh dung `/api/v3/nutrition/recommendation`.
-
----
+The old placeholder LangGraph agent under `app/services/v3/agent.py` is not
+mounted because it exposes legacy tools that can bypass the production
+recommendation contract.
 
 ## Endpoint
 
-### POST /api/v3/chat
+### POST `/api/v3/chat`
 
-**Permission:** `chat.use`
+Permission: `chat.use`
 
-**Request:**
+Request:
 
 ```json
 {
-  "question": "Uc ga bao nhieu calo?",
+  "question": "TDEE la gi?",
   "session_id": null
 }
 ```
 
-| Field | Type | Default | Mo ta |
-|-------|------|---------|-------|
-| `question` | str | required | Cau hoi cua nguoi dung |
-| `session_id` | str? | null | ID session (null = tao moi) |
-
-**Response:**
+Response:
 
 ```json
 {
   "status": "success",
   "data": {
-    "answer": "Uc ga luoc chua khoang 165 kcal/100g...",
+    "answer": "TDEE la tong nang luong co the ban tieu hao trong mot ngay...",
     "session_id": "uuid-...",
-    "engine": "Redis Cache (Fast)",
-    "context_used": ["Redis Semantic Cache"]
+    "engine": "GeneralChatService+ollama",
+    "status": "answered",
+    "context_used": ["general nutrition education"],
+    "suggested_endpoint": null
   }
 }
 ```
 
----
+If the user asks for a concrete meal plan, the endpoint returns a routing
+contract instead of generating food items:
 
-## Luong Xu ly
-
-```
-1. Semantic Cache Check (Qdrant)
-   |-- Dense embed query
-   |-- cosine similarity >= 0.95?
-   |   |-- YES: Return cached answer
-   |   |-- NO: Continue
-   |
-2. Build User Profile
-   |-- Calculate TDEE & macros (if enough data)
-   |-- Inject into user_dict
-   |
-3. LangGraph Agent
-   |-- System prompt dong (user context)
-   |-- Agent loop:
-   |   |-- LLM suy nghi
-   |   |-- Tool call? -> Execute tool -> Loop
-   |   |-- No tool -> Final answer
-   |
-4. Hau xu ly
-   |-- Luu vao Semantic Cache (Qdrant)
-   |-- Luu vao Chat History (PostgreSQL, background task)
+```json
+{
+  "status": "success",
+  "data": {
+    "answer": "Yeu cau nay can engine recommendation...",
+    "session_id": "uuid-...",
+    "engine": "GeneralChatRouter",
+    "status": "use_nutrition_agent",
+    "context_used": ["NutritionWorkflowService required"],
+    "suggested_endpoint": "/api/v3/nutrition/recommendation-agent"
+  }
+}
 ```
 
----
+Frontend should render `data.answer`. When `data.status` is
+`use_nutrition_agent`, call `data.suggested_endpoint` with a structured
+nutrition request instead of treating the chat response as a meal plan.
 
-## So sanh Chat V3 vs Nutrition V3
+## Safety Boundary
 
-| Tieu chi | Chat V3 | Nutrition V3 |
-|---------|---------|--------------|
-| Tinh chat | Hoi thoai tu nhien | Goi y thuc don co cau truc |
-| Engine | LangGraph Agent (LLM quyetdinh) | Deterministic pipeline (SciPy) |
-| Do chinh xac | Phu thuoc LLM | Chinh xac cao (mathematical) |
-| Cache | Semantic (Qdrant cosine) | Exact (Redis SHA-256) |
-| Multi-turn | Co (Redis checkpoints) | Khong (single-shot) |
-| Trang thai | Chua active | **Active** |
-
----
-
-## Lien ket
-
-- [LangGraph Agent](../architecture/langgraph-agent.md)
-- [Cache & State](../services/cache-state.md)
-- [Tong quan API](overview.md)
+- Chat V3 may explain general nutrition concepts.
+- Chat V3 must not produce final meal plans, shopping lists, or specific food
+  item selections.
+- The recommendation agent remains the only public endpoint for personalized
+  meal plans.
+- Final foods must still come from the validated core recommendation response.

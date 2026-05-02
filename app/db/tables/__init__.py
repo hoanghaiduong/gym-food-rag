@@ -7,6 +7,7 @@ from app.db.base import metadata
 from .users import users
 from .rbac import roles, permissions, role_permissions, user_roles
 from .chat import chat_sessions, chat_history
+from .otp_requests import otp_requests
 from .system_settings import system_settings
 # from .products import products, orders
 # ...
@@ -16,6 +17,7 @@ __all__ = [
     "metadata",
     "users",
     "roles", "permissions", "role_permissions", "user_roles",
+    "otp_requests",
     "chat_sessions", "chat_history",
     "system_settings",
     # "products", "orders"

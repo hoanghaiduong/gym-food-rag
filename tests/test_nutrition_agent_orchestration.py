@@ -5,6 +5,7 @@ from unittest.mock import patch
 from app.core.config import settings
 from app.schemas.nutrition import NutritionAgentRecommendationRequest, NutritionRecommendationRequest
 from app.services.nutrition.orchestration.graph import NutritionAgentGraph
+from app.services.nutrition.orchestration.safety_clarification import NutritionAgentSafetyClarificationPolicy
 from app.services.nutrition.orchestration.service import NutritionAgentService
 from app.services.nutrition.orchestration.tools import NutritionCoreRecommendationTool
 
@@ -14,6 +15,14 @@ class FakeIntentParser:
         self.clarification = clarification
 
     def get_chat_clarification(self, current_user, instruction):
+        return self.clarification
+
+
+class FakeSafetyClarificationPolicy:
+    def __init__(self, clarification=None):
+        self.clarification = clarification
+
+    def build(self, current_user, request):
         return self.clarification
 
 
@@ -63,10 +72,11 @@ class NutritionAgentOrchestrationTests(unittest.TestCase):
     def tearDown(self):
         settings.NUTRITION_AGENT_REDIS_CHECKPOINT = self.previous_checkpoint
 
-    def build_service(self, core_tool, intent_parser=None):
+    def build_service(self, core_tool, intent_parser=None, safety_policy=None):
         graph = NutritionAgentGraph(
             core_tool=core_tool,
             intent_parser=intent_parser or FakeIntentParser(),
+            safety_clarification_policy=safety_policy or FakeSafetyClarificationPolicy(),
         )
         return NutritionAgentService(graph=graph)
 
@@ -152,6 +162,41 @@ class NutritionAgentOrchestrationTests(unittest.TestCase):
         self.assertIsNone(result["recommendation"])
         self.assertEqual(result["status"], "needs_clarification")
         self.assertEqual(result["answer"], "Bạn muốn tăng cơ hay giảm mỡ?")
+
+    def test_agent_safety_clarification_short_circuits_core_tool_when_profile_is_missing(self):
+        core_tool = FakeCoreTool(safe_recommendation_response())
+        service = self.build_service(
+            core_tool,
+            intent_parser=FakeIntentParser(),
+            safety_policy=NutritionAgentSafetyClarificationPolicy(),
+        )
+
+        result = service.run({"id": 1}, NutritionAgentRecommendationRequest(instruction="Tao thuc don tang co"))
+
+        self.assertEqual(core_tool.calls, [])
+        self.assertFalse(result["validation_passed"])
+        self.assertIsNone(result["recommendation"])
+        self.assertEqual(result["status"], "needs_clarification")
+        self.assertIn("bệnh nền", result["answer"])
+        self.assertIn("hải sản", result["answer"])
+
+    def test_agent_does_not_repeat_safety_clarification_when_user_confirms_none(self):
+        core_tool = FakeCoreTool(safe_recommendation_response())
+        service = self.build_service(
+            core_tool,
+            intent_parser=FakeIntentParser(),
+            safety_policy=NutritionAgentSafetyClarificationPolicy(),
+        )
+
+        result = service.run(
+            {"id": 1},
+            NutritionAgentRecommendationRequest(
+                instruction="Tao thuc don tang co. Khong benh nen, khong di ung."
+            ),
+        )
+
+        self.assertTrue(result["validation_passed"])
+        self.assertEqual(len(core_tool.calls), 1)
 
     def test_shadow_endpoint_returns_agent_contract(self):
         from app.api.v3 import nutrition as nutrition_api

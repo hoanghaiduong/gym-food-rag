@@ -1,11 +1,23 @@
-from pydantic import BaseModel
-from typing import List, Optional, Dict
 from datetime import datetime
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel, Field
 
 class ChatRequest(BaseModel):
     question: str
     session_id: Optional[str] = None
-    history: Optional[List[Dict[str, str]]] = []
+    history: Optional[List[Dict[str, str]]] = Field(default_factory=list)
+
+
+class ChatResponseV3(BaseModel):
+    answer: str
+    session_id: str
+    engine: str
+    status: str = Field(
+        description="answered | use_nutrition_agent | needs_question | fallback"
+    )
+    context_used: List[str] = Field(default_factory=list)
+    suggested_endpoint: Optional[str] = None
 
 class ChatSessionResponse(BaseModel):
     id: str

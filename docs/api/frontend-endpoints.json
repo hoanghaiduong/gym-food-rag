@@ -1,0 +1,701 @@
+{
+  "title": "Gym Food RAG",
+  "version": "0.1.0",
+  "base_url": "http://localhost:8000",
+  "openapi_source": "/openapi.json",
+  "auth": {
+    "type": "bearer",
+    "login_path": "/api/v3/auth/login",
+    "refresh_path": "/api/v3/auth/refresh"
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/api/v2/setup/status",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Get System Status",
+      "operation_id": "get_system_status_api_v2_setup_status_get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/init-admin",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Initialize Admin",
+      "operation_id": "initialize_admin_api_v2_setup_init_admin_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/AdminSetupConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step1/save",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Save Network Config",
+      "operation_id": "save_network_config_api_v2_setup_step1_save_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/NetworkConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step2/test",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Test Database",
+      "operation_id": "test_database_api_v2_setup_step2_test_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/DatabaseConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step2/save",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Save Database Config",
+      "operation_id": "save_database_config_api_v2_setup_step2_save_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/DatabaseConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/setup/step4/db-status",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Check Db Status",
+      "operation_id": "check_db_status_api_v2_setup_step4_db_status_get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step4/db-migrate",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Execute Migration Endpoint",
+      "operation_id": "execute_migration_endpoint_api_v2_setup_step4_db_migrate_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/MigrationRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/migrate-table",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Migrate Single Table",
+      "operation_id": "migrate_single_table_api_v2_setup_migrate_table_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/SingleTableMigrationRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/create-first-admin",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Create First Admin",
+      "operation_id": "create_first_admin_api_v2_setup_create_first_admin_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/FirstAdminRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step3/test",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Test Vector Db",
+      "operation_id": "test_vector_db_api_v2_setup_step3_test_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/VectorConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step3/save",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Save Vector Config",
+      "operation_id": "save_vector_config_api_v2_setup_step3_save_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/VectorConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step4/test",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Test Llm Connection",
+      "operation_id": "test_llm_connection_api_v2_setup_step4_test_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/LLMConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step4/save",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Save Llm Config",
+      "operation_id": "save_llm_config_api_v2_setup_step4_save_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/LLMConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/setup/step5/save",
+      "tags": [
+        "Setup Wizard"
+      ],
+      "summary": "Save General Config",
+      "operation_id": "save_general_config_api_v2_setup_step5_save_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/GeneralConfig"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/system/health",
+      "tags": [
+        "System Control"
+      ],
+      "summary": "System Health",
+      "operation_id": "system_health_api_v2_system_health_get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/system/config",
+      "tags": [
+        "System Control"
+      ],
+      "summary": "Get Config",
+      "operation_id": "get_config_api_v2_system_config_get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/system/config/update",
+      "tags": [
+        "System Control"
+      ],
+      "summary": "Update Env",
+      "operation_id": "update_env_api_v2_system_config_update_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/EnvUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/system/restart",
+      "tags": [
+        "System Control"
+      ],
+      "summary": "Restart Server",
+      "operation_id": "restart_server_api_v2_system_restart_post",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/register",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Register V3",
+      "operation_id": "register_v3_api_v3_auth_register_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/UserCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_UserResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/login",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Login V3",
+      "operation_id": "login_v3_api_v3_auth_login_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/UserLogin"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_LoginData_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/otp/request",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Request Otp V3",
+      "operation_id": "request_otp_v3_api_v3_auth_otp_request_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/OtpRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_OtpRequestResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/otp/verify",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Verify Otp V3",
+      "operation_id": "verify_otp_v3_api_v3_auth_otp_verify_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/OtpVerifyRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_OtpVerifyResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/reset-password",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Reset Password With Otp V3",
+      "operation_id": "reset_password_with_otp_v3_api_v3_auth_reset_password_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/PasswordResetWithOtpRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/auth/me",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Read Users Me V3",
+      "operation_id": "read_users_me_v3_api_v3_auth_me_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_UserData_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/refresh",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Refresh Token V3",
+      "operation_id": "refresh_token_v3_api_v3_auth_refresh_post",
+      "requires_auth": false,
+      "request_schema": {
+        "$ref": "#/components/schemas/RefreshTokenRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_Token_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/auth/logout",
+      "tags": [
+        "Authentication V3"
+      ],
+      "summary": "Logout V3",
+      "operation_id": "logout_v3_api_v3_auth_logout_post",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/rbac/permissions",
+      "tags": [
+        "V3 Access Control"
+      ],
+      "summary": "List Permissions",
+      "operation_id": "list_permissions_api_v3_rbac_permissions_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_List_PermissionBase__"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/rbac/permissions",
+      "tags": [
+        "V3 Access Control"
+      ],
+      "summary": "Create Permission",
+      "operation_id": "create_permission_api_v3_rbac_permissions_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/PermissionCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_PermissionBase_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/rbac/roles",
+      "tags": [
+        "V3 Access Control"
+      ],
+      "summary": "List Roles",
+      "operation_id": "list_roles_api_v3_rbac_roles_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_List_RoleResponse__"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/rbac/roles",
+      "tags": [
+        "V3 Access Control"
+      ],
+      "summary": "Create Role",
+      "operation_id": "create_role_api_v3_rbac_roles_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/RoleCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_RoleResponse_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/rbac/roles/{role_id}",
+      "tags": [
+        "V3 Access Control"
+      ],
+      "summary": "Update Role Permissions",
+      "operation_id": "update_role_permissions_api_v3_rbac_roles__role_id__put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/RoleUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/users/",
+      "tags": [
+        "V3 User Management"
+      ],
+      "summary": "List all users with roles",
+      "operation_id": "list_users_api_v3_users__get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_UserWithRoles__"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/users/me/avatar",
+      "tags": [
+        "V3 User Management"
+      ],
+      "summary": "Upload my avatar",
+      "operation_id": "upload_my_avatar_api_v3_users_me_avatar_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/Body_upload_my_avatar_api_v3_users_me_avatar_post"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/users/me/preferences",
+      "tags": [
+        "V3 User Management"
+      ],
+      "summary": "Get my app preferences",
+      "operation_id": "get_my_preferences_api_v3_users_me_preferences_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_UserPreferencesResponse_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/users/me/preferences",
+      "tags": [
+        "V3 User Management"
+      ],
+      "summary": "Update my app preferences",
+      "operation_id": "update_my_preferences_api_v3_users_me_preferences_put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/UserPreferencesUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_UserPreferencesResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/users/{user_id}/assign-roles",
+      "tags": [
+        "V3 User Management"
+      ],
+      "summary": "Assign roles to user",
+      "operation_id": "assign_roles_api_v3_users__user_id__assign_roles_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/UserRoleUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/chat",
+      "tags": [
+        "Chat V3"
+      ],
+      "summary": "General safe chat",
+      "operation_id": "chat_v3_api_v3_chat_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/ChatRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_ChatResponseV3_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/nutrition/options",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Get Nutrition Options",
+      "operation_id": "get_nutrition_options_api_v3_nutrition_options_get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_NutritionOptionsResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/nutrition/profile",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Get My Nutrition Profile",
+      "operation_id": "get_my_nutrition_profile_api_v3_nutrition_profile_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_NutritionProfile_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/nutrition/profile",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Update My Nutrition Profile",
+      "operation_id": "update_my_nutrition_profile_api_v3_nutrition_profile_put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/NutritionProfileUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_NutritionProfile_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/nutrition/recommendation",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Generate Nutrition Recommendation",
+      "operation_id": "generate_nutrition_recommendation_api_v3_nutrition_recommendation_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/NutritionRecommendationRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_NutritionRecommendationResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/nutrition/recommendation-agent",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Generate Nutrition Recommendation Agent",
+      "operation_id": "generate_nutrition_recommendation_agent_api_v3_nutrition_recommendation_agent_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/NutritionAgentRecommendationRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_NutritionAgentRecommendationResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/nutrition/workflows/{request_id}",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Get Workflow State",
+      "operation_id": "get_workflow_state_api_v3_nutrition_workflows__request_id__get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_WorkflowStateResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/nutrition/evaluate",
+      "tags": [
+        "Nutrition Decision Support"
+      ],
+      "summary": "Evaluate Nutrition Variants",
+      "operation_id": "evaluate_nutrition_variants_api_v3_nutrition_evaluate_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/NutritionRecommendationRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_NutritionEvaluationResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "tags": [],
+      "summary": "Root",
+      "operation_id": "root__get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    }
+  ]
+}

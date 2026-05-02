@@ -10,6 +10,7 @@ from app.schemas.nutrition import NutritionAgentRecommendationRequest, Nutrition
 from app.services.nutrition_intent_service import nutrition_intent_service
 
 from .explanations import NutritionAgentExplanationBuilder
+from .safety_clarification import NutritionAgentSafetyClarificationPolicy
 from .state import NutritionAgentState, NutritionAgentTraceStep
 from .tools import NutritionCoreRecommendationTool, core_recommendation_tool
 
@@ -21,10 +22,12 @@ class NutritionAgentGraph:
         core_tool: NutritionCoreRecommendationTool | None = None,
         explanation_builder: NutritionAgentExplanationBuilder | None = None,
         intent_parser: Any | None = None,
+        safety_clarification_policy: NutritionAgentSafetyClarificationPolicy | None = None,
     ):
         self.core_tool = core_tool or core_recommendation_tool
         self.explanation_builder = explanation_builder or NutritionAgentExplanationBuilder()
         self.intent_parser = intent_parser or nutrition_intent_service
+        self.safety_clarification_policy = safety_clarification_policy or NutritionAgentSafetyClarificationPolicy()
         self.checkpoint_backend = "none"
         self.app = self._build_graph()
 
@@ -88,6 +91,22 @@ class NutritionAgentGraph:
     def _clarify_intent(self, state: NutritionAgentState) -> dict[str, Any]:
         request = state["core_request"]
         instruction = request.instruction or ""
+        safety_clarification = self.safety_clarification_policy.build(state.get("current_user") or {}, request)
+        if safety_clarification:
+            return {
+                "clarification": safety_clarification,
+                "status": "needs_clarification",
+                "answer": str(safety_clarification.get("question") or ""),
+                "orchestration_trace": self._trace(
+                    state,
+                    "clarify_intent",
+                    "needs_clarification",
+                    {
+                        "reason": safety_clarification.get("reason"),
+                        "required_fields": safety_clarification.get("required_fields") or [],
+                    },
+                ),
+            }
         if not instruction.strip():
             return {
                 "status": "intent_ready",
@@ -219,9 +238,11 @@ def build_nutrition_agent_graph(
     core_tool: NutritionCoreRecommendationTool | None = None,
     explanation_builder: NutritionAgentExplanationBuilder | None = None,
     intent_parser: Any | None = None,
+    safety_clarification_policy: NutritionAgentSafetyClarificationPolicy | None = None,
 ) -> NutritionAgentGraph:
     return NutritionAgentGraph(
         core_tool=core_tool,
         explanation_builder=explanation_builder,
         intent_parser=intent_parser,
+        safety_clarification_policy=safety_clarification_policy,
     )

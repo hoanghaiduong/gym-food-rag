@@ -20,6 +20,14 @@ from .constants import (
 
 
 class WorkflowProfileTargetsMixin:
+    _LIST_PROFILE_FIELDS = {
+        "training_types",
+        "disliked_foods",
+        "favorite_meals",
+        "avoid_meals",
+        "medical_conditions",
+    }
+
     def normalize_profile_update(self, update_data: dict[str, Any]) -> dict[str, Any]:
         normalized = {}
         for field, value in update_data.items():
@@ -35,6 +43,8 @@ class WorkflowProfileTargetsMixin:
                 normalized[field] = self._normalize_goal(value)
             elif field == "allergies":
                 normalized[field] = ", ".join(self._normalize_allergies(value))
+            elif field in self._LIST_PROFILE_FIELDS:
+                normalized[field] = self._normalize_text_list(value)
             else:
                 normalized[field] = value
         return normalized
@@ -44,19 +54,28 @@ class WorkflowProfileTargetsMixin:
             "user_id": current_user["id"],
             "username": current_user["username"],
             "full_name": current_user.get("full_name"),
+            "phone": current_user.get("phone"),
+            "avatar_url": current_user.get("avatar_url"),
             "age": current_user.get("age"),
             "gender": self._normalize_gender(current_user.get("gender")),
             "weight": current_user.get("weight"),
             "height": current_user.get("height"),
             "activity_level": self._normalize_activity_level(current_user.get("activity_level")),
+            "workouts_per_week": current_user.get("workouts_per_week"),
+            "workout_minutes": current_user.get("workout_minutes"),
+            "training_types": current_user.get("training_types"),
             "dietary_preference": self._normalize_dietary_preference(current_user.get("dietary_preference")),
             "allergies": current_user.get("allergies"),
+            "disliked_foods": current_user.get("disliked_foods"),
+            "favorite_meals": current_user.get("favorite_meals"),
+            "avoid_meals": current_user.get("avoid_meals"),
+            "medical_conditions": current_user.get("medical_conditions"),
             "target_goal": self._normalize_goal(current_user.get("target_goal")),
             "allergy_tags": self._normalize_allergies(current_user.get("allergies")),
         }
 
     def _normalize_goal(self, value: Any) -> Optional[str]:
-        normalized = ascii_normalize(str(value or "")).replace(" ", "_")
+        normalized = ascii_normalize(str(value or "")).replace("-", "_").replace(" ", "_")
         return GOAL_MAP.get(normalized, "maintain" if normalized else None)
 
     def _normalize_planning_strategy(self, value: Any) -> Optional[str]:
@@ -94,8 +113,16 @@ class WorkflowProfileTargetsMixin:
         return ACTIVITY_MAP.get(normalized, "moderate" if normalized else None)
 
     def _normalize_dietary_preference(self, value: Any) -> Optional[str]:
-        normalized = ascii_normalize(str(value or "")).replace(" ", "_")
+        normalized = ascii_normalize(str(value or "")).replace("-", "_").replace(" ", "_")
         return DIETARY_MAP.get(normalized, "omnivore" if normalized else None)
+
+    def _normalize_text_list(self, value: Any) -> str:
+        if isinstance(value, list):
+            raw_items = value
+        else:
+            raw_items = str(value).replace(";", ",").replace("/", ",").split(",")
+        cleaned = [str(item).strip() for item in raw_items if str(item).strip()]
+        return ", ".join(dict.fromkeys(cleaned))
 
     def _normalize_allergies(self, value: Any) -> list[str]:
         if value is None:

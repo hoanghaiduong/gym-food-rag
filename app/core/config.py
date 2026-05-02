@@ -36,6 +36,12 @@ class Settings(BaseSettings):
     NUTRITION_AGENT_ENABLED: bool = True
     NUTRITION_AGENT_MODEL: str = ""
     NUTRITION_AGENT_REDIS_CHECKPOINT: bool = True
+    OTP_DEV_MODE: bool = True
+    OTP_EXPIRE_MINUTES: int = 5
+    OTP_COOLDOWN_SECONDS: int = 60
+    OTP_MAX_ATTEMPTS: int = 5
+    OTP_VERIFICATION_TOKEN_EXPIRE_MINUTES: int = 10
+    AVATAR_MAX_UPLOAD_BYTES: int = 5 * 1024 * 1024
 
     QDRANT_HOST: str = "localhost"
     QDRANT_PORT: int = 6333

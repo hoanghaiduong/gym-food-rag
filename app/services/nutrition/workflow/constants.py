@@ -17,6 +17,7 @@ GOAL_MAP = {
     "lose_weight": "lose_weight",
     "cutting": "lose_weight",
     "fat_loss": "lose_weight",
+    "lose_fat": "lose_weight",
     "giam_can": "lose_weight",
     "giam_mo": "lose_weight",
     "gain_muscle": "gain_muscle",
@@ -62,6 +63,9 @@ ACTIVITY_MAP = {
 
 DIETARY_MAP = {
     "omnivore": "omnivore",
+    "balanced": "omnivore",
+    "keto": "omnivore",
+    "paleo": "omnivore",
     "an_tap": "omnivore",
     "vegetarian": "vegetarian",
     "an_chay": "vegetarian",

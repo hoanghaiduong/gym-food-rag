@@ -5,13 +5,22 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class NutritionProfileUpdate(BaseModel):
+    full_name: Optional[str] = None
+    phone: Optional[str] = None
     age: Optional[int] = Field(default=None, ge=10, le=100)
     gender: Optional[str] = None
     weight: Optional[float] = Field(default=None, gt=20, lt=400)
     height: Optional[float] = Field(default=None, gt=100, lt=250)
     activity_level: Optional[str] = None
+    workouts_per_week: Optional[int] = Field(default=None, ge=0, le=14)
+    workout_minutes: Optional[int] = Field(default=None, ge=0, le=360)
+    training_types: Optional[str | List[str]] = None
     dietary_preference: Optional[str] = None
     allergies: Optional[str | List[str]] = None
+    disliked_foods: Optional[str | List[str]] = None
+    favorite_meals: Optional[str | List[str]] = None
+    avoid_meals: Optional[str | List[str]] = None
+    medical_conditions: Optional[str | List[str]] = None
     target_goal: Optional[str] = None
 
 
@@ -19,18 +28,41 @@ class NutritionProfile(BaseModel):
     user_id: int
     username: str
     full_name: Optional[str] = None
+    phone: Optional[str] = None
+    avatar_url: Optional[str] = None
     age: Optional[int] = None
     gender: Optional[str] = None
     weight: Optional[float] = None
     height: Optional[float] = None
     activity_level: Optional[str] = None
+    workouts_per_week: Optional[int] = None
+    workout_minutes: Optional[int] = None
+    training_types: Optional[str] = None
     dietary_preference: Optional[str] = None
     allergies: Optional[str] = None
+    disliked_foods: Optional[str] = None
+    favorite_meals: Optional[str] = None
+    avoid_meals: Optional[str] = None
+    medical_conditions: Optional[str] = None
     target_goal: Optional[str] = None
     allergy_tags: List[str] = Field(default_factory=list)
     goal_raw_semantic: Optional[str] = None
     goal_normalized_internal: Optional[str] = None
     planning_strategy: Optional[str] = None
+
+
+class NutritionOptionItem(BaseModel):
+    value: str
+    label: str
+    backend_value: Optional[str] = None
+
+
+class NutritionOptionsResponse(BaseModel):
+    goals: List[NutritionOptionItem]
+    activity_levels: List[NutritionOptionItem]
+    diet_styles: List[NutritionOptionItem]
+    allergies: List[NutritionOptionItem]
+    training_types: List[NutritionOptionItem]
 
 
 class NutritionRecommendationRequest(BaseModel):

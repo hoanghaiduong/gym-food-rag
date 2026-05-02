@@ -11,6 +11,7 @@ from app.schemas.nutrition import (
     NutritionAgentRecommendationRequest,
     NutritionAgentRecommendationResponse,
     NutritionEvaluationResponse,
+    NutritionOptionsResponse,
     NutritionProfile,
     NutritionProfileUpdate,
     NutritionRecommendationRequest,
@@ -26,6 +27,51 @@ from app.services.redis_state_service import redis_state_service
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+
+@router.get("/options", response_model=BaseResponse[NutritionOptionsResponse])
+async def get_nutrition_options():
+    options = {
+        "goals": [
+            {"value": "gain-muscle", "label": "Tăng cơ", "backend_value": "gain_muscle"},
+            {"value": "lose-fat", "label": "Giảm mỡ", "backend_value": "lose_weight"},
+            {"value": "maintain", "label": "Duy trì", "backend_value": "maintain"},
+        ],
+        "activity_levels": [
+            {"value": "sedentary", "label": "Ít vận động", "backend_value": "sedentary"},
+            {"value": "light", "label": "Vận động nhẹ", "backend_value": "light"},
+            {"value": "moderate", "label": "Vận động vừa", "backend_value": "moderate"},
+            {"value": "active", "label": "Năng động", "backend_value": "active"},
+            {"value": "very_active", "label": "Rất năng động", "backend_value": "very_active"},
+        ],
+        "diet_styles": [
+            {"value": "balanced", "label": "Cân bằng", "backend_value": "omnivore"},
+            {"value": "vegetarian", "label": "Ăn chay", "backend_value": "vegetarian"},
+            {"value": "vegan", "label": "Thuần chay", "backend_value": "vegan"},
+            {"value": "pescatarian", "label": "Ăn cá", "backend_value": "pescatarian"},
+            {"value": "keto", "label": "Keto", "backend_value": "omnivore"},
+            {"value": "paleo", "label": "Paleo", "backend_value": "omnivore"},
+        ],
+        "allergies": [
+            {"value": "dairy", "label": "Sữa", "backend_value": "dairy"},
+            {"value": "egg", "label": "Trứng", "backend_value": "egg"},
+            {"value": "soy", "label": "Đậu nành", "backend_value": "soy"},
+            {"value": "peanut", "label": "Lạc/đậu phộng", "backend_value": "peanut"},
+            {"value": "tree_nut", "label": "Hạt cây", "backend_value": "tree_nut"},
+            {"value": "gluten", "label": "Gluten", "backend_value": "gluten"},
+            {"value": "shellfish", "label": "Tôm cua/giáp xác", "backend_value": "shellfish"},
+            {"value": "fish", "label": "Cá", "backend_value": "fish"},
+            {"value": "sesame", "label": "Mè", "backend_value": "sesame"},
+        ],
+        "training_types": [
+            {"value": "gym", "label": "Gym", "backend_value": "gym"},
+            {"value": "cardio", "label": "Cardio", "backend_value": "cardio"},
+            {"value": "yoga", "label": "Yoga", "backend_value": "yoga"},
+            {"value": "running", "label": "Chạy bộ", "backend_value": "running"},
+            {"value": "calisthenics", "label": "Calisthenics", "backend_value": "calisthenics"},
+        ],
+    }
+    return success_response(data=options, message="Lấy tùy chọn dinh dưỡng thành công.")
 
 
 @router.get("/profile", response_model=BaseResponse[NutritionProfile])

@@ -18,13 +18,22 @@ from app.core.security import (
 # Import Tables & Schemas
 from app.db.tables import users, roles, user_roles
 from app.schemas import (
-    Token, UserLogin, UserCreate, UserResponse, 
-    RefreshTokenRequest
+    OtpRequest,
+    OtpRequestResponse,
+    OtpVerifyRequest,
+    OtpVerifyResponse,
+    PasswordResetWithOtpRequest,
+    RefreshTokenRequest,
+    Token,
+    UserCreate,
+    UserLogin,
+    UserResponse,
 )
 from pydantic import BaseModel
 
 # Import Global Response Helper (Äáº£m báº£o báº¡n Ä‘Ã£ táº¡o file app/core/response.py)
 from app.core.response import BaseResponse, success_response
+from app.services.auth import otp_service
 
 router = APIRouter()
 
@@ -62,6 +71,8 @@ async def register_v3(user_data: UserCreate, db: Session = Depends(get_db)):
             email=user_data.email,
             password_hash=hashed_password,
             full_name=user_data.full_name,
+            phone=user_data.phone,
+            referral_code=user_data.referral_code,
             is_active=True
            
         ).returning(users)
@@ -145,6 +156,49 @@ async def login_v3(user_data: UserLogin, db: Session = Depends(get_db)):
         "permissions": list(perms)
     }
     return success_response(data=data, message="Đăng nhập thành công")
+
+
+@router.post("/otp/request", response_model=BaseResponse[OtpRequestResponse])
+async def request_otp_v3(payload: OtpRequest, db: Session = Depends(get_db)):
+    try:
+        data = otp_service.request_otp(
+            db,
+            target=payload.target,
+            channel=payload.channel,
+            purpose=payload.purpose,
+        )
+        return success_response(data=data, message="Đã tạo mã OTP.")
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/otp/verify", response_model=BaseResponse[OtpVerifyResponse])
+async def verify_otp_v3(payload: OtpVerifyRequest, db: Session = Depends(get_db)):
+    try:
+        data = otp_service.verify_otp(
+            db,
+            otp_request_id=payload.otp_request_id,
+            code=payload.code,
+        )
+        return success_response(data=data, message="Xác thực OTP thành công.")
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@router.post("/reset-password", response_model=BaseResponse[dict])
+async def reset_password_with_otp_v3(
+    payload: PasswordResetWithOtpRequest,
+    db: Session = Depends(get_db),
+):
+    try:
+        otp_service.reset_password(
+            db,
+            verification_token=payload.verification_token,
+            new_password=payload.new_password,
+        )
+        return success_response(data=None, message="Đặt lại mật khẩu thành công.")
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 # ==========================================
 # 3. GET ME (Láº¥y thÃ´ng tin báº£n thÃ¢n)
 # ==========================================

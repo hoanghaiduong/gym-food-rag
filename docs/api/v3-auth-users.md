@@ -69,12 +69,24 @@ Lay thong tin user hien tai.
 **Response:**
 ```json
 {
-  "id": 1,
-  "username": "admin",
-  "email": "admin@gmail.com",
-  "full_name": "Super Administrator",
-  "is_active": true,
-  "permissions": ["user.view", "system.config", "chat.use"]
+  "status": "success",
+  "data": {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "full_name": "Super Administrator",
+    "phone": "0900000000",
+    "target_goal": "lose_weight",
+    "goal_normalized_internal": "lose_weight",
+    "planning_strategy": "deficit_high_satiety",
+    "age": 25,
+    "gender": "male",
+    "height": 170,
+    "weight": 65,
+    "activity_level": "active",
+    "is_profile_completed": true,
+    "permissions": ["user.view", "system.config", "chat.use"]
+  }
 }
 ```
 

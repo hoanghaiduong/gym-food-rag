@@ -37,6 +37,11 @@ Refresh flow:
 
 ## Profile / Onboarding
 
+`GET /api/v3/auth/me` returns `data.is_profile_completed` explicitly so the app
+can decide whether to show onboarding without reimplementing backend completion
+rules. The fallback fields are `target_goal`, `goal_normalized_internal`,
+`planning_strategy`, `age`, `gender`, `height`, `weight`, and `activity_level`.
+
 | Frontend field | Backend field | Backend normalized value |
 | --- | --- | --- |
 | `heightCm` | `height` | number in cm |
@@ -78,6 +83,73 @@ Recommended frontend values from `GET /api/v3/nutrition/options`:
 For `/api/v3/nutrition/recommendation-agent`, if `data.status === "needs_clarification"`,
 render `data.answer` as the next question and do not render a meal plan because
 `data.recommendation` is `null`.
+
+## Dashboard Overview
+
+Primary endpoint: `GET /api/v3/dashboard/overview`
+
+During rollout, frontend may fall back to `GET /api/v3/nutrition/profile` if
+the dashboard endpoint returns `404`.
+
+| Frontend field | Backend field |
+| --- | --- |
+| `greetingName` | `greeting_name` |
+| `goalLabel` | `goal_label` |
+| `weeklyProgress` | `weekly_progress` |
+| `caloriesConsumed` | `calories_consumed` |
+| `caloriesTarget` | `calories_target` |
+| `caloriesRemaining` | `calories_remaining` |
+| `bmi` | `bmi` |
+| `weightKg` | `weight_kg` |
+| `bmr` | `bmr` |
+| `trendPoints` | `trend_points` |
+| `recentPlans` | `recent_plans` |
+| `profileCompleted` | `profile_completed` |
+
+Backend `macros` is a numeric object:
+
+```json
+{"protein_g": 130, "carbs_g": 220, "fat_g": 60}
+```
+
+Frontend maps it to display rows:
+
+```ts
+[
+  { label: "PRO", consumed: 0, target: proteinG, accent: "primary" },
+  { label: "CARB", consumed: 0, target: carbsG, accent: "warning" },
+  { label: "FAT", consumed: 0, target: fatG, accent: "info" }
+]
+```
+
+## Plans / Calendar
+
+Weekly endpoint: `GET /api/v3/plans/weekly?week_start=2026-05-04`
+
+| Frontend field | Backend field |
+| --- | --- |
+| `id` | `id` |
+| `dayLabel` | `day_label` |
+| `title` | `title` |
+| `subtitle` | `subtitle` |
+| `status` | `status` (`completed`, `active`, `upcoming`, `insight`) |
+
+Monthly endpoint: `GET /api/v3/plans/monthly?year=2026&month=5`
+
+| Frontend field | Backend field |
+| --- | --- |
+| `days[].day` | `days[].day` |
+| `days[].hasCompletedWorkout` | `days[].has_completed_workout` |
+| `days[].hasPlannedWorkout` | `days[].has_planned_workout` |
+| `days[].isToday` | `days[].is_today` |
+| `monthlyProgress.workoutCompleted` | `monthly_progress.workout_completed` |
+| `monthlyProgress.workoutTarget` | `monthly_progress.workout_target` |
+| `monthlyProgress.nutritionCompleted` | `monthly_progress.nutrition_completed` |
+| `monthlyProgress.nutritionTarget` | `monthly_progress.nutrition_target` |
+| `selectedDay.date` | `selected_day.date` |
+| `selectedDay.title` | `selected_day.title` |
+| `selectedDay.subtitle` | `selected_day.subtitle` |
+| `selectedDay.calories` | `selected_day.calories` |
 
 ## General Chat
 

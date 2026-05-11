@@ -1,6 +1,6 @@
 ﻿from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from sqlalchemy import text, insert, select, update,or_
+from sqlalchemy import insert, select, update, or_
 from datetime import timedelta
 from typing import List, Optional
 
@@ -9,9 +9,8 @@ from app.api.deps import get_db, get_current_user, get_user_permissions
 from app.core.security import (
     create_access_token, 
     create_refresh_token, 
-    verify_password, 
+    verify_password,
     get_password_hash,
-    verify_token,
     ACCESS_TOKEN_EXPIRE_MINUTES
 )
 
@@ -34,6 +33,8 @@ from pydantic import BaseModel
 # Import Global Response Helper (Äáº£m báº£o báº¡n Ä‘Ã£ táº¡o file app/core/response.py)
 from app.core.response import BaseResponse, success_response
 from app.services.auth import otp_service
+from app.services.nutrition_workflow_service import nutrition_workflow_service
+from app.services.user_profile_contract import build_current_user_contract
 
 router = APIRouter()
 
@@ -48,6 +49,10 @@ class LoginData(BaseModel):
 
 class UserData(UserResponse):
     permissions: List[str]
+    goal_raw_semantic: Optional[str] = None
+    goal_normalized_internal: Optional[str] = None
+    planning_strategy: Optional[str] = None
+    is_profile_completed: bool
 
 # ==========================================
 # 1. REGISTER (ÄÄ‚NG KÃ)
@@ -210,26 +215,14 @@ async def read_users_me_v3(
     """
     Tráº£ vá» thÃ´ng tin user hiá»‡n táº¡i + danh sÃ¡ch quyá»n háº¡n
     """
-    # 1. Láº¥y permissions
     perms = get_user_permissions(current_user["id"], db)
-    
-    # 2. Convert User Object sang Dict
-    # FIX Lá»–I _mapping: VÃ¬ current_user lÃ  RowMapping (dict-like), ta chá»‰ cáº§n Ã©p kiá»ƒu dict()
-    try:
-        user_dict = dict(current_user)
-    except (TypeError, ValueError):
-        # Fallback náº¿u current_user lÃ  Pydantic model hoáº·c object khÃ¡c
-        user_dict = {
-            "id": current_user["id"],
-            "username": current_user.username,
-            "email": current_user.email,
-            "full_name": current_user.full_name,
-            "is_active": current_user.is_active,
-            "created_at": current_user.created_at
-        }
-
-    # 3. Gáº¯n thÃªm permissions
-    user_dict["permissions"] = list(perms)
+    current_user_dict = dict(current_user)
+    nutrition_profile = nutrition_workflow_service.build_profile(current_user_dict)
+    user_dict = build_current_user_contract(
+        current_user_dict,
+        permissions=perms,
+        nutrition_profile=nutrition_profile,
+    )
     
     return success_response(data=user_dict, message="Lấy thông tin thành công")
 

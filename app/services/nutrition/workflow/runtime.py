@@ -31,6 +31,8 @@ class WorkflowRuntimeMixin:
                 cached_response["request_id"] = request_id
                 cached_response["cached"] = True
                 cached_response["response_time_seconds"] = round(time.perf_counter() - start_time, 3)
+                if isinstance(cached_response.get("profile"), dict):
+                    cached_response["profile"] = self.ensure_profile_contract(cached_response["profile"])
                 cached_response["workflow_trace"] = [
                     self._trace_entry("redis_exact_cache", "completed", {"hit": True})
                 ]

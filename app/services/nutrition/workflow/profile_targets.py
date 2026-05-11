@@ -20,12 +20,30 @@ from .constants import (
 
 
 class WorkflowProfileTargetsMixin:
+    _PROFILE_COMPLETION_REQUIRED_FIELDS = (
+        "target_goal",
+        "age",
+        "gender",
+        "height",
+        "weight",
+        "activity_level",
+    )
     _LIST_PROFILE_FIELDS = {
         "training_types",
         "disliked_foods",
         "favorite_meals",
         "avoid_meals",
         "medical_conditions",
+    }
+    _DEFAULT_RAW_SEMANTIC_BY_GOAL = {
+        "gain_muscle": "gain_muscle",
+        "lose_weight": "fat_loss",
+        "maintain": "maintain",
+    }
+    _DEFAULT_PLANNING_STRATEGY_BY_GOAL = {
+        "gain_muscle": "surplus_high_protein",
+        "lose_weight": "deficit_high_satiety",
+        "maintain": "maintenance_balanced",
     }
 
     def normalize_profile_update(self, update_data: dict[str, Any]) -> dict[str, Any]:
@@ -50,7 +68,8 @@ class WorkflowProfileTargetsMixin:
         return normalized
 
     def build_profile(self, current_user: dict[str, Any]) -> dict[str, Any]:
-        return {
+        target_goal = self._normalize_goal(current_user.get("target_goal"))
+        profile = {
             "user_id": current_user["id"],
             "username": current_user["username"],
             "full_name": current_user.get("full_name"),
@@ -70,13 +89,51 @@ class WorkflowProfileTargetsMixin:
             "favorite_meals": current_user.get("favorite_meals"),
             "avoid_meals": current_user.get("avoid_meals"),
             "medical_conditions": current_user.get("medical_conditions"),
-            "target_goal": self._normalize_goal(current_user.get("target_goal")),
+            "target_goal": target_goal,
             "allergy_tags": self._normalize_allergies(current_user.get("allergies")),
         }
+        return self.ensure_profile_contract(profile)
+
+    def ensure_profile_contract(self, profile: dict[str, Any]) -> dict[str, Any]:
+        profile = dict(profile)
+        target_goal = self._normalize_goal(profile.get("target_goal"))
+        normalized_goal = self._normalize_goal(profile.get("goal_normalized_internal")) or target_goal
+
+        profile["target_goal"] = target_goal
+        profile["goal_raw_semantic"] = (
+            profile.get("goal_raw_semantic")
+            or self._default_raw_semantic_for_goal(normalized_goal)
+        )
+        profile["goal_normalized_internal"] = normalized_goal
+        profile["planning_strategy"] = (
+            self._normalize_planning_strategy(profile.get("planning_strategy"))
+            or self._default_planning_strategy_for_goal(normalized_goal)
+        )
+        profile["is_profile_completed"] = self.is_profile_completed(profile)
+        return profile
+
+    def is_profile_completed(self, profile: dict[str, Any]) -> bool:
+        return all(
+            self._has_profile_value(profile.get(field))
+            for field in self._PROFILE_COMPLETION_REQUIRED_FIELDS
+        )
+
+    def _has_profile_value(self, value: Any) -> bool:
+        if value is None:
+            return False
+        if isinstance(value, str):
+            return bool(value.strip())
+        return True
 
     def _normalize_goal(self, value: Any) -> Optional[str]:
         normalized = ascii_normalize(str(value or "")).replace("-", "_").replace(" ", "_")
         return GOAL_MAP.get(normalized, "maintain" if normalized else None)
+
+    def _default_raw_semantic_for_goal(self, goal: Optional[str]) -> Optional[str]:
+        return self._DEFAULT_RAW_SEMANTIC_BY_GOAL.get(goal or "")
+
+    def _default_planning_strategy_for_goal(self, goal: Optional[str]) -> Optional[str]:
+        return self._DEFAULT_PLANNING_STRATEGY_BY_GOAL.get(goal or "")
 
     def _normalize_planning_strategy(self, value: Any) -> Optional[str]:
         normalized = ascii_normalize(str(value or "")).replace(" ", "_")

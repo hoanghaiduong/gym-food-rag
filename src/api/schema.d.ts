@@ -608,6 +608,57 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/dashboard/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Dashboard Overview */
+        get: operations["get_dashboard_overview_api_v3_dashboard_overview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/plans/weekly": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Weekly Plans */
+        get: operations["get_weekly_plans_api_v3_plans_weekly_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/plans/monthly": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Monthly Plans */
+        get: operations["get_monthly_plans_api_v3_plans_monthly_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v3/nutrition/options": {
         parameters: {
             query?: never;
@@ -842,6 +893,70 @@ export interface components {
              */
             message: string;
             data?: components["schemas"]["LoginData"] | null;
+            /** Meta */
+            meta?: unknown | null;
+        };
+        /** BaseResponse[DashboardOverviewResponse] */
+        BaseResponse_DashboardOverviewResponse_: {
+            /**
+             * Status
+             * @default success
+             */
+            status: string;
+            /**
+             * Code
+             * @default 200
+             */
+            code: number;
+            /**
+             * Message
+             * @default Success
+             */
+            message: string;
+            data?: components["schemas"]["DashboardOverviewResponse"] | null;
+            /** Meta */
+            meta?: unknown | null;
+        };
+        /** BaseResponse[List[WeeklyTimelineItem]] */
+        BaseResponse_List_WeeklyTimelineItem__: {
+            /**
+             * Status
+             * @default success
+             */
+            status: string;
+            /**
+             * Code
+             * @default 200
+             */
+            code: number;
+            /**
+             * Message
+             * @default Success
+             */
+            message: string;
+            /** Data */
+            data?: components["schemas"]["WeeklyTimelineItem"][] | null;
+            /** Meta */
+            meta?: unknown | null;
+        };
+        /** BaseResponse[MonthlyPlansResponse] */
+        BaseResponse_MonthlyPlansResponse_: {
+            /**
+             * Status
+             * @default success
+             */
+            status: string;
+            /**
+             * Code
+             * @default 200
+             */
+            code: number;
+            /**
+             * Message
+             * @default Success
+             */
+            message: string;
+            data?: components["schemas"]["MonthlyPlansResponse"] | null;
             /** Meta */
             meta?: unknown | null;
         };
@@ -1267,6 +1382,135 @@ export interface components {
             /** Notes */
             notes?: string[];
         };
+        /** DashboardMacros */
+        DashboardMacros: {
+            /**
+             * Protein G
+             * @default 0
+             */
+            protein_g: number;
+            /**
+             * Carbs G
+             * @default 0
+             */
+            carbs_g: number;
+            /**
+             * Fat G
+             * @default 0
+             */
+            fat_g: number;
+        };
+        /** DashboardOverviewResponse */
+        DashboardOverviewResponse: {
+            /** Greeting Name */
+            greeting_name: string;
+            /** Goal Label */
+            goal_label: string;
+            /**
+             * Weekly Progress
+             * @default 0
+             */
+            weekly_progress?: number;
+            /**
+             * Calories Consumed
+             * @default 0
+             */
+            calories_consumed?: number;
+            /**
+             * Calories Target
+             * @default 0
+             */
+            calories_target?: number;
+            /**
+             * Calories Remaining
+             * @default 0
+             */
+            calories_remaining?: number;
+            macros?: components["schemas"]["DashboardMacros"];
+            /** Timeline */
+            timeline?: {
+                [key: string]: unknown;
+            }[];
+            /** Bmi */
+            bmi?: number | null;
+            /** Weight Kg */
+            weight_kg?: number | null;
+            /** Bmr */
+            bmr?: number | null;
+            /** Trend Points */
+            trend_points?: {
+                [key: string]: unknown;
+            }[];
+            /** Recent Plans */
+            recent_plans?: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Profile Completed
+             * @default false
+             */
+            profile_completed?: boolean;
+        };
+        /** MonthlyDay */
+        MonthlyDay: {
+            /** Day */
+            day: number;
+            /** Has Completed Workout */
+            has_completed_workout: boolean;
+            /** Has Planned Workout */
+            has_planned_workout: boolean;
+            /** Is Today */
+            is_today: boolean;
+        };
+        /** MonthlyProgress */
+        MonthlyProgress: {
+            /** Workout Completed */
+            workout_completed: number;
+            /** Workout Target */
+            workout_target: number;
+            /** Nutrition Completed */
+            nutrition_completed: number;
+            /** Nutrition Target */
+            nutrition_target: number;
+        };
+        /** MonthlySelectedDay */
+        MonthlySelectedDay: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Title */
+            title: string;
+            /** Subtitle */
+            subtitle: string;
+            /** Calories */
+            calories: number;
+        };
+        /** MonthlyPlansResponse */
+        MonthlyPlansResponse: {
+            /** Year */
+            year: number;
+            /** Month */
+            month: number;
+            /** Days */
+            days: components["schemas"]["MonthlyDay"][];
+            monthly_progress: components["schemas"]["MonthlyProgress"];
+            selected_day: components["schemas"]["MonthlySelectedDay"] | null;
+        };
+        /** WeeklyTimelineItem */
+        WeeklyTimelineItem: {
+            /** Id */
+            id: string;
+            /** Day Label */
+            day_label: string;
+            /** Title */
+            title: string;
+            /** Subtitle */
+            subtitle: string;
+            /** Status */
+            status: "completed" | "active" | "upcoming" | "insight";
+        };
         /** FirstAdminRequest */
         FirstAdminRequest: {
             /** Username */
@@ -1498,6 +1742,8 @@ export interface components {
             goal_normalized_internal?: string | null;
             /** Planning Strategy */
             planning_strategy?: string | null;
+            /** Is Profile Completed */
+            is_profile_completed: boolean;
         };
         /** NutritionProfileUpdate */
         NutritionProfileUpdate: {
@@ -2064,6 +2310,14 @@ export interface components {
             target_goal?: string | null;
             /** Permissions */
             permissions: string[];
+            /** Goal Raw Semantic */
+            goal_raw_semantic?: string | null;
+            /** Goal Normalized Internal */
+            goal_normalized_internal?: string | null;
+            /** Planning Strategy */
+            planning_strategy?: string | null;
+            /** Is Profile Completed */
+            is_profile_completed: boolean;
         };
         /** UserLogin */
         UserLogin: {
@@ -3547,6 +3801,90 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["BaseResponse_ChatResponseV3_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_dashboard_overview_api_v3_dashboard_overview_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_DashboardOverviewResponse_"];
+                };
+            };
+        };
+    };
+    get_weekly_plans_api_v3_plans_weekly_get: {
+        parameters: {
+            query?: {
+                /** Format: date */
+                week_start?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_List_WeeklyTimelineItem__"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_monthly_plans_api_v3_plans_monthly_get: {
+        parameters: {
+            query: {
+                year: number;
+                month: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseResponse_MonthlyPlansResponse_"];
                 };
             };
             /** @description Validation Error */

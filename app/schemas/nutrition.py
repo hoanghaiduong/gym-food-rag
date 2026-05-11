@@ -49,6 +49,7 @@ class NutritionProfile(BaseModel):
     goal_raw_semantic: Optional[str] = None
     goal_normalized_internal: Optional[str] = None
     planning_strategy: Optional[str] = None
+    is_profile_completed: bool
 
 
 class NutritionOptionItem(BaseModel):

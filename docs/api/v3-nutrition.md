@@ -34,6 +34,9 @@ Lay ho so dinh duong cua user hien tai.
     "dietary_preference": "omnivore",
     "allergies": "shellfish",
     "target_goal": "gain_muscle",
+    "goal_normalized_internal": "gain_muscle",
+    "planning_strategy": "surplus_high_protein",
+    "is_profile_completed": true,
     "allergy_tags": ["shellfish"]
   }
 }

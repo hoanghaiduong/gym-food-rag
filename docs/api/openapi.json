@@ -3750,12 +3750,17 @@
               }
             ],
             "title": "Planning Strategy"
+          },
+          "is_profile_completed": {
+            "type": "boolean",
+            "title": "Is Profile Completed"
           }
         },
         "type": "object",
         "required": [
           "user_id",
-          "username"
+          "username",
+          "is_profile_completed"
         ],
         "title": "NutritionProfile"
       },
@@ -5632,6 +5637,43 @@
             },
             "type": "array",
             "title": "Permissions"
+          },
+          "goal_raw_semantic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Raw Semantic"
+          },
+          "goal_normalized_internal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Normalized Internal"
+          },
+          "planning_strategy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Planning Strategy"
+          },
+          "is_profile_completed": {
+            "type": "boolean",
+            "title": "Is Profile Completed"
           }
         },
         "type": "object",
@@ -5642,7 +5684,8 @@
           "full_name",
           "is_active",
           "created_at",
-          "permissions"
+          "permissions",
+          "is_profile_completed"
         ],
         "title": "UserData"
       },

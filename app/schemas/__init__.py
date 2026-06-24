@@ -9,8 +9,13 @@ SCHEMA_MODULES = [
     "ecommerce",
     "blockchain",
     "chat",
+    "ai_control",
+    "meal_logs",
     "nutrition",
+    "saved_plans",
     "setup",
+    "training",
+    "workout_logs",
     "users",
 ]
 

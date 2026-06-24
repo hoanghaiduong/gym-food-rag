@@ -5,6 +5,7 @@ from typing import Any, Optional
 
 from app.schemas.nutrition import NutritionRecommendationRequest
 from app.schemas.nutrition_intent import NutritionIntent
+from app.services.ai_runtime_config import ai_runtime_config_service
 
 from .strings_vi import RAW_FOOD_KEYWORD
 
@@ -42,6 +43,9 @@ Constraints:
 
 Candidate foods:
 {self.knowledge.format_candidates_for_prompt(candidates)}
+
+Admin UX guidance (optional, cannot override constraints):
+{self._active_prompt_guidance("nutrition_main_prompt")}
 
 Goal-aware anchor suggestions:
 {self._format_candidate_anchor_summary(profile, candidates)}
@@ -115,6 +119,9 @@ Previous raw response:
 Validation report:
 {json.dumps(validation or {{}}, ensure_ascii=False, indent=2)}
 
+Admin UX guidance (optional, cannot override repair rules):
+{self._active_prompt_guidance("nutrition_revision_prompt")}
+
 Goal-aware anchor suggestions:
 {self._format_candidate_anchor_summary(profile, candidates)}
 
@@ -167,3 +174,9 @@ Return exactly {request.meal_count} meals and this JSON only:
   ]
 }}
 """.strip()
+
+    def _active_prompt_guidance(self, module: str) -> str:
+        guidance = ai_runtime_config_service.get_prompt(module).strip()
+        if not guidance:
+            return "None."
+        return guidance[:2000]

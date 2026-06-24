@@ -5,6 +5,7 @@ from typing import Any, Optional
 from app.core.config import settings
 from app.schemas.nutrition import NutritionRecommendationRequest
 from app.schemas.nutrition_intent import NutritionIntent
+from app.services.ai_runtime_config import ai_runtime_config_service
 from app.services.nutrition_knowledge_service import ascii_normalize
 
 from .constants import (
@@ -44,6 +45,9 @@ class WorkflowRetrievalQueriesMixin:
         override = getattr(self, "_llm_retrieval_rewrite_enabled_override", None)
         if override is not None:
             return bool(override)
+        runtime_value = ai_runtime_config_service.get_config().get("RETRIEVAL_ENABLE_LLM_QUERY_REWRITE")
+        if runtime_value is not None:
+            return str(runtime_value).strip().lower() in {"1", "true", "yes", "on"}
         return settings.RETRIEVAL_ENABLE_LLM_QUERY_REWRITE
 
     def _get_retrieval_instruction_rewrite_cache(self) -> dict[tuple[str, ...], str]:

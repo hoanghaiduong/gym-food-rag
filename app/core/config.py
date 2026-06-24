@@ -14,7 +14,11 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     OPENAI_API_KEY: str = ""
-    OPENAI_MODEL: str = "gpt-3.5-turbo"
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    OPENAI_REQUEST_TIMEOUT_SECONDS: int = 120
+    OPENAI_MAX_RETRIES: int = 2
+    OPENAI_RETRY_BASE_SECONDS: float = 2.0
+    OPENAI_RETRY_MAX_SECONDS: float = 20.0
     GOOGLE_API_KEY: str = ""
     USE_LOCAL_EMBEDDING: bool = True
     LOCAL_EMBEDDING_MODEL: str = "BAAI/bge-m3"

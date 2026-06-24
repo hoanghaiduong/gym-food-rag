@@ -6,9 +6,11 @@ import time
 from typing import Any
 
 from google import genai
+from openai import OpenAI
 import requests
 
 from app.core.config import settings
+from app.services.ai_runtime_config import ai_runtime_config_service
 
 
 logger = logging.getLogger(__name__)
@@ -28,12 +30,20 @@ GEMINI_RETRYABLE_MARKERS = (
     "high demand",
 )
 GEMINI_RETRY_DELAY_PATTERN = re.compile(r"['\"]?retryDelay['\"]?\s*:\s*['\"](?P<seconds>\d+(?:\.\d+)?)s['\"]")
+OPENAI_RETRYABLE_MARKERS = (
+    "429",
+    "500",
+    "502",
+    "503",
+    "504",
+    "rate_limit",
+    "Rate limit",
+    "temporarily unavailable",
+)
 
 
 class OllamaNutritionService:
-    """LLM Service for nutrition that supports switching between Ollama and Gemini
-    via LLM_BACKEND in .env (ollama or gemini)
-    """
+    """Nutrition LLM service selected by LLM_BACKEND (ollama, gemini, or openai)."""
     def __init__(self):
         self.backend = getattr(settings, "LLM_BACKEND", "ollama").lower()
         self.timeout_seconds = settings.OLLAMA_REQUEST_TIMEOUT_SECONDS
@@ -42,12 +52,27 @@ class OllamaNutritionService:
         self.gemini_retry_base_seconds = max(0.0, settings.GEMINI_RETRY_BASE_SECONDS)
         self.gemini_retry_max_seconds = max(0.0, settings.GEMINI_RETRY_MAX_SECONDS)
         self.gemini_quota_cooldown_seconds = max(0, settings.GEMINI_QUOTA_COOLDOWN_SECONDS)
+        self.openai_max_retries = max(0, settings.OPENAI_MAX_RETRIES)
+        self.openai_retry_base_seconds = max(0.0, settings.OPENAI_RETRY_BASE_SECONDS)
+        self.openai_retry_max_seconds = max(0.0, settings.OPENAI_RETRY_MAX_SECONDS)
+        self.openai_timeout_seconds = max(1, settings.OPENAI_REQUEST_TIMEOUT_SECONDS)
         self._gemini_unavailable_until = 0.0
 
         if self.backend == "ollama":
             self.base_url = settings.OLLAMA_BASE_URL.rstrip("/")
             self.model = settings.OLLAMA_MODEL
             logger.info(f"🔧 [Nutrition LLM] Using Ollama: {self.model}")
+        elif self.backend in ("openai", "gpt"):
+            self.model = settings.OPENAI_MODEL
+            api_key = getattr(settings, "OPENAI_API_KEY", "") or os.getenv("OPENAI_API_KEY")
+            if api_key:
+                self.client = OpenAI(api_key=api_key, timeout=self.openai_timeout_seconds)
+                logger.info("Nutrition LLM using OpenAI: %s", self.model)
+            else:
+                logger.warning("No OPENAI_API_KEY found for OpenAI backend")
+                self.backend = "ollama"
+                self.base_url = settings.OLLAMA_BASE_URL.rstrip("/")
+                self.model = settings.OLLAMA_MODEL
         elif self.backend in ("gemini", "google"):
             self.model = settings.GEMINI_MODEL
             api_key = getattr(settings, "GOOGLE_API_KEY", "") or os.getenv("GOOGLE_API_KEY")
@@ -68,6 +93,7 @@ class OllamaNutritionService:
     def generate_text(self, prompt: str, *, temperature: float = 0.2) -> str:
         """Generate text using either Ollama or Gemini based on backend."""
         started_at = time.perf_counter()
+        self._apply_runtime_overrides()
 
         if self.backend == "ollama":
             payload = {
@@ -152,8 +178,33 @@ class OllamaNutritionService:
         elif self.backend in ("gemini", "google"):
             return self._generate_text_with_gemini(prompt, temperature=temperature, started_at=started_at)
 
+        elif self.backend in ("openai", "gpt"):
+            return self._generate_text_with_openai(prompt, temperature=temperature, started_at=started_at)
+
         else:
             raise RuntimeError(f"Unsupported backend: {self.backend}")
+
+    def _apply_runtime_overrides(self) -> None:
+        runtime_config = ai_runtime_config_service.get_config()
+        if not runtime_config:
+            return
+        if self.backend == "ollama" and runtime_config.get("OLLAMA_MODEL"):
+            self.model = str(runtime_config["OLLAMA_MODEL"])
+        if self.backend in ("gemini", "google") and runtime_config.get("GEMINI_MODEL"):
+            self.model = str(runtime_config["GEMINI_MODEL"])
+        if self.backend in ("openai", "gpt") and runtime_config.get("OPENAI_MODEL"):
+            self.model = str(runtime_config["OPENAI_MODEL"])
+        self.timeout_seconds = int(runtime_config.get("OLLAMA_REQUEST_TIMEOUT_SECONDS", self.timeout_seconds))
+        self.gemini_max_retries = int(runtime_config.get("GEMINI_MAX_RETRIES", self.gemini_max_retries))
+        self.gemini_retry_base_seconds = float(runtime_config.get("GEMINI_RETRY_BASE_SECONDS", self.gemini_retry_base_seconds))
+        self.gemini_retry_max_seconds = float(runtime_config.get("GEMINI_RETRY_MAX_SECONDS", self.gemini_retry_max_seconds))
+        self.gemini_quota_cooldown_seconds = int(
+            runtime_config.get("GEMINI_QUOTA_COOLDOWN_SECONDS", self.gemini_quota_cooldown_seconds)
+        )
+        self.openai_max_retries = int(runtime_config.get("OPENAI_MAX_RETRIES", self.openai_max_retries))
+        self.openai_retry_base_seconds = float(runtime_config.get("OPENAI_RETRY_BASE_SECONDS", self.openai_retry_base_seconds))
+        self.openai_retry_max_seconds = float(runtime_config.get("OPENAI_RETRY_MAX_SECONDS", self.openai_retry_max_seconds))
+        self.openai_timeout_seconds = int(runtime_config.get("OPENAI_REQUEST_TIMEOUT_SECONDS", self.openai_timeout_seconds))
 
     def _generate_text_with_gemini(
         self,
@@ -234,6 +285,89 @@ class OllamaNutritionService:
 
         raise RuntimeError(f"Gemini request failed: {last_error}") from last_error
 
+    def _generate_text_with_openai(
+        self,
+        prompt: str,
+        *,
+        temperature: float,
+        started_at: float,
+    ) -> str:
+        last_error: Exception | None = None
+        max_attempts = self.openai_max_retries + 1
+
+        for attempt in range(max_attempts):
+            logger.info(
+                "OpenAI request started | model=%s | temperature=%.2f | prompt_chars=%s | attempt=%s/%s",
+                self.model,
+                temperature,
+                len(prompt),
+                attempt + 1,
+                max_attempts,
+            )
+            try:
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "Return only a valid JSON object. Do not wrap the JSON in markdown.",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    temperature=temperature,
+                    response_format={"type": "json_object"},
+                    max_tokens=8192,
+                )
+                text = (response.choices[0].message.content or "").strip()
+                elapsed = round(time.perf_counter() - started_at, 2)
+                logger.info(
+                    "OpenAI response received | model=%s | elapsed=%.2fs | attempt=%s/%s | response_chars=%s",
+                    self.model,
+                    elapsed,
+                    attempt + 1,
+                    max_attempts,
+                    len(text),
+                )
+                if not text:
+                    raise ValueError("OpenAI returned empty response")
+                return text
+            except Exception as exc:
+                last_error = exc
+                error_text = str(exc)
+                elapsed = round(time.perf_counter() - started_at, 2)
+                retry_delay = min(
+                    self.openai_retry_max_seconds,
+                    self.openai_retry_base_seconds * (2**attempt),
+                )
+                should_retry = (
+                    self._is_openai_retryable_error(error_text)
+                    and attempt < self.openai_max_retries
+                    and retry_delay <= self.openai_retry_max_seconds
+                )
+                if should_retry:
+                    logger.warning(
+                        "OpenAI request retrying | model=%s | elapsed=%.2fs | attempt=%s/%s | retry_in=%.2fs | error=%s",
+                        self.model,
+                        elapsed,
+                        attempt + 1,
+                        max_attempts,
+                        retry_delay,
+                        error_text,
+                    )
+                    if retry_delay > 0:
+                        time.sleep(retry_delay)
+                    continue
+                logger.error(
+                    "OpenAI request failed | model=%s | elapsed=%.2fs | attempts=%s | error=%s",
+                    self.model,
+                    elapsed,
+                    attempt + 1,
+                    error_text,
+                )
+                raise RuntimeError(f"OpenAI request failed: {exc}") from exc
+
+        raise RuntimeError(f"OpenAI request failed: {last_error}") from last_error
+
     def _raise_if_gemini_in_cooldown(self) -> None:
         remaining_seconds = self._gemini_unavailable_until - time.monotonic()
         if remaining_seconds > 0:
@@ -268,6 +402,10 @@ class OllamaNutritionService:
     def _is_gemini_daily_quota_exhausted(error_text: str) -> bool:
         normalized = error_text.lower()
         return any(marker.lower() in normalized for marker in GEMINI_DAILY_QUOTA_MARKERS)
+
+    @staticmethod
+    def _is_openai_retryable_error(error_text: str) -> bool:
+        return any(marker in error_text for marker in OPENAI_RETRYABLE_MARKERS)
 
     def parse_json(self, raw_text: str) -> dict[str, Any]:
         text = raw_text.strip()

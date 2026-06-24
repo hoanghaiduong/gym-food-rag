@@ -121,6 +121,21 @@ Luong pre-prod chuan:
 .\myenv\Scripts\python -X utf8 scripts\judge_production_readiness.py
 ```
 
+Benchmark so sanh baseline cho luan van chay rieng, khong anh huong release gate:
+
+```powershell
+.\myenv\Scripts\python -X utf8 scripts\compare_nutrition_baselines.py
+```
+
+Output mac dinh:
+
+```text
+logs/nutrition_case_runs/_debug/comparison/latest/comparison_summary.json
+```
+
+Run dai co the dung `--resume` de tiep tuc tu `comparison_summary.json` da ghi sau
+tung case, hoac `--start-index N` de chay tiep tu case thu N khi can chia batch.
+
 Acceptance production:
 
 - Intent KPI pass.
@@ -145,7 +160,7 @@ Acceptance production:
 | LangGraph/LangChain | Shadow orchestration trong `app/services/nutrition/orchestration/`. |
 | Constraint checking | Validation trong `NutritionWorkflowService`. |
 | Revise/fail-safe | Agent `needs_revision`, core revision rounds va validation gates. |
-| Baseline comparison | `nutrition_evaluation_service.evaluate()` va recommendation benchmark. |
+| Baseline comparison | `compare_nutrition_baselines.py`: main flow vs pure LLM vs rule-based. |
 
 ## 10. Ket Luan
 

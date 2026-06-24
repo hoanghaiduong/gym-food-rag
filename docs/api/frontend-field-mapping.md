@@ -151,6 +151,120 @@ Monthly endpoint: `GET /api/v3/plans/monthly?year=2026&month=5`
 | `selectedDay.subtitle` | `selected_day.subtitle` |
 | `selectedDay.calories` | `selected_day.calories` |
 
+## Training Recommendation
+
+Options endpoint: `GET /api/v3/training/options`
+
+Recommendation endpoint: `POST /api/v3/training/recommendation`
+
+This endpoint is deterministic and does not call the LLM. It uses the user
+profile plus optional request overrides to return a safe training schedule that
+can be shown next to the meal plan.
+
+| Frontend field | Backend field |
+| --- | --- |
+| `goal` | `goal` (`gain_muscle`, `lose_weight`, `maintain`, `endurance`, `mobility`) |
+| `experienceLevel` | `experience_level` (`beginner`, `intermediate`, `advanced`) |
+| `workoutsPerWeek` | `workouts_per_week` |
+| `workoutMinutes` | `workout_minutes` |
+| `trainingTypes` | `training_types` |
+| `equipment` | `equipment` |
+| `limitations` | `limitations` |
+| `includeNutritionTiming` | `include_nutrition_timing` |
+
+Response fields to map:
+
+| Frontend field | Backend field |
+| --- | --- |
+| `weeklyFrequency` | `weekly_frequency` |
+| `sessionMinutes` | `session_minutes` |
+| `profileSummary` | `profile_summary` |
+| `safetyNotes` | `safety_notes` |
+| `nutritionAlignment` | `nutrition_alignment` |
+| `schedule[].dayIndex` | `schedule[].day_index` |
+| `schedule[].estimatedMinutes` | `schedule[].estimated_minutes` |
+| `schedule[].exercises[].durationMinutes` | `schedule[].exercises[].duration_minutes` |
+| `schedule[].exercises[].restSeconds` | `schedule[].exercises[].rest_seconds` |
+
+## Meal Logs
+
+Endpoints:
+
+- `POST /api/v3/meals/logs`
+- `GET /api/v3/meals/logs?date_from=2026-05-01&date_to=2026-05-13`
+- `GET /api/v3/meals/logs/summary?date_from=2026-05-01&date_to=2026-05-13`
+- `GET|PUT|DELETE /api/v3/meals/logs/{log_id}`
+
+| Frontend field | Backend field |
+| --- | --- |
+| `loggedAt` | `logged_at` |
+| `mealName` | `meal_name` |
+| `energyKcal` | `energy_kcal` |
+| `proteinG` | `protein_g` |
+| `carbsG` | `carbs_g` |
+| `fatG` | `fat_g` |
+| `items[].entityId` | `items[].entity_id` |
+| `items[].foodId` | `items[].food_id` |
+| `items[].displayName` | `items[].display_name` |
+
+Manual meal logs are user diary data only. They must not be inserted back into
+the production retrieval candidate pool.
+
+## Workout Logs
+
+Endpoints:
+
+- `POST /api/v3/workouts/logs`
+- `GET /api/v3/workouts/logs?date_from=2026-05-01&date_to=2026-05-13`
+- `GET /api/v3/workouts/logs/summary?date_from=2026-05-01&date_to=2026-05-13`
+- `GET|PUT|DELETE /api/v3/workouts/logs/{log_id}`
+
+| Frontend field | Backend field |
+| --- | --- |
+| `loggedAt` | `logged_at` |
+| `workoutType` | `workout_type` |
+| `durationMinutes` | `duration_minutes` |
+| `caloriesEstimated` | `calories_estimated` |
+| `exercises[].exerciseName` | `exercises[].exercise_name` |
+| `exercises[].weightKg` | `exercises[].weight_kg` |
+| `exercises[].durationMinutes` | `exercises[].duration_minutes` |
+| `exercises[].restSeconds` | `exercises[].rest_seconds` |
+
+## Saved Plans
+
+Endpoints:
+
+- `POST /api/v3/plans/saved`
+- `GET /api/v3/plans/saved?type=weekly`
+- `GET|PUT|DELETE /api/v3/plans/saved/{plan_id}`
+- `POST /api/v3/plans/weekly/generate`
+- `POST /api/v3/plans/monthly/generate`
+
+`GET /api/v3/plans/weekly` and `GET /api/v3/plans/monthly` now prefer a saved
+snapshot for that date range. If none exists, they return the profile-based
+fallback timeline.
+
+## AI Control / Feedback
+
+User feedback endpoint:
+
+- `POST /api/v3/ai/feedback`
+
+Admin-only endpoints require `system.config`:
+
+- `GET|PUT /api/v3/admin/ai/config`
+- `GET|POST /api/v3/admin/ai/prompts`
+- `POST /api/v3/admin/ai/prompts/{version_id}/validate`
+- `POST /api/v3/admin/ai/prompts/{version_id}/publish`
+- `GET|POST /api/v3/admin/ai/rules`
+- `POST /api/v3/admin/ai/rules/{version_id}/validate`
+- `POST /api/v3/admin/ai/rules/{version_id}/publish`
+- `GET /api/v3/admin/ai/feedback`
+- `GET /api/v3/admin/ai/training-data/export`
+
+Do not send API keys/secrets through these endpoints. Prompt/rule versions are
+validated before publish and cannot override hard safety rules.
+
 ## General Chat
 
 Endpoint: `POST /api/v3/chat`

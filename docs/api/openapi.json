@@ -1663,6 +1663,650 @@
         }
       }
     },
+    "/api/v3/ai/feedback": {
+      "post": {
+        "tags": [
+          "AI Feedback"
+        ],
+        "summary": "Create Ai Feedback",
+        "operationId": "create_ai_feedback_api_v3_ai_feedback_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIFeedbackCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIFeedbackResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v3/admin/ai/config": {
+      "get": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Get Ai Config",
+        "operationId": "get_ai_config_api_v3_admin_ai_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIConfigResponse_"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Update Ai Config",
+        "operationId": "update_ai_config_api_v3_admin_ai_config_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIConfigUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v3/admin/ai/prompts": {
+      "get": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "List Ai Prompts",
+        "operationId": "list_ai_prompts_api_v3_admin_ai_prompts_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Module"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_AIControlVersionResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Create Ai Prompt",
+        "operationId": "create_ai_prompt_api_v3_admin_ai_prompts_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIControlVersionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/prompts/{version_id}/validate": {
+      "post": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Validate Ai Prompt",
+        "operationId": "validate_ai_prompt_api_v3_admin_ai_prompts__version_id__validate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/prompts/{version_id}/publish": {
+      "post": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Publish Ai Prompt",
+        "operationId": "publish_ai_prompt_api_v3_admin_ai_prompts__version_id__publish_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/rules": {
+      "get": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "List Ai Rules",
+        "operationId": "list_ai_rules_api_v3_admin_ai_rules_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "module",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Module"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_AIControlVersionResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Create Ai Rule",
+        "operationId": "create_ai_rule_api_v3_admin_ai_rules_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AIControlVersionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/rules/{version_id}/validate": {
+      "post": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Validate Ai Rule",
+        "operationId": "validate_ai_rule_api_v3_admin_ai_rules__version_id__validate_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/rules/{version_id}/publish": {
+      "post": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Publish Ai Rule",
+        "operationId": "publish_ai_rule_api_v3_admin_ai_rules__version_id__publish_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/feedback": {
+      "get": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "List Ai Feedback",
+        "operationId": "list_ai_feedback_api_v3_admin_ai_feedback_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_AIFeedbackResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/admin/ai/training-data/export": {
+      "get": {
+        "tags": [
+          "AI Control Plane"
+        ],
+        "summary": "Export Ai Training Data",
+        "operationId": "export_ai_training_data_api_v3_admin_ai_training_data_export_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_AITrainingDataExportResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v3/chat": {
       "post": {
         "tags": [
@@ -1986,6 +2630,1255 @@
         ]
       }
     },
+    "/api/v3/training/options": {
+      "get": {
+        "tags": [
+          "Training Decision Support"
+        ],
+        "summary": "Get Training Options",
+        "operationId": "get_training_options_api_v3_training_options_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_TrainingOptionsResponse_"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/training/recommendation": {
+      "post": {
+        "tags": [
+          "Training Decision Support"
+        ],
+        "summary": "Generate Training Recommendation",
+        "operationId": "generate_training_recommendation_api_v3_training_recommendation_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainingRecommendationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_TrainingRecommendationResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v3/meals/logs": {
+      "post": {
+        "tags": [
+          "Meal Logs"
+        ],
+        "summary": "Create Meal Log",
+        "operationId": "create_meal_log_api_v3_meals_logs_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealLogCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_MealLogResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Meal Logs"
+        ],
+        "summary": "List Meal Logs",
+        "operationId": "list_meal_logs_api_v3_meals_logs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_MealLogResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/meals/logs/summary": {
+      "get": {
+        "tags": [
+          "Meal Logs"
+        ],
+        "summary": "Summarize Meal Logs",
+        "operationId": "summarize_meal_logs_api_v3_meals_logs_summary_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_MealLogSummaryResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/meals/logs/{log_id}": {
+      "get": {
+        "tags": [
+          "Meal Logs"
+        ],
+        "summary": "Get Meal Log",
+        "operationId": "get_meal_log_api_v3_meals_logs__log_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Log Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_MealLogResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Meal Logs"
+        ],
+        "summary": "Update Meal Log",
+        "operationId": "update_meal_log_api_v3_meals_logs__log_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Log Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealLogUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_MealLogResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Meal Logs"
+        ],
+        "summary": "Delete Meal Log",
+        "operationId": "delete_meal_log_api_v3_meals_logs__log_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Log Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_dict_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/workouts/logs": {
+      "post": {
+        "tags": [
+          "Workout Logs"
+        ],
+        "summary": "Create Workout Log",
+        "operationId": "create_workout_log_api_v3_workouts_logs_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkoutLogCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_WorkoutLogResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Workout Logs"
+        ],
+        "summary": "List Workout Logs",
+        "operationId": "list_workout_logs_api_v3_workouts_logs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_WorkoutLogResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/workouts/logs/summary": {
+      "get": {
+        "tags": [
+          "Workout Logs"
+        ],
+        "summary": "Summarize Workout Logs",
+        "operationId": "summarize_workout_logs_api_v3_workouts_logs_summary_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_WorkoutLogSummaryResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/workouts/logs/{log_id}": {
+      "get": {
+        "tags": [
+          "Workout Logs"
+        ],
+        "summary": "Get Workout Log",
+        "operationId": "get_workout_log_api_v3_workouts_logs__log_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Log Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_WorkoutLogResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Workout Logs"
+        ],
+        "summary": "Update Workout Log",
+        "operationId": "update_workout_log_api_v3_workouts_logs__log_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Log Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkoutLogUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_WorkoutLogResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Workout Logs"
+        ],
+        "summary": "Delete Workout Log",
+        "operationId": "delete_workout_log_api_v3_workouts_logs__log_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "log_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Log Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_dict_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/dashboard/overview": {
+      "get": {
+        "tags": [
+          "Dashboard V3"
+        ],
+        "summary": "Get Dashboard Overview",
+        "operationId": "get_dashboard_overview_api_v3_dashboard_overview_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_DashboardOverviewResponse_"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v3/plans/weekly": {
+      "get": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Get Weekly Plans",
+        "operationId": "get_weekly_plans_api_v3_plans_weekly_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "week_start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Week Start"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_WeeklyTimelineItem__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/plans/monthly": {
+      "get": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Get Monthly Plans",
+        "operationId": "get_monthly_plans_api_v3_plans_monthly_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2200,
+              "minimum": 1900,
+              "title": "Year"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_MonthlyPlansResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/plans/saved": {
+      "post": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Create Saved Plan",
+        "operationId": "create_saved_plan_api_v3_plans_saved_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavedPlanCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "List Saved Plans",
+        "operationId": "list_saved_plans_api_v3_plans_saved_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Type"
+            }
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_list_SavedPlanResponse__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/plans/saved/{plan_id}": {
+      "get": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Get Saved Plan",
+        "operationId": "get_saved_plan_api_v3_plans_saved__plan_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Update Saved Plan",
+        "operationId": "update_saved_plan_api_v3_plans_saved__plan_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavedPlanUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Delete Saved Plan",
+        "operationId": "delete_saved_plan_api_v3_plans_saved__plan_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Plan Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_dict_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v3/plans/weekly/generate": {
+      "post": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Generate Weekly Plan",
+        "operationId": "generate_weekly_plan_api_v3_plans_weekly_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WeeklyPlanGenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v3/plans/monthly/generate": {
+      "post": {
+        "tags": [
+          "Plans V3"
+        ],
+        "summary": "Generate Monthly Plan",
+        "operationId": "generate_monthly_plan_api_v3_plans_monthly_generate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MonthlyPlanGenerateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/": {
       "get": {
         "summary": "Root",
@@ -2007,6 +3900,369 @@
   },
   "components": {
     "schemas": {
+      "AIConfigResponse": {
+        "properties": {
+          "active_config": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Active Config"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/AIControlVersionResponse"
+            },
+            "type": "array",
+            "title": "Versions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "active_config",
+          "versions"
+        ],
+        "title": "AIConfigResponse"
+      },
+      "AIConfigUpdate": {
+        "properties": {
+          "module": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Module",
+            "default": "llm_runtime"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "payload"
+        ],
+        "title": "AIConfigUpdate"
+      },
+      "AIControlValidationReport": {
+        "properties": {
+          "passed": {
+            "type": "boolean",
+            "title": "Passed"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "passed"
+        ],
+        "title": "AIControlValidationReport"
+      },
+      "AIControlVersionCreate": {
+        "properties": {
+          "module": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Module"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module",
+          "payload"
+        ],
+        "title": "AIControlVersionCreate"
+      },
+      "AIControlVersionResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "module": {
+            "type": "string",
+            "title": "Module"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "validation_report": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIControlValidationReport"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_by": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "module",
+          "version",
+          "payload",
+          "status"
+        ],
+        "title": "AIControlVersionResponse"
+      },
+      "AIFeedbackCreate": {
+        "properties": {
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 5.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating"
+          },
+          "issue_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Issue Tags"
+          },
+          "correction_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correction Text"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          }
+        },
+        "type": "object",
+        "title": "AIFeedbackCreate"
+      },
+      "AIFeedbackResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
+          "session_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Session Id"
+          },
+          "rating": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rating"
+          },
+          "issue_tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Issue Tags"
+          },
+          "correction_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Correction Text"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "AIFeedbackResponse"
+      },
+      "AITrainingDataExportResponse": {
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "item_count": {
+            "type": "integer",
+            "title": "Item Count"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AIFeedbackResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "generated_at",
+          "item_count",
+          "items"
+        ],
+        "title": "AITrainingDataExportResponse"
+      },
       "AdminSetupConfig": {
         "properties": {
           "admin_secret_key": {
@@ -2059,6 +4315,166 @@
         "type": "object",
         "title": "BaseResponse"
       },
+      "BaseResponse_AIConfigResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIConfigResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[AIConfigResponse]"
+      },
+      "BaseResponse_AIControlVersionResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIControlVersionResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[AIControlVersionResponse]"
+      },
+      "BaseResponse_AIFeedbackResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIFeedbackResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[AIFeedbackResponse]"
+      },
+      "BaseResponse_AITrainingDataExportResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AITrainingDataExportResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[AITrainingDataExportResponse]"
+      },
       "BaseResponse_ChatResponseV3_": {
         "properties": {
           "status": {
@@ -2098,6 +4514,46 @@
         },
         "type": "object",
         "title": "BaseResponse[ChatResponseV3]"
+      },
+      "BaseResponse_DashboardOverviewResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DashboardOverviewResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[DashboardOverviewResponse]"
       },
       "BaseResponse_List_PermissionBase__": {
         "properties": {
@@ -2226,6 +4682,126 @@
         },
         "type": "object",
         "title": "BaseResponse[LoginData]"
+      },
+      "BaseResponse_MealLogResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealLogResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[MealLogResponse]"
+      },
+      "BaseResponse_MealLogSummaryResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MealLogSummaryResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[MealLogSummaryResponse]"
+      },
+      "BaseResponse_MonthlyPlansResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MonthlyPlansResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[MonthlyPlansResponse]"
       },
       "BaseResponse_NutritionAgentRecommendationResponse_": {
         "properties": {
@@ -2587,6 +5163,46 @@
         "type": "object",
         "title": "BaseResponse[RoleResponse]"
       },
+      "BaseResponse_SavedPlanResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SavedPlanResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[SavedPlanResponse]"
+      },
       "BaseResponse_Token_": {
         "properties": {
           "status": {
@@ -2626,6 +5242,86 @@
         },
         "type": "object",
         "title": "BaseResponse[Token]"
+      },
+      "BaseResponse_TrainingOptionsResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrainingOptionsResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[TrainingOptionsResponse]"
+      },
+      "BaseResponse_TrainingRecommendationResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrainingRecommendationResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[TrainingRecommendationResponse]"
       },
       "BaseResponse_UserData_": {
         "properties": {
@@ -2787,6 +5483,86 @@
         "type": "object",
         "title": "BaseResponse[WorkflowStateResponse]"
       },
+      "BaseResponse_WorkoutLogResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkoutLogResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[WorkoutLogResponse]"
+      },
+      "BaseResponse_WorkoutLogSummaryResponse_": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkoutLogSummaryResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[WorkoutLogSummaryResponse]"
+      },
       "BaseResponse_dict_": {
         "properties": {
           "status": {
@@ -2828,6 +5604,182 @@
         },
         "type": "object",
         "title": "BaseResponse[dict]"
+      },
+      "BaseResponse_list_AIControlVersionResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AIControlVersionResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[list[AIControlVersionResponse]]"
+      },
+      "BaseResponse_list_AIFeedbackResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AIFeedbackResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[list[AIFeedbackResponse]]"
+      },
+      "BaseResponse_list_MealLogResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MealLogResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[list[MealLogResponse]]"
+      },
+      "BaseResponse_list_SavedPlanResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/SavedPlanResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[list[SavedPlanResponse]]"
       },
       "BaseResponse_list_UserWithRoles__": {
         "properties": {
@@ -2872,6 +5824,94 @@
         },
         "type": "object",
         "title": "BaseResponse[list[UserWithRoles]]"
+      },
+      "BaseResponse_list_WeeklyTimelineItem__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/WeeklyTimelineItem"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[list[WeeklyTimelineItem]]"
+      },
+      "BaseResponse_list_WorkoutLogResponse__": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "success"
+          },
+          "code": {
+            "type": "integer",
+            "title": "Code",
+            "default": 200
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/WorkoutLogResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data"
+          },
+          "meta": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "title": "BaseResponse[list[WorkoutLogResponse]]"
       },
       "Body_upload_my_avatar_api_v3_users_me_avatar_post": {
         "properties": {
@@ -2974,6 +6014,130 @@
           "status"
         ],
         "title": "ChatResponseV3"
+      },
+      "DashboardMacros": {
+        "properties": {
+          "protein_g": {
+            "type": "number",
+            "title": "Protein G",
+            "default": 0.0
+          },
+          "carbs_g": {
+            "type": "number",
+            "title": "Carbs G",
+            "default": 0.0
+          },
+          "fat_g": {
+            "type": "number",
+            "title": "Fat G",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "title": "DashboardMacros"
+      },
+      "DashboardOverviewResponse": {
+        "properties": {
+          "greeting_name": {
+            "type": "string",
+            "title": "Greeting Name"
+          },
+          "goal_label": {
+            "type": "string",
+            "title": "Goal Label"
+          },
+          "weekly_progress": {
+            "type": "number",
+            "title": "Weekly Progress",
+            "default": 0.0
+          },
+          "calories_consumed": {
+            "type": "number",
+            "title": "Calories Consumed",
+            "default": 0.0
+          },
+          "calories_target": {
+            "type": "number",
+            "title": "Calories Target",
+            "default": 0.0
+          },
+          "calories_remaining": {
+            "type": "number",
+            "title": "Calories Remaining",
+            "default": 0.0
+          },
+          "macros": {
+            "$ref": "#/components/schemas/DashboardMacros"
+          },
+          "timeline": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Timeline"
+          },
+          "bmi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bmi"
+          },
+          "weight_kg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weight Kg"
+          },
+          "bmr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bmr"
+          },
+          "trend_points": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Trend Points"
+          },
+          "recent_plans": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Recent Plans"
+          },
+          "profile_completed": {
+            "type": "boolean",
+            "title": "Profile Completed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "greeting_name",
+          "goal_label"
+        ],
+        "title": "DashboardOverviewResponse"
       },
       "DatabaseConfig": {
         "properties": {
@@ -3211,6 +6375,403 @@
         ],
         "title": "LoginData"
       },
+      "MealLogCreate": {
+        "properties": {
+          "logged_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Logged At"
+          },
+          "meal_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Meal Name"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "recommendation",
+              "imported"
+            ],
+            "title": "Source",
+            "default": "manual"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MealLogItemCreate"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "logged_at",
+          "meal_name",
+          "items"
+        ],
+        "title": "MealLogCreate"
+      },
+      "MealLogItemCreate": {
+        "properties": {
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "food_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Id"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Display Name"
+          },
+          "grams": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Grams"
+          },
+          "energy_kcal": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Energy Kcal",
+            "default": 0.0
+          },
+          "protein_g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Protein G",
+            "default": 0.0
+          },
+          "carbs_g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Carbs G",
+            "default": 0.0
+          },
+          "fat_g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Fat G",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "display_name",
+          "grams"
+        ],
+        "title": "MealLogItemCreate"
+      },
+      "MealLogItemResponse": {
+        "properties": {
+          "entity_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Entity Id"
+          },
+          "food_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Food Id"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Display Name"
+          },
+          "grams": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Grams"
+          },
+          "energy_kcal": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Energy Kcal",
+            "default": 0.0
+          },
+          "protein_g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Protein G",
+            "default": 0.0
+          },
+          "carbs_g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Carbs G",
+            "default": 0.0
+          },
+          "fat_g": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Fat G",
+            "default": 0.0
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "display_name",
+          "grams",
+          "id"
+        ],
+        "title": "MealLogItemResponse"
+      },
+      "MealLogResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "logged_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Logged At"
+          },
+          "meal_name": {
+            "type": "string",
+            "title": "Meal Name"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "energy_kcal": {
+            "type": "number",
+            "title": "Energy Kcal"
+          },
+          "protein_g": {
+            "type": "number",
+            "title": "Protein G"
+          },
+          "carbs_g": {
+            "type": "number",
+            "title": "Carbs G"
+          },
+          "fat_g": {
+            "type": "number",
+            "title": "Fat G"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/MealLogItemResponse"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "logged_at",
+          "meal_name",
+          "source",
+          "energy_kcal",
+          "protein_g",
+          "carbs_g",
+          "fat_g"
+        ],
+        "title": "MealLogResponse"
+      },
+      "MealLogSummaryResponse": {
+        "properties": {
+          "log_count": {
+            "type": "integer",
+            "title": "Log Count"
+          },
+          "item_count": {
+            "type": "integer",
+            "title": "Item Count"
+          },
+          "energy_kcal": {
+            "type": "number",
+            "title": "Energy Kcal"
+          },
+          "protein_g": {
+            "type": "number",
+            "title": "Protein G"
+          },
+          "carbs_g": {
+            "type": "number",
+            "title": "Carbs G"
+          },
+          "fat_g": {
+            "type": "number",
+            "title": "Fat G"
+          }
+        },
+        "type": "object",
+        "required": [
+          "log_count",
+          "item_count",
+          "energy_kcal",
+          "protein_g",
+          "carbs_g",
+          "fat_g"
+        ],
+        "title": "MealLogSummaryResponse"
+      },
+      "MealLogUpdate": {
+        "properties": {
+          "logged_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged At"
+          },
+          "meal_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meal Name"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "manual",
+                  "recommendation",
+                  "imported"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "items": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MealLogItemCreate"
+                },
+                "type": "array",
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "title": "MealLogUpdate"
+      },
       "MigrationRequest": {
         "properties": {
           "force_reset": {
@@ -3221,6 +6782,195 @@
         },
         "type": "object",
         "title": "MigrationRequest"
+      },
+      "MonthlyDay": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "has_completed_workout": {
+            "type": "boolean",
+            "title": "Has Completed Workout"
+          },
+          "has_planned_workout": {
+            "type": "boolean",
+            "title": "Has Planned Workout"
+          },
+          "is_today": {
+            "type": "boolean",
+            "title": "Is Today"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "has_completed_workout",
+          "has_planned_workout",
+          "is_today"
+        ],
+        "title": "MonthlyDay"
+      },
+      "MonthlyPlanGenerateRequest": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "maximum": 2200.0,
+            "minimum": 1900.0,
+            "title": "Year"
+          },
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "include_nutrition": {
+            "type": "boolean",
+            "title": "Include Nutrition",
+            "default": true
+          },
+          "include_training": {
+            "type": "boolean",
+            "title": "Include Training",
+            "default": true
+          },
+          "nutrition_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NutritionRecommendationRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "training_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrainingRecommendationRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "month"
+        ],
+        "title": "MonthlyPlanGenerateRequest"
+      },
+      "MonthlyPlansResponse": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/MonthlyDay"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "monthly_progress": {
+            "$ref": "#/components/schemas/MonthlyProgress"
+          },
+          "selected_day": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MonthlySelectedDay"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "month",
+          "days",
+          "monthly_progress",
+          "selected_day"
+        ],
+        "title": "MonthlyPlansResponse"
+      },
+      "MonthlyProgress": {
+        "properties": {
+          "workout_completed": {
+            "type": "integer",
+            "title": "Workout Completed"
+          },
+          "workout_target": {
+            "type": "integer",
+            "title": "Workout Target"
+          },
+          "nutrition_completed": {
+            "type": "integer",
+            "title": "Nutrition Completed"
+          },
+          "nutrition_target": {
+            "type": "integer",
+            "title": "Nutrition Target"
+          }
+        },
+        "type": "object",
+        "required": [
+          "workout_completed",
+          "workout_target",
+          "nutrition_completed",
+          "nutrition_target"
+        ],
+        "title": "MonthlyProgress"
+      },
+      "MonthlySelectedDay": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "subtitle": {
+            "type": "string",
+            "title": "Subtitle"
+          },
+          "calories": {
+            "type": "number",
+            "title": "Calories"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "title",
+          "subtitle",
+          "calories"
+        ],
+        "title": "MonthlySelectedDay"
       },
       "NetworkConfig": {
         "properties": {
@@ -5212,6 +8962,274 @@
         "type": "object",
         "title": "RoleUpdate"
       },
+      "SavedPlanCreate": {
+        "properties": {
+          "plan_type": {
+            "type": "string",
+            "enum": [
+              "nutrition",
+              "training",
+              "weekly",
+              "monthly"
+            ],
+            "title": "Plan Type"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "date_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From"
+          },
+          "date_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "archived",
+              "completed"
+            ],
+            "title": "Status",
+            "default": "active"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "source_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "plan_type",
+          "payload"
+        ],
+        "title": "SavedPlanCreate"
+      },
+      "SavedPlanResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "plan_type": {
+            "type": "string",
+            "title": "Plan Type"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "date_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From"
+          },
+          "date_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "source_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Request"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "plan_type",
+          "status",
+          "payload"
+        ],
+        "title": "SavedPlanResponse"
+      },
+      "SavedPlanUpdate": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "date_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From"
+          },
+          "date_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "active",
+                  "archived",
+                  "completed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "payload": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Payload"
+          },
+          "source_request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Request"
+          }
+        },
+        "type": "object",
+        "title": "SavedPlanUpdate"
+      },
       "SingleTableMigrationRequest": {
         "properties": {
           "table_name": {
@@ -5341,6 +9359,442 @@
           "refresh_token"
         ],
         "title": "Token"
+      },
+      "TrainingDayPlan": {
+        "properties": {
+          "day_index": {
+            "type": "integer",
+            "title": "Day Index"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "focus": {
+            "type": "string",
+            "title": "Focus"
+          },
+          "estimated_minutes": {
+            "type": "integer",
+            "title": "Estimated Minutes"
+          },
+          "warmup": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warmup"
+          },
+          "exercises": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingExercise"
+            },
+            "type": "array",
+            "title": "Exercises"
+          },
+          "cooldown": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Cooldown"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day_index",
+          "title",
+          "focus",
+          "estimated_minutes",
+          "warmup",
+          "exercises",
+          "cooldown"
+        ],
+        "title": "TrainingDayPlan"
+      },
+      "TrainingExercise": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "sets": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sets"
+          },
+          "reps": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "intensity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ],
+            "title": "Intensity"
+          },
+          "rest_seconds": {
+            "type": "integer",
+            "title": "Rest Seconds"
+          },
+          "instructions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Instructions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "category",
+          "intensity",
+          "rest_seconds"
+        ],
+        "title": "TrainingExercise"
+      },
+      "TrainingOptionItem": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "backend_value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Backend Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "label"
+        ],
+        "title": "TrainingOptionItem"
+      },
+      "TrainingOptionsResponse": {
+        "properties": {
+          "goals": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingOptionItem"
+            },
+            "type": "array",
+            "title": "Goals"
+          },
+          "experience_levels": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingOptionItem"
+            },
+            "type": "array",
+            "title": "Experience Levels"
+          },
+          "training_types": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingOptionItem"
+            },
+            "type": "array",
+            "title": "Training Types"
+          },
+          "equipment": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingOptionItem"
+            },
+            "type": "array",
+            "title": "Equipment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "goals",
+          "experience_levels",
+          "training_types",
+          "equipment"
+        ],
+        "title": "TrainingOptionsResponse"
+      },
+      "TrainingRecommendationRequest": {
+        "properties": {
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "gain_muscle",
+                  "lose_weight",
+                  "maintain",
+                  "endurance",
+                  "mobility"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal"
+          },
+          "experience_level": {
+            "type": "string",
+            "enum": [
+              "beginner",
+              "intermediate",
+              "advanced"
+            ],
+            "title": "Experience Level",
+            "default": "beginner"
+          },
+          "workouts_per_week": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 7.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workouts Per Week"
+          },
+          "workout_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 180.0,
+                "minimum": 15.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workout Minutes"
+          },
+          "training_types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Training Types"
+          },
+          "equipment": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Equipment"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          },
+          "include_nutrition_timing": {
+            "type": "boolean",
+            "title": "Include Nutrition Timing",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "TrainingRecommendationRequest"
+      },
+      "TrainingRecommendationResponse": {
+        "properties": {
+          "engine": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Engine"
+          },
+          "profile_summary": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Profile Summary"
+          },
+          "goal": {
+            "type": "string",
+            "enum": [
+              "gain_muscle",
+              "lose_weight",
+              "maintain",
+              "endurance",
+              "mobility"
+            ],
+            "title": "Goal"
+          },
+          "weekly_frequency": {
+            "type": "integer",
+            "title": "Weekly Frequency"
+          },
+          "session_minutes": {
+            "type": "integer",
+            "title": "Session Minutes"
+          },
+          "intensity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ],
+            "title": "Intensity"
+          },
+          "schedule": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingDayPlan"
+            },
+            "type": "array",
+            "title": "Schedule"
+          },
+          "progression": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Progression"
+          },
+          "safety_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Safety Notes"
+          },
+          "nutrition_alignment": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Nutrition Alignment"
+          },
+          "validation": {
+            "$ref": "#/components/schemas/TrainingValidationReport"
+          }
+        },
+        "type": "object",
+        "required": [
+          "engine",
+          "profile_summary",
+          "goal",
+          "weekly_frequency",
+          "session_minutes",
+          "intensity",
+          "schedule",
+          "progression",
+          "safety_notes",
+          "nutrition_alignment",
+          "validation"
+        ],
+        "title": "TrainingRecommendationResponse"
+      },
+      "TrainingValidationIssue": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "warning",
+              "error"
+            ],
+            "title": "Severity"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "severity",
+          "message"
+        ],
+        "title": "TrainingValidationIssue"
+      },
+      "TrainingValidationReport": {
+        "properties": {
+          "passed": {
+            "type": "boolean",
+            "title": "Passed"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/TrainingValidationIssue"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "passed"
+        ],
+        "title": "TrainingValidationReport"
       },
       "UserCreate": {
         "properties": {
@@ -6599,6 +11053,104 @@
         ],
         "title": "VectorConfig"
       },
+      "WeeklyPlanGenerateRequest": {
+        "properties": {
+          "week_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Week Start"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "include_nutrition": {
+            "type": "boolean",
+            "title": "Include Nutrition",
+            "default": true
+          },
+          "include_training": {
+            "type": "boolean",
+            "title": "Include Training",
+            "default": true
+          },
+          "nutrition_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NutritionRecommendationRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "training_request": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TrainingRecommendationRequest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "WeeklyPlanGenerateRequest"
+      },
+      "WeeklyTimelineItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "day_label": {
+            "type": "string",
+            "title": "Day Label"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "subtitle": {
+            "type": "string",
+            "title": "Subtitle"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "completed",
+              "active",
+              "upcoming",
+              "insight"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "day_label",
+          "title",
+          "subtitle",
+          "status"
+        ],
+        "title": "WeeklyTimelineItem"
+      },
       "WorkflowStateResponse": {
         "properties": {
           "request_id": {
@@ -6670,6 +11222,462 @@
           "started_at"
         ],
         "title": "WorkflowStep"
+      },
+      "WorkoutExerciseCreate": {
+        "properties": {
+          "exercise_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Exercise Name"
+          },
+          "sets": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sets"
+          },
+          "reps": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps"
+          },
+          "weight_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weight Kg"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "rest_seconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rest Seconds"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "exercise_name"
+        ],
+        "title": "WorkoutExerciseCreate"
+      },
+      "WorkoutExerciseResponse": {
+        "properties": {
+          "exercise_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Exercise Name"
+          },
+          "sets": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 100.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sets"
+          },
+          "reps": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 50
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reps"
+          },
+          "weight_kg": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weight Kg"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "rest_seconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 3600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rest Seconds"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "exercise_name",
+          "id"
+        ],
+        "title": "WorkoutExerciseResponse"
+      },
+      "WorkoutLogCreate": {
+        "properties": {
+          "logged_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Logged At"
+          },
+          "workout_type": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Workout Type"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "maximum": 600.0,
+            "minimum": 0.0,
+            "title": "Duration Minutes"
+          },
+          "intensity": {
+            "type": "string",
+            "enum": [
+              "low",
+              "moderate",
+              "high"
+            ],
+            "title": "Intensity",
+            "default": "moderate"
+          },
+          "calories_estimated": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Calories Estimated",
+            "default": 0.0
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "exercises": {
+            "items": {
+              "$ref": "#/components/schemas/WorkoutExerciseCreate"
+            },
+            "type": "array",
+            "title": "Exercises"
+          }
+        },
+        "type": "object",
+        "required": [
+          "logged_at",
+          "workout_type",
+          "duration_minutes"
+        ],
+        "title": "WorkoutLogCreate"
+      },
+      "WorkoutLogResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "user_id": {
+            "type": "integer",
+            "title": "User Id"
+          },
+          "logged_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Logged At"
+          },
+          "workout_type": {
+            "type": "string",
+            "title": "Workout Type"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "title": "Duration Minutes"
+          },
+          "intensity": {
+            "type": "string",
+            "title": "Intensity"
+          },
+          "calories_estimated": {
+            "type": "number",
+            "title": "Calories Estimated"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "exercises": {
+            "items": {
+              "$ref": "#/components/schemas/WorkoutExerciseResponse"
+            },
+            "type": "array",
+            "title": "Exercises"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "user_id",
+          "logged_at",
+          "workout_type",
+          "duration_minutes",
+          "intensity",
+          "calories_estimated"
+        ],
+        "title": "WorkoutLogResponse"
+      },
+      "WorkoutLogSummaryResponse": {
+        "properties": {
+          "log_count": {
+            "type": "integer",
+            "title": "Log Count"
+          },
+          "exercise_count": {
+            "type": "integer",
+            "title": "Exercise Count"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "title": "Duration Minutes"
+          },
+          "calories_estimated": {
+            "type": "number",
+            "title": "Calories Estimated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "log_count",
+          "exercise_count",
+          "duration_minutes",
+          "calories_estimated"
+        ],
+        "title": "WorkoutLogSummaryResponse"
+      },
+      "WorkoutLogUpdate": {
+        "properties": {
+          "logged_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logged At"
+          },
+          "workout_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workout Type"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 600.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "intensity": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "moderate",
+                  "high"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intensity"
+          },
+          "calories_estimated": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calories Estimated"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "exercises": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/WorkoutExerciseCreate"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exercises"
+          }
+        },
+        "type": "object",
+        "title": "WorkoutLogUpdate"
       }
     },
     "securitySchemes": {

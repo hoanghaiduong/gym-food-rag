@@ -239,6 +239,40 @@ nen mat nhieu thoi gian hon API thuong. Nen su dung cho **testing/benchmarking**
 
 ---
 
+## 8. Benchmark so sanh cho luan van
+
+Khi can chay so sanh tren nhieu case, dung CLI rieng thay vi goi endpoint `/evaluate`
+lap lai nhieu lan:
+
+```powershell
+.\myenv\Scripts\python -X utf8 scripts\compare_nutrition_baselines.py
+```
+
+CLI nay chay cung 3 variant (`main_flow`, `pure_generation`, `rule_based`) tren bo
+recommendation production cases, nhung chi ghi artifact nghien cuu vao:
+
+```text
+logs/nutrition_case_runs/_debug/comparison/latest/comparison_summary.json
+```
+
+Mac dinh CLI chi sinh 1 file summary, khong ghi vao canonical root va khong tham gia
+`judge_production_readiness.py`. Per-case JSON va Markdown report chi duoc ghi khi bat
+co `--emit-case-files` hoac `--emit-markdown`.
+
+Voi run dai de gap loi Gemini `429/503`, co the resume bang summary da ghi tang dan:
+
+```powershell
+.\myenv\Scripts\python -X utf8 scripts\compare_nutrition_baselines.py --run-name thesis_full --emit-markdown --resume
+```
+
+Neu can bo qua cac case dau da co log rieng, dung production case index 1-based:
+
+```powershell
+.\myenv\Scripts\python -X utf8 scripts\compare_nutrition_baselines.py --run-name thesis_full_part2 --start-index 6 --emit-markdown
+```
+
+---
+
 ## Tai lieu lien quan
 
 - [Tong quan kien truc](../architecture/overview.md)

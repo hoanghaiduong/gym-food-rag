@@ -9,6 +9,8 @@ from .rbac import roles, permissions, role_permissions, user_roles
 from .chat import chat_sessions, chat_history
 from .otp_requests import otp_requests
 from .system_settings import system_settings
+from .tracking import meal_logs, meal_log_items, workout_logs, workout_log_exercises, saved_plans
+from .ai_control import ai_control_versions, ai_feedback_events, audit_events
 # from .products import products, orders
 # ...
 
@@ -20,5 +22,9 @@ __all__ = [
     "otp_requests",
     "chat_sessions", "chat_history",
     "system_settings",
+    "meal_logs", "meal_log_items",
+    "workout_logs", "workout_log_exercises",
+    "saved_plans",
+    "ai_control_versions", "ai_feedback_events", "audit_events",
     # "products", "orders"
 ]

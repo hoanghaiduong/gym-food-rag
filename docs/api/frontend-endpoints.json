@@ -565,6 +565,196 @@
     },
     {
       "method": "POST",
+      "path": "/api/v3/ai/feedback",
+      "tags": [
+        "AI Feedback"
+      ],
+      "summary": "Create Ai Feedback",
+      "operation_id": "create_ai_feedback_api_v3_ai_feedback_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/AIFeedbackCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIFeedbackResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/admin/ai/config",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Get Ai Config",
+      "operation_id": "get_ai_config_api_v3_admin_ai_config_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIConfigResponse_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/admin/ai/config",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Update Ai Config",
+      "operation_id": "update_ai_config_api_v3_admin_ai_config_put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/AIConfigUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/admin/ai/prompts",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "List Ai Prompts",
+      "operation_id": "list_ai_prompts_api_v3_admin_ai_prompts_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_AIControlVersionResponse__"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/admin/ai/prompts",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Create Ai Prompt",
+      "operation_id": "create_ai_prompt_api_v3_admin_ai_prompts_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/AIControlVersionCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/admin/ai/prompts/{version_id}/validate",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Validate Ai Prompt",
+      "operation_id": "validate_ai_prompt_api_v3_admin_ai_prompts__version_id__validate_post",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/admin/ai/prompts/{version_id}/publish",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Publish Ai Prompt",
+      "operation_id": "publish_ai_prompt_api_v3_admin_ai_prompts__version_id__publish_post",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/admin/ai/rules",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "List Ai Rules",
+      "operation_id": "list_ai_rules_api_v3_admin_ai_rules_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_AIControlVersionResponse__"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/admin/ai/rules",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Create Ai Rule",
+      "operation_id": "create_ai_rule_api_v3_admin_ai_rules_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/AIControlVersionCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/admin/ai/rules/{version_id}/validate",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Validate Ai Rule",
+      "operation_id": "validate_ai_rule_api_v3_admin_ai_rules__version_id__validate_post",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/admin/ai/rules/{version_id}/publish",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Publish Ai Rule",
+      "operation_id": "publish_ai_rule_api_v3_admin_ai_rules__version_id__publish_post",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AIControlVersionResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/admin/ai/feedback",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "List Ai Feedback",
+      "operation_id": "list_ai_feedback_api_v3_admin_ai_feedback_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_AIFeedbackResponse__"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/admin/ai/training-data/export",
+      "tags": [
+        "AI Control Plane"
+      ],
+      "summary": "Export Ai Training Data",
+      "operation_id": "export_ai_training_data_api_v3_admin_ai_training_data_export_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_AITrainingDataExportResponse_"
+      }
+    },
+    {
+      "method": "POST",
       "path": "/api/v3/chat",
       "tags": [
         "Chat V3"
@@ -683,6 +873,360 @@
       },
       "response_schema": {
         "$ref": "#/components/schemas/BaseResponse_NutritionEvaluationResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/training/options",
+      "tags": [
+        "Training Decision Support"
+      ],
+      "summary": "Get Training Options",
+      "operation_id": "get_training_options_api_v3_training_options_get",
+      "requires_auth": false,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_TrainingOptionsResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/training/recommendation",
+      "tags": [
+        "Training Decision Support"
+      ],
+      "summary": "Generate Training Recommendation",
+      "operation_id": "generate_training_recommendation_api_v3_training_recommendation_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/TrainingRecommendationRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_TrainingRecommendationResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/meals/logs",
+      "tags": [
+        "Meal Logs"
+      ],
+      "summary": "Create Meal Log",
+      "operation_id": "create_meal_log_api_v3_meals_logs_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/MealLogCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_MealLogResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/meals/logs",
+      "tags": [
+        "Meal Logs"
+      ],
+      "summary": "List Meal Logs",
+      "operation_id": "list_meal_logs_api_v3_meals_logs_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_MealLogResponse__"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/meals/logs/summary",
+      "tags": [
+        "Meal Logs"
+      ],
+      "summary": "Summarize Meal Logs",
+      "operation_id": "summarize_meal_logs_api_v3_meals_logs_summary_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_MealLogSummaryResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/meals/logs/{log_id}",
+      "tags": [
+        "Meal Logs"
+      ],
+      "summary": "Get Meal Log",
+      "operation_id": "get_meal_log_api_v3_meals_logs__log_id__get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_MealLogResponse_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/meals/logs/{log_id}",
+      "tags": [
+        "Meal Logs"
+      ],
+      "summary": "Update Meal Log",
+      "operation_id": "update_meal_log_api_v3_meals_logs__log_id__put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/MealLogUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_MealLogResponse_"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/meals/logs/{log_id}",
+      "tags": [
+        "Meal Logs"
+      ],
+      "summary": "Delete Meal Log",
+      "operation_id": "delete_meal_log_api_v3_meals_logs__log_id__delete",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/workouts/logs",
+      "tags": [
+        "Workout Logs"
+      ],
+      "summary": "Create Workout Log",
+      "operation_id": "create_workout_log_api_v3_workouts_logs_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/WorkoutLogCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_WorkoutLogResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/workouts/logs",
+      "tags": [
+        "Workout Logs"
+      ],
+      "summary": "List Workout Logs",
+      "operation_id": "list_workout_logs_api_v3_workouts_logs_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_WorkoutLogResponse__"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/workouts/logs/summary",
+      "tags": [
+        "Workout Logs"
+      ],
+      "summary": "Summarize Workout Logs",
+      "operation_id": "summarize_workout_logs_api_v3_workouts_logs_summary_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_WorkoutLogSummaryResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/workouts/logs/{log_id}",
+      "tags": [
+        "Workout Logs"
+      ],
+      "summary": "Get Workout Log",
+      "operation_id": "get_workout_log_api_v3_workouts_logs__log_id__get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_WorkoutLogResponse_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/workouts/logs/{log_id}",
+      "tags": [
+        "Workout Logs"
+      ],
+      "summary": "Update Workout Log",
+      "operation_id": "update_workout_log_api_v3_workouts_logs__log_id__put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/WorkoutLogUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_WorkoutLogResponse_"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/workouts/logs/{log_id}",
+      "tags": [
+        "Workout Logs"
+      ],
+      "summary": "Delete Workout Log",
+      "operation_id": "delete_workout_log_api_v3_workouts_logs__log_id__delete",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/dashboard/overview",
+      "tags": [
+        "Dashboard V3"
+      ],
+      "summary": "Get Dashboard Overview",
+      "operation_id": "get_dashboard_overview_api_v3_dashboard_overview_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_DashboardOverviewResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/plans/weekly",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Get Weekly Plans",
+      "operation_id": "get_weekly_plans_api_v3_plans_weekly_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_WeeklyTimelineItem__"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/plans/monthly",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Get Monthly Plans",
+      "operation_id": "get_monthly_plans_api_v3_plans_monthly_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_MonthlyPlansResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/plans/saved",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Create Saved Plan",
+      "operation_id": "create_saved_plan_api_v3_plans_saved_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/SavedPlanCreate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/plans/saved",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "List Saved Plans",
+      "operation_id": "list_saved_plans_api_v3_plans_saved_get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_list_SavedPlanResponse__"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/v3/plans/saved/{plan_id}",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Get Saved Plan",
+      "operation_id": "get_saved_plan_api_v3_plans_saved__plan_id__get",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v3/plans/saved/{plan_id}",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Update Saved Plan",
+      "operation_id": "update_saved_plan_api_v3_plans_saved__plan_id__put",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/SavedPlanUpdate"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v3/plans/saved/{plan_id}",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Delete Saved Plan",
+      "operation_id": "delete_saved_plan_api_v3_plans_saved__plan_id__delete",
+      "requires_auth": true,
+      "request_schema": null,
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_dict_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/plans/weekly/generate",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Generate Weekly Plan",
+      "operation_id": "generate_weekly_plan_api_v3_plans_weekly_generate_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/WeeklyPlanGenerateRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/v3/plans/monthly/generate",
+      "tags": [
+        "Plans V3"
+      ],
+      "summary": "Generate Monthly Plan",
+      "operation_id": "generate_monthly_plan_api_v3_plans_monthly_generate_post",
+      "requires_auth": true,
+      "request_schema": {
+        "$ref": "#/components/schemas/MonthlyPlanGenerateRequest"
+      },
+      "response_schema": {
+        "$ref": "#/components/schemas/BaseResponse_SavedPlanResponse_"
       }
     },
     {
